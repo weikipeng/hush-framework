@@ -1,18 +1,18 @@
 <?php
 /**
- * Ihush Page
+ * Ihush App
  *
  * @category   Ihush
- * @package    Ihush_App_Page
- * @author     James.Huang <james@ihush.com>
- * @copyright  Copyright (c) iHush Technologies Inc. (http://www.ihush.com)
+ * @package    Ihush_App
+ * @author     James.Huang <shagoo@gmail.com>
+ * @license    http://www.apache.org/licenses/LICENSE-2.0
  * @version    $Id$
  */
  
 require_once 'Ihush/App/Page.php';
 
 /**
- * @package Ihush_App_Page
+ * @package Ihush_App
  */
 class Ihush_App_Backend extends Ihush_App_Page
 {

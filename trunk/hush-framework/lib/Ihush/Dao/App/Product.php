@@ -3,15 +3,15 @@
  * Ihush Dao
  *
  * @category   Ihush
- * @package    Ihush_Dao_Acl
- * @author     James.Huang <james@ihush.com>
- * @copyright  Copyright (c) iHush Technologies Inc. (http://www.ihush.com)
+ * @package    Ihush_Dao_App
+ * @author     James.Huang <shagoo@gmail.com>
+ * @license    http://www.apache.org/licenses/LICENSE-2.0
  * @version    $Id$
  */
  
 require_once 'Ihush/Dao/App.php';
 /**
- * @package Ihush_Dao_Acl
+ * @package Ihush_Dao_App
  */
 class App_Product extends Ihush_Dao_App
 {

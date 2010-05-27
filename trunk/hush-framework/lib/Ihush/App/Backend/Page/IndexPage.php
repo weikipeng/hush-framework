@@ -4,8 +4,8 @@
  *
  * @category   Track
  * @package    Ihush_App_Backend
- * @author     James.Huang <james@ihush.com>
- * @copyright  Copyright (c) iHush Technologies Inc. (http://www.ihush.com)
+ * @author     James.Huang <shagoo@gmail.com>
+ * @license    http://www.apache.org/licenses/LICENSE-2.0
  * @version    $Id$
  */
  
