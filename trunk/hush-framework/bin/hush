@@ -1,0 +1,5 @@
+#!/bin/sh
+
+PHP_EXE="php"
+
+$PHP_EXE hush.php $1 $2 $3
