@@ -42,3 +42,17 @@ define('__LIB_PATH_REMOTE', realpath(__LIB_DIR . '/Ihush/App/Frontend/Remote'));
 define('__TPL_ENGINE', 'Smarty');
 define('__TPL_LIB_PATH', 'Smarty_2');
 define('__TPL_SMARTY_PATH', realpath(__TPL_DIR . '/frontend'));
+
+/**
+ * Cache's settings
+ * TODO : could be changed by yourself's settings !!!
+ */
+define('__FILECACHE_DIR', realpath(__DAT_DIR . '/cache'));
+define('__MEMCACHE_HOST', '192.168.1.213');
+define('__MEMCACHE_PORT', '11211');
+
+/**
+ * Acl's settings
+ * TODO : could be changed by yourself's settings !!!
+ */
+define('__ACL_SA', 'sa');
