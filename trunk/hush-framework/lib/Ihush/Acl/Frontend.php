@@ -18,14 +18,14 @@ require_once 'Ihush/Dao.php';
 class Ihush_Acl_Frontend extends Ihush_Acl
 {
 	/**
-	 * @var Ihush_App_Backend_Acl
+	 * @var Ihush_Acl_Frontend
 	 */
 	public static $_acl = null;
 	
 	/**
 	 * Get static or cached acl object
 	 * 
-	 * @return Ihush_App_Backend_Acl
+	 * @return Ihush_Acl_Frontend
 	 */
 	public static function getInstance ()
 	{
