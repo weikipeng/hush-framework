@@ -19,8 +19,8 @@ define('__SQL_INIT_FE', __ROOT . '/doc/sql/ihush_app.sql');
 define('__SQL_BACKUP_BE', __DAT_DIR . '/dbsql/database.ihush_acl.' . date('Y-m-d') . '.sql');
 define('__SQL_BACKUP_FE', __DAT_DIR . '/dbsql/database.ihush_app.' . date('Y-m-d') . '.sql');
 
-define('__SQL_IMPORT_TOOL', 'd:/xampp/mysql/bin/mysql.exe');
-define('__SQL_DUMPER_TOOL', 'd:/xampp/mysql/bin/mysqldump.exe');
+define('__SQL_IMPORT_TOOL', 'mysql');
+define('__SQL_DUMPER_TOOL', 'mysqldump');
 define('__SQL_IMPORT_COMMAND', __SQL_IMPORT_TOOL . ' {PARAMS} < {SQLFILE}');
 define('__SQL_DUMPER_COMMAND', __SQL_DUMPER_TOOL . ' {PARAMS} --add-drop-database > {SQLFILE}');
 
@@ -153,9 +153,11 @@ if (strcasecmp($classn, 'fe')) {
 }
 
 // init action
-if (!strcasecmp($classn, 'init')) {
+if (!strcasecmp($classn, 'init') ||
+	!strcasecmp($classn, 'dir')) {
 	
-	echo 
+	if (!strcasecmp($classn, 'init')) {	
+		echo 
 <<<NOTICE
 
 **********************************************************
@@ -172,12 +174,28 @@ Because you will :
 
 Are you sure to do all above things [Y/N] : 
 NOTICE;
+	} else {
+		echo 
+<<<NOTICE
+
+**********************************************************
+* Start to check dirs for the Hush Framework             *
+**********************************************************
+
+This action will check all necessary dirs for the system
+
+Are you sure to do such things [Y/N] : 
+NOTICE;
+	}
 	
 	$input = fgets(fopen("php://stdin", "r"));
 	
 	// start do init process
-	if (!strcasecmp(trim($input), 'y')) {
-		
+	if (strcasecmp(trim($input), 'y')) {
+		exit;
+	}
+	
+	if (!strcasecmp($classn, 'init')) {
 		$be_command = __SQL_IMPORT_COMMAND;
 		$be_command = str_replace('{PARAMS}', Hush_Console::getDBParams(__SQL_INI_BE), $be_command);
 		$be_command = str_replace('{SQLFILE}', __SQL_INIT_BE, $be_command);
@@ -196,25 +214,26 @@ NOTICE;
 		} else {
 			exit;
 		}
-		
-		$check_dirs = array(
-			__DAT_DIR . '/cache',
-			__DAT_DIR . '/dbsql',
-			__TPL_DIR . '/cache',
-			__TPL_DIR . '/template_c'
-		);
-		
-		foreach ($check_dirs as $dir) {
-			if (!is_dir($dir) || !is_writable($dir)) {
-				mkdir($dir, 0777);
-			}
-			echo "\nCHECK DIR : $dir";
-		}
-		
-		echo "\n\nAll dirs are ok ...\n";
 	}
 	
-	echo 
+	$check_dirs = array(
+		__DAT_DIR . '/cache',
+		__DAT_DIR . '/dbsql',
+		__TPL_DIR . '/cache',
+		__TPL_DIR . '/template_c'
+	);
+	
+	foreach ($check_dirs as $dir) {
+		if (!is_dir($dir) || !is_writable($dir)) {
+			mkdir($dir, 0777);
+		}
+		echo "\nCHECK DIR : $dir";
+	}
+	
+	echo "\n\nAll dirs are ok ...\n";
+	
+	if (!strcasecmp($classn, 'init')) {
+		echo 
 <<<NOTICE
 
 **********************************************************
@@ -224,6 +243,7 @@ NOTICE;
 Thank you for using Hush Framework !!!
 
 NOTICE;
+	}
 	
 	exit;
 }
@@ -237,6 +257,7 @@ Usage: hush [ENVIRONMENT] [OPTIONS] <ACTIONS>
 
 Enviornment:
     init   :   Initialize the framework first time
+    dir    :   Check all dir operation only
     fe     :   Frontend relavant operation
     be     :   Backend relavant operation
 
