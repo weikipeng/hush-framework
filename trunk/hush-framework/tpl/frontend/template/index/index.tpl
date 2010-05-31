@@ -2,7 +2,7 @@
 
 	<img src="{$_root}img/logo.gif" />
 	
-	<br/><br/><hr/><br/>
+	<div style="padding:8px 0px 8px 0px"><hr/></div>
 	
 	<h1 style="font-size:14pt">{$welcome}</h1>
 	
