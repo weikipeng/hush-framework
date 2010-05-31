@@ -16,6 +16,7 @@ if(self!=top){top.location=self.location;}
 	<div class="login-con">
 	<h1><img src="{$_root}img/logo_s.gif" /><span>后台管理系统</span></h1>
 		<div class="login">
+		{include file="frame/error.tpl"}
 		<form action="{$_root}auth/login" method="post">
 			<input type="hidden" name="go" value=""/>
 			<input type="hidden" name="do" value="login"/>
