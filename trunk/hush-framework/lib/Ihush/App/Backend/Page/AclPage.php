@@ -19,9 +19,8 @@ class AclPage extends Ihush_App_Backend_Page
 {
 	public function __init ()
 	{
-		$this->authenticate();
-		
 		parent::__init(); // overload parent class's method
+		$this->authenticate();
 	}
 	
 	public function __done ()

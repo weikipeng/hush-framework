@@ -29,6 +29,9 @@ class Ihush_App_Backend_Page extends Ihush_App_Backend
 		
 		// Auto load dao
 		$this->dao->acl = new Ihush_Dao_Acl();
+		
+		// Setting acl control object
+		$this->view->_acl = $this->acl = Ihush_Acl_Backend::getInstance();
 	}
 	
 	/**
@@ -46,17 +49,14 @@ class Ihush_App_Backend_Page extends Ihush_App_Backend
 		// set admin info object
 		$this->view->_admin = $this->admin = $this->session('admin');
 		
-		// Setting acl control object
-		$this->view->_acl = $this->acl = Ihush_Acl_Backend::getInstance();
-		
 		// check if this path is accessable
 		$path = parse_url($_SERVER['REQUEST_URI']);
-		if ($this->acl->has($path['path'])) {
-			if (!$this->acl->isAllowed($this->admin['role'], $path['path'])) {
-				$this->forward($this->root . 'common/');
+		if ($this->acl instanceof Zend_Acl) {
+			if ($this->acl->has($path['path'])) {
+				if (!$this->acl->isAllowed($this->admin['role'], $path['path'])) {
+					$this->forward($this->root . 'common/');
+				}
 			}
 		}
-		
-
 	}
 }
