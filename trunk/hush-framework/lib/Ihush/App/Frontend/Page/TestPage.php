@@ -34,12 +34,12 @@ class TestPage extends Ihush_App_Frontend_Page
 	
 	public function pagingAction () 
 	{
-		echo 'Paging request uri : ' . $_SERVER['REQUEST_URI'] . '<br/>';
-		echo 'Paging demo : <br/>';
-		$this->paging();
+		echo 'Paging object : ';
+		$this->pagingDemo();
+		
 	}
 	
-	private function paging ()
+	private function pagingDemo ()
 	{
 		$data = array();
 		for ($i = 0; $i < 50; $i++) {
@@ -50,6 +50,7 @@ class TestPage extends Ihush_App_Frontend_Page
 		$page = new Ihush_Paging($data, 5, null, array(
 			'Href' => '/test/p/{page}'
 		));
+		
 		Hush_Util::dump($page->paging());
 	}
 }
