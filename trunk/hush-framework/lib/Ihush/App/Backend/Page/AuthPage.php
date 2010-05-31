@@ -23,23 +23,41 @@ class AuthPage extends Ihush_App_Backend_Page
 	
 	public function loginAction () 
 	{
-		if (strcasecmp($this->param('securitycode'),$this->session('securitycode'))) {
-			// redirect to homepage
-			$this->forward($this->root);
+		// validate
+		if (!$this->param('username') ||
+			!$this->param('password') ||
+			!$this->param('securitycode')) {
+			$this->addError('login.notempty');
+		}
+		elseif (strcasecmp($this->param('securitycode'),$this->session('securitycode'))) {
+			$this->addError('common.scodeerr');
 		}
 		
-		$aclUserDao = $this->dao->acl->load('Acl_User');
-		$admin = $aclUserDao->authenticate($this->param('username'), $this->param('password'));
-		if ($admin) {
-			// whether super admin
-			$admin['sa'] = strcasecmp($admin['name'], $this->sa) ? false : true;
-			// store admin into session
-			$this->session('admin', $admin);
-			// redirect to homepage
-			$this->forward($this->root);
+		// login process
+		if ($this->noError()) {
+			$aclUserDao = $this->dao->acl->load('Acl_User');
+			$admin = $aclUserDao->authenticate($this->param('username'), $this->param('password'));
+			// login failed
+			if (!$admin) {
+				$this->addError('login.nouser');
+			}
+			// login failed 
+			elseif (is_int($admin)) {
+				$this->addError('login.failed');
+			} 
+			// login ok
+			else {
+				// whether super admin
+				$admin['sa'] = strcasecmp($admin['name'], $this->sa) ? false : true;
+				// store admin into session
+				$this->session('admin', $admin);
+				// redirect to homepage
+				$this->forward($this->root);
+			}
 		}
 		
-		$this->forward($this->root);
+		// also use index template
+		$this->render('auth/index.tpl');
 	}
 	
 	public function logoutAction ()

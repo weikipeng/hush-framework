@@ -77,9 +77,10 @@ class Ihush_App_Page extends Hush_Page
 			throw new Ihush_App_Exception('Error messages ini file can not be found');
 		}
 		
-		$error_str = '';
 		$error_tpl_arr = parse_ini_file(__MSG_INI_FILE);
 		$error_tpl_str = isset($error_tpl_arr[$msg]) ? $error_tpl_arr[$msg] : 'undefined';
+		
+		$error_str = $error_tpl_str; // default error msg
 		
 		$args = func_get_args();
 		@array_shift($args); // remove first parameter (msg id)

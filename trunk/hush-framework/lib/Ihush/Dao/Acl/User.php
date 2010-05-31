@@ -48,12 +48,13 @@ class Acl_User extends Ihush_Dao_Acl
 		
 		$sql = $this->db->select()
 			->from($this->t1, "*")
-			->where("name = ?", $user)
-			->where("pass = ?", Hush_Util::md5($pass));
+			->where("name = ?", $user);
 		
 		$user = $this->db->fetchRow($sql);
 		
-		if (!$user['id']) return false;
+		if (!$user['id'] || !$user['pass']) return false;
+		
+		if (strcmp($user['pass'], Hush_Util::md5($pass))) return $user['id'];
 		
 		$sql = $this->db->select()
 			->from($this->t2, "*")
