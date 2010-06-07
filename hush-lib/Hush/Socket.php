@@ -1,0 +1,79 @@
+<?php
+/**
+ * Hush Framework
+ *
+ * @category   Hush
+ * @package    Hush_Socket
+ * @author     James.Huang <james@ihush.com>
+ * @copyright  Copyright (c) iHush Technologies Inc. (http://www.ihush.com)
+ * @version    $Id$
+ */
+
+/**
+ * @see Hush_Socket_Exception
+ */
+require_once 'Hush/Socket/Exception.php';
+
+/**
+ * @package Hush_Socket
+ */
+class Hush_Socket
+{
+	/**
+	 * @var string
+	 */
+	public $host = '127.0.0.1';
+	
+	/**
+	 * @var string
+	 */
+	public $port = '12345';
+	
+	/**
+	 * @var resource
+	 */
+	public $sock;
+	
+	/**
+	 * Check runtime enviornment and initlialize resource for process
+	 * Resource include Mutex resource and shared variables
+	 * Call by construct
+	 * 
+	 * @return void
+	 */
+	protected function __initialize ($host, $port)
+	{
+		if (substr(php_sapi_name(), 0, 3) != 'cli') {
+			throw new Hush_Socket_Exception("Please use cli mode to run this script");
+		}
+		
+		if (!extension_loaded("sockets")) {
+			throw new Hush_Socket_Exception("You need to open sockets extensions");
+		}
+		
+		if ($host) $this->host = $host;
+		if ($port) $this->port = $port;
+	}
+	
+	/**
+	 * Set socket from outside (after init)
+	 * 
+	 * @param resource $socket
+	 * @return void
+	 */
+	public function setSocket ($socket)
+	{
+		$this->sock = $socket;
+	}
+	
+	/**
+	 * Get socket resource
+	 * 
+	 * @return resource
+	 */
+	public function getSocket ($socket)
+	{
+		$this->sock = $socket;
+	}
+}
+
