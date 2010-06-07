@@ -49,10 +49,11 @@
 <script type="text/javascript">
 // only when element exists
 if ($("#sel_pid").length > 0) {
+	var default_opt = '{if $app.is_app eq 'YES'}app{else}menu{/if}';
 	// default create menu
-	$.post('appAjax', { opt : 'menu' , sel : '{$app.pid}' }, function(text){
+	$.post('appAjax', { opt : default_opt , sel : '{$app.pid}' }, function(text){
 		$("#sel_pid").append(text);
-	})
+	});
 	// level option list
 	$('form input[name=is_app]').click(function(){
 		$("#sel_pid").empty();
