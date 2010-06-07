@@ -1,16 +1,16 @@
-<?php /* Smarty version 3.0rc1, created on 2010-06-07 18:00:32
-         compiled from "D:\workspace\hush-framework\tpl\backend\template\acl/forms/roles_add.tpl" */ ?>
-<?php /*%%SmartyHeaderCode:322404c0cc340e35ed2-57733553%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
+<?php /* Smarty version 3.0rc1, created on 2010-06-07 18:30:38
+         compiled from "D:\workspace\hush-framework\hush-app\tpl\backend\template\acl/forms/roles_add.tpl" */ ?>
+<?php /*%%SmartyHeaderCode:192094c0cca4edc2f43-09711875%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_smarty_tpl->decodeProperties(array (
   'file_dependency' => 
   array (
-    'd409b8e159558846649e1670bf50fd2bb57f3966' => 
+    '51f82f5043e59763a3d51176e90b3f2129b40358' => 
     array (
-      0 => 'D:\\workspace\\hush-framework\\tpl\\backend\\template\\acl/forms/roles_add.tpl',
-      1 => 1274950988,
+      0 => 'D:\\workspace\\hush-framework\\hush-app\\tpl\\backend\\template\\acl/forms/roles_add.tpl',
+      1 => 1275906252,
     ),
   ),
-  'nocache_hash' => '322404c0cc340e35ed2-57733553',
+  'nocache_hash' => '192094c0cca4edc2f43-09711875',
   'function' => 
   array (
   ),

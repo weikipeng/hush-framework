@@ -1,16 +1,16 @@
-<?php /* Smarty version 3.0rc1, created on 2010-06-07 18:00:31
-         compiled from "D:\workspace\hush-framework\tpl\backend\template\acl/role/list.tpl" */ ?>
-<?php /*%%SmartyHeaderCode:313434c0cc33f357a05-99766625%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
+<?php /* Smarty version 3.0rc1, created on 2010-06-07 18:28:12
+         compiled from "D:\workspace\hush-framework\hush-app\tpl\backend\template\acl/role/list.tpl" */ ?>
+<?php /*%%SmartyHeaderCode:81184c0cc9bc48d518-89620468%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_smarty_tpl->decodeProperties(array (
   'file_dependency' => 
   array (
-    '567ac13323d50989cedd4b62bd7cc2f060988738' => 
+    'd91437dea90293ecbd756b89e206c2a674af1f08' => 
     array (
-      0 => 'D:\\workspace\\hush-framework\\tpl\\backend\\template\\acl/role/list.tpl',
-      1 => 1274950988,
+      0 => 'D:\\workspace\\hush-framework\\hush-app\\tpl\\backend\\template\\acl/role/list.tpl',
+      1 => 1275906252,
     ),
   ),
-  'nocache_hash' => '313434c0cc33f357a05-99766625',
+  'nocache_hash' => '81184c0cc9bc48d518-89620468',
   'function' => 
   array (
   ),

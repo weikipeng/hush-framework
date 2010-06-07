@@ -1,16 +1,16 @@
-<?php /* Smarty version 3.0rc1, created on 2010-06-07 18:00:23
-         compiled from "D:\workspace\hush-framework\tpl\backend\template\frame/head.tpl" */ ?>
-<?php /*%%SmartyHeaderCode:255034c0cc3377fffc6-70175142%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
+<?php /* Smarty version 3.0rc1, created on 2010-06-07 18:28:10
+         compiled from "D:\workspace\hush-framework\hush-app\tpl\backend\template\frame/head.tpl" */ ?>
+<?php /*%%SmartyHeaderCode:237434c0cc9bac15cb9-42156271%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_smarty_tpl->decodeProperties(array (
   'file_dependency' => 
   array (
-    '431d392e1c4e43cb45dd90d53d15524d65137878' => 
+    '99297576efd5fd9db05b3c4dfe3fce510013239c' => 
     array (
-      0 => 'D:\\workspace\\hush-framework\\tpl\\backend\\template\\frame/head.tpl',
-      1 => 1274950988,
+      0 => 'D:\\workspace\\hush-framework\\hush-app\\tpl\\backend\\template\\frame/head.tpl',
+      1 => 1275906254,
     ),
   ),
-  'nocache_hash' => '255034c0cc3377fffc6-70175142',
+  'nocache_hash' => '237434c0cc9bac15cb9-42156271',
   'function' => 
   array (
   ),

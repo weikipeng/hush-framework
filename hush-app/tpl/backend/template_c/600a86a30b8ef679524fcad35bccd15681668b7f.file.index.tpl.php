@@ -1,16 +1,16 @@
-<?php /* Smarty version 3.0rc1, created on 2010-06-07 18:00:15
-         compiled from "D:\workspace\hush-framework\tpl\backend\template\auth\index.tpl" */ ?>
-<?php /*%%SmartyHeaderCode:17894c0cc32f3424b6-41084186%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
+<?php /* Smarty version 3.0rc1, created on 2010-06-07 18:28:04
+         compiled from "D:\workspace\hush-framework\hush-app\tpl\backend\template\auth/index.tpl" */ ?>
+<?php /*%%SmartyHeaderCode:307684c0cc9b4035648-33820024%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_smarty_tpl->decodeProperties(array (
   'file_dependency' => 
   array (
-    '478187b206a01a023ae58f966431c8e5b1b08810' => 
+    '600a86a30b8ef679524fcad35bccd15681668b7f' => 
     array (
-      0 => 'D:\\workspace\\hush-framework\\tpl\\backend\\template\\auth\\index.tpl',
-      1 => 1275286500,
+      0 => 'D:\\workspace\\hush-framework\\hush-app\\tpl\\backend\\template\\auth/index.tpl',
+      1 => 1275906254,
     ),
   ),
-  'nocache_hash' => '17894c0cc32f3424b6-41084186',
+  'nocache_hash' => '307684c0cc9b4035648-33820024',
   'function' => 
   array (
   ),
