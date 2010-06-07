@@ -22,13 +22,13 @@ CREATE TABLE `app` (
   `pid` int(10) NOT NULL DEFAULT '0',
   `is_app` enum('YES','NO') NOT NULL DEFAULT 'YES',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC;
 
 /*Data for the table `app` */
 
 LOCK TABLES `app` WRITE;
 
-insert  into `app`(`id`,`name`,`path`,`pid`,`is_app`) values (1,'权限系统','',0,'NO'),(2,'权限管理','',1,'NO'),(3,'角色管理','/acl/rolelist',2,'YES'),(4,'用户管理','/acl/userlist',2,'YES'),(5,'资源管理','/acl/resourcelist',2,'YES'),(6,'菜单管理','/acl/applist',2,'YES'),(7,'常用工具','',0,'NO'),(8,'测试菜单','',7,'NO'),(9,'测试应用','/test/',8,'YES');
+insert  into `app`(`id`,`name`,`path`,`pid`,`is_app`) values (1,'系统管理','',0,'NO'),(2,'权限管理','',1,'NO'),(3,'角色管理','/acl/rolelist',2,'YES'),(4,'用户管理','/acl/userlist',2,'YES'),(5,'资源管理','/acl/resourcelist',2,'YES'),(6,'菜单管理','/acl/applist',2,'YES'),(7,'常用工具','',0,'NO'),(8,'测试菜单','',7,'NO'),(9,'测试应用','/test/',8,'YES'),(10,'日常管理','',1,'NO'),(11,'欢迎界面','/common/',10,'YES'),(12,'个人设置','/common/personal',10,'YES');
 
 UNLOCK TABLES;
 
@@ -46,7 +46,7 @@ CREATE TABLE `app_role` (
 
 LOCK TABLES `app_role` WRITE;
 
-insert  into `app_role`(`app_id`,`role_id`) values (1,1),(1,2),(2,1),(2,2),(3,1),(4,1),(4,2),(5,1),(5,2),(6,1),(6,2),(7,1),(7,2),(7,3),(7,4),(7,5),(8,1),(8,2),(8,3),(8,4),(8,5),(9,1),(9,2),(9,3),(9,4),(9,5);
+insert  into `app_role`(`app_id`,`role_id`) values (1,1),(1,2),(2,1),(2,2),(3,1),(4,1),(4,2),(5,1),(5,2),(6,1),(6,2),(7,1),(7,2),(7,3),(7,4),(7,5),(8,1),(8,2),(8,3),(8,4),(8,5),(9,1),(9,2),(9,3),(9,4),(9,5),(10,1),(10,2),(10,3),(10,4),(10,5),(11,1),(11,2),(11,3),(11,4),(11,5),(12,1),(12,2),(12,3),(12,4),(12,5);
 
 UNLOCK TABLES;
 
