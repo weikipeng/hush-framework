@@ -40,7 +40,12 @@ class Examples_Message_Queue extends Hush_Message_Queue
  */
 class Examples_Message_Handler extends Hush_Message_Handler
 {
-	public function handler ()
+	public function doSend ()
+	{
+		// TODO : add send handler for sending message
+	}
+	
+	public function doRecv ()
 	{
 		// Get message from queue
 		$msg = $this->getMessage();
@@ -71,6 +76,7 @@ try {
 			$msg = new Examples_Message();
 			$msg->setType(Examples_Message::MSG_ERROR);
 			$msg->setData("Error Message {$msg_id}");
+			$msg = json_encode($msg); // json format data
 			$mq->addMessage($msg);
 			unset($msg);
 		}
@@ -79,6 +85,7 @@ try {
 			$msg = new Examples_Message();
 			$msg->setType(Examples_Message::MSG_NOTICE);
 			$msg->setData("Notice Message {$msg_id}");
+			$msg = json_encode($msg); // json format data
 			$mq->addMessage($msg);
 			unset($msg);
 		}

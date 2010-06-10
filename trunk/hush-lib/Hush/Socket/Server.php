@@ -76,16 +76,19 @@ class Hush_Socket_Server extends Hush_Socket
 	
 	/**
 	 * Init socket resource
-	 * Only once !!!
+	 * Should be only once !!!
 	 * 
 	 * @return resource
 	 */
-	public function initSocket ()
+	public function init ()
 	{
 		if (!$this->host ||
 			!$this->port) {
 				throw new Hush_Socket_Exception("Please set server's host and port first");
 			}
+		
+		// release resource at first !!!
+		$this->close();
 		
 		if (($this->sock = @socket_create(AF_INET, SOCK_STREAM, SOL_TCP)) < 0) {
 			echo "socket_create() failed.\nReason: " . socket_strerror($this->sock) . "\n";
@@ -103,13 +106,23 @@ class Hush_Socket_Server extends Hush_Socket
 	}
 	
 	/**
+	 * Release socket resource
+	 * 
+	 * @return resource
+	 */
+	public function close ()
+	{
+		@socket_close($this->sock);
+	}
+	
+	/**
 	 * Run server as a daemon
 	 * 
 	 * @return void
 	 */
 	 public function daemon ($init = true) 
 	 {
-	 	if ($init) $this->initSocket();
+	 	if ($init) $this->init();
 	 	
 		if (!$this->sock) {
 			throw new Hush_Socket_Exception("Please init socket resource first");
@@ -127,6 +140,7 @@ class Hush_Socket_Server extends Hush_Socket
 			echo "socket_listen() failed\n";
 		}
 
+		// socket must be block as a server !!!
 		@socket_set_block($this->sock);
 
 		do {
@@ -195,7 +209,8 @@ class Hush_Socket_Server extends Hush_Socket
 		}
 		while (true);
 
-		@socket_close($this->sock);
+		// release resource at last !!!
+		$this->close();
 	}
 	
 	/**
