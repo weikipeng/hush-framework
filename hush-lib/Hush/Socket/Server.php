@@ -52,6 +52,10 @@ class Hush_Socket_Server extends Hush_Socket
 	 */
 	public function __construct ($host = '', $port = 0) 
 	{
+		if (substr(php_sapi_name(), 0, 3) != 'cli') {
+			throw new Hush_Socket_Exception("Please use cli mode to run this script");
+		}
+		
 		$this->__initialize(trim($host), $port);
 	}
 	

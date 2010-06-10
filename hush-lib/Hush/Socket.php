@@ -43,10 +43,6 @@ class Hush_Socket
 	 */
 	protected function __initialize ($host, $port)
 	{
-		if (substr(php_sapi_name(), 0, 3) != 'cli') {
-			throw new Hush_Socket_Exception("Please use cli mode to run this script");
-		}
-		
 		if (!extension_loaded("sockets")) {
 			throw new Hush_Socket_Exception("You need to open sockets extensions");
 		}
