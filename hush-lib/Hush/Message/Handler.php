@@ -53,5 +53,10 @@ abstract class Hush_Message_Handler
 	/**
 	 * @abstract
 	 */
-	abstract protected function handler ();
+	abstract protected function doSend ();
+	
+	/**
+	 * @abstract
+	 */
+	abstract protected function doRecv ();
 }

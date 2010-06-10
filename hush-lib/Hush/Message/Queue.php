@@ -115,8 +115,11 @@ abstract class Hush_Message_Queue
 	 */
 	public function addMessage ($message)
 	{
-		if (!($message instanceof Hush_Message)) {
-			throw new Hush_Message_Exception("Please add an instance of the Hush_Message");
+		$message = @json_decode($message); // json format data
+		
+		if (!is_object($message) ||
+			!isset($message->type)) {
+			throw new Hush_Message_Exception("Message must be a Json Object contains type field");
 			return false;
 		}
 		
@@ -124,11 +127,25 @@ abstract class Hush_Message_Queue
 		
 		// serialize : true ; blocking : false
 		$errorcode = 0;
-		$this->status = msg_send($queue, $message->getType(), $message->getData(), true, false, $errorcode);
+		$this->status = msg_send($queue, $message->type, $message->data, true, false, $errorcode);
 		
 		// catch send error code
 		if ($errorcode) {
 			throw new Hush_Message_Exception("Message send error : " . $errorcode);
+			return false;
+		} 
+		// call send handler
+		else {	
+			// build message object
+			$msg = new Hush_Message();
+			$msg->setType($message->type);
+			$msg->setData($message->data);
+				
+			// do handler process
+			foreach ($this->handlers as $handler) {
+				$handler->setMessage($msg);
+				$handler->doSend();
+			}
 		}
 		
 		return $this;
@@ -165,17 +182,18 @@ abstract class Hush_Message_Queue
 		$type = $data = null;
 		if (msg_receive($queue, 0, $type, 1024, $data, true, MSG_IPC_NOWAIT)) 
 		{
-			// do handler process
+			// build message object
+			$msg = new Hush_Message();
+			$msg->setType($type);
+			$msg->setData($data);
+			
+			// call recv handler
 			foreach ($this->handlers as $handler) {
-				
-				$message = new Hush_Message();
-				$message->setType($type);
-				$message->setData($data);
-				
-				$handler->setMessage($message);
-				$handler->handler();
+				$handler->setMessage($msg);
+				$handler->doRecv();
 			}
-			return true;
+			
+			return json_encode($msg);
 		}
 		
 		return false;
