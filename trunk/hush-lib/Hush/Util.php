@@ -389,4 +389,15 @@ class Hush_Util
 		}
 		return false;
 	}
+	
+	/**
+	 * Check if item is json string
+	 * @static
+	 * @param array $str
+	 * @return bool
+	 */
+	public static function is_json ($str) 
+	{
+		return (is_string($str) && is_object(json_decode($str))) ? true : false;
+	}
 }
