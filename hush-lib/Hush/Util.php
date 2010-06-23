@@ -291,6 +291,23 @@ class Hush_Util
 	}
 	
 	/**
+	 * Get string hash code
+	 * Each string has different hash code
+	 * @param string $str
+	 * @return int
+	 */
+	public static function str_hash ($str)
+	{
+		$hc = $si = 0;
+		$cs = preg_split('//', $str, -1, PREG_SPLIT_NO_EMPTY);
+		while ($c = array_shift($cs)) {
+			$hc += ord($c) ^ $si;
+			$si++;
+		}
+		return $hc;
+	}
+	
+	/**
 	 * Sort hash array by value's key
 	 * @static
 	 * @param array $array
