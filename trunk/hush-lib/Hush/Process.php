@@ -15,6 +15,11 @@
 require_once 'Hush/Process/Exception.php';
 
 /**
+ * @see Hush_Util
+ */
+require_once 'Hush/Util.php';
+
+/**
  * Set basic environment
  * Give us eternity to execute the script
  */
@@ -86,11 +91,11 @@ abstract class Hush_Process
 	{
 		// get global process id
 		$this->name = get_class($this);
-		$this->gid = hexdec($this->name);
+		$this->gid = $this->__hashcode($this->name);
 		
 		// get process id from name
 		$this->name .= '_' . $name;
-		$this->pid = hexdec($this->name);
+		$this->pid = $this->__hashcode($this->name);
 		
 		// release all resource
 		$this->__release();
@@ -112,7 +117,7 @@ abstract class Hush_Process
 	 */
 	public function __set ($k, $v)
 	{
-		$key = hexdec($k);
+		$key = $this->__hashcode($k);
 		$val = $v ? $v : self::$nullVal;
 		@shm_put_var($this->shared, $key, $val);
 		return $val;
@@ -123,7 +128,7 @@ abstract class Hush_Process
 	 */
 	public function __get ($k)
 	{
-		$key = hexdec($k);
+		$key = $this->__hashcode($k);
 		$val = @shm_get_var($this->shared, $key);
 		return $val ? $val : self::$nullVal;
 	}
@@ -133,18 +138,31 @@ abstract class Hush_Process
 	 */
 	public function __global ($k, $v = null)
 	{
-		$key = hexdec($k);
+		$key = $this->__hashcode($k);
+		
 		// get global variables
 		if (!isset($v)) {
 			$val = @shm_get_var($this->global, $key);
 			return $val ? $val : self::$nullVal;
-		} 
+		}
+		
 		// set global variables
 		else {
 			$val = $v ? $v : self::$nullVal;
 			@shm_put_var($this->global, $key, $val);
 			return $val;
 		}
+	}
+	
+	/**
+	 * Get string or key's hash code
+	 * @param string $s
+	 * @return int
+	 */
+	private function __hashcode ($s)
+	{
+		$code = Hush_Util::str_hash($s);
+		return $code ? $code : -1;
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////////////////////
