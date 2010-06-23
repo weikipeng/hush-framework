@@ -58,6 +58,16 @@ abstract class Hush_Process
 	 * @staticvar int
 	 */
 	public static $parentPid = 0;
+
+	/**
+	 * @var int
+	 */
+	public $ftbm = 0;
+	
+	/**
+	 * @var int
+	 */
+	public $ftbr = 0;
 	
 	/**
 	 * @var resource
@@ -89,6 +99,10 @@ abstract class Hush_Process
 	 */
 	public function __construct ($name = '')
 	{
+		// ftok base
+		$this->ftbm = ftok(__FILE__, 'm');
+		$this->ftbr = ftok(__FILE__, 'r');
+		
 		// get global process id
 		$this->name = get_class($this);
 		$this->gid = $this->__hashcode($this->name);
@@ -119,7 +133,12 @@ abstract class Hush_Process
 	{
 		$key = $this->__hashcode($k);
 		$val = $v ? $v : self::$nullVal;
+		
+		// avoid dirty write
+		$this->lock();
 		@shm_put_var($this->shared, $key, $val);
+		$this->unlock();
+		
 		return $val;
 	}
 	
@@ -161,8 +180,8 @@ abstract class Hush_Process
 	 */
 	private function __hashcode ($s)
 	{
-		$code = Hush_Util::str_hash($s);
-		return $code ? $code : -1;
+		$code = $this->ftbr + Hush_Util::str_hash($s);
+		return $code ? $code : $this->ftbr;
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////////////////////
@@ -190,15 +209,15 @@ abstract class Hush_Process
 			}
 		
 		// init mutex for lock
-		$mutex_id = ftok(__FILE__, 'm') + $this->pid;
+		$mutex_id = $this->ftbm + $this->pid;
 		$this->mutex = sem_get($mutex_id, 1);
 		
 		// init global space for all
-		$global_id = ftok(__FILE__, 'r') + $this->gid;
+		$global_id = $this->ftbr + $this->gid;
 		$this->global = shm_attach($global_id, 1024 * 1024 * 2);
 		
 		// init shared space for group
-		$shared_id = ftok(__FILE__, 'r') + $this->pid;
+		$shared_id = $this->ftbr + $this->pid;
 		$this->shared = shm_attach($shared_id, 1024 * 1024 * 1);
 		
 		// register callback functions
@@ -274,7 +293,7 @@ abstract class Hush_Process
 	 * 
 	 * @return void
 	 */
-	private function __wait ($pids)
+	private function __waitpid ($pids)
 	{
 		foreach ($pids as $pid) {
 			pcntl_waitpid($pid, self::$nowStatus);
@@ -301,6 +320,21 @@ abstract class Hush_Process
 				// TODO : Do somthing when caught SIGUSR1
 				break;
 		}
+	}
+	
+	/**
+	 * Protect shared variables dirty read/write
+	 * Please use this method when data is important
+	 * Especially when do something for database in multi-processes
+	 * Pay attention that this method will have speed slower
+	 * 
+	 * @return void
+	 */
+	protected function __safewait ()
+	{
+		$rs = 44444 * self::$maxProcessNum;
+		$re = 55555 * self::$maxProcessNum;
+		$this->sleep(rand($rs, $re));
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////////////////////
@@ -390,7 +424,7 @@ abstract class Hush_Process
 		for ($i = $sumProcessNum; $i < self::$maxProcessNum; $i++) {
 			$pids[] = $this->__process();
 		}
-		$this->__wait($pids);
+		$this->__waitpid($pids);
 	}
 	
 	/**
