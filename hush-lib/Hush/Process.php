@@ -112,8 +112,9 @@ abstract class Hush_Process
 	 */
 	public function __set ($k, $v)
 	{
+		$key = hexdec($k);
 		$val = $v ? $v : self::$nullVal;
-		@shm_put_var($this->shared, $k, $val);
+		@shm_put_var($this->shared, $key, $val);
 		return $val;
 	}
 	
@@ -122,7 +123,8 @@ abstract class Hush_Process
 	 */
 	public function __get ($k)
 	{
-		$val = @shm_get_var($this->shared, $k);
+		$key = hexdec($k);
+		$val = @shm_get_var($this->shared, $key);
 		return $val ? $val : self::$nullVal;
 	}
 	
@@ -131,15 +133,16 @@ abstract class Hush_Process
 	 */
 	public function __global ($k, $v = null)
 	{
+		$key = hexdec($k);
 		// get global variables
 		if (!isset($v)) {
-			$val = @shm_get_var($this->global, $k);
+			$val = @shm_get_var($this->global, $key);
 			return $val ? $val : self::$nullVal;
 		} 
 		// set global variables
 		else {
 			$val = $v ? $v : self::$nullVal;
-			@shm_put_var($this->global, $k, $val);
+			@shm_put_var($this->global, $key, $val);
 			return $val;
 		}
 	}
@@ -416,7 +419,7 @@ abstract class Hush_Process
 	 */
 	public function unlock ()
 	{
-		@sem_remove($this->mutex);
+		@sem_release($this->mutex);
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////////////////////
