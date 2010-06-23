@@ -20,6 +20,11 @@ require_once 'Hush/Message/Exception.php';
 require_once 'Hush/Message.php';
 
 /**
+ * @see Hush_Util
+ */
+require_once 'Hush/Util.php';
+
+/**
  * @package Hush_Message
  */
 abstract class Hush_Message_Queue
@@ -63,7 +68,7 @@ abstract class Hush_Message_Queue
 		
 		// get queue id from name
 		$this->name .= '_' . $name;
-		$this->qid = hexdec($this->name);
+		$this->qid = Hush_Util::str_hash($this->name);
 		
 		// init msg queue
 		if (!$this->queue = msg_get_queue($this->qid, 0666)) {
