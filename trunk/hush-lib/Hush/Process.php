@@ -15,6 +15,11 @@
 require_once 'Hush/Process/Exception.php';
 
 /**
+ * @see Hush_Process_Storage
+ */
+require_once 'Hush/Process/Storage.php';
+
+/**
  * @see Hush_Util
  */
 require_once 'Hush/Util.php';
@@ -40,9 +45,9 @@ ini_set("max_input_time", "0");
 abstract class Hush_Process
 {
 	/**
-	 * @staticvar int
+	 * @staticvar string [sysv|file]
 	 */
-	public static $nullVal = 0;
+	public static $storage = 'sysv';
 	
 	/**
 	 * @staticvar int
@@ -65,16 +70,6 @@ abstract class Hush_Process
 	public static $parentPid = 0;
 
 	/**
-	 * @staticvar int
-	 */
-	public static $globalMemorySize = 16777216; // 1024 * 1024 * 16
-	
-	/**
-	 * @staticvar int
-	 */
-	public static $sharedMemorySize = 16777216; // 1024 * 1024 * 16
-
-	/**
 	 * @staticvar bool
 	 */
 	public static $stopAfterRun = true;
@@ -95,12 +90,12 @@ abstract class Hush_Process
 	public $mutex = null;
 	
 	/**
-	 * @var resource
+	 * @var object
 	 */
 	public $global = null;
 	
 	/**
-	 * @var resource
+	 * @var object
 	 */
 	public $shared = null;
 	
@@ -108,6 +103,11 @@ abstract class Hush_Process
 	 * @var string
 	 */
 	public $name = '';
+	
+	/**
+	 * @var int
+	 */
+	public $gid = 0;
 	
 	/**
 	 * @var int
@@ -127,9 +127,13 @@ abstract class Hush_Process
 		$this->name = get_class($this);
 		$this->gid = $this->__hashcode($this->name);
 		
-		// get process id from name
+		// get process id by $name
 		$this->name .= '_' . $name;
 		$this->pid = $this->__hashcode($this->name);
+		
+		// create shared space for variables
+		$this->global = Hush_Process_Storage::factory(self::$storage, array('name' => $this->gid));
+		$this->shared = Hush_Process_Storage::factory(self::$storage, array('name' => $this->pid));
 		
 		// release all resource
 		$this->__release();
@@ -151,15 +155,8 @@ abstract class Hush_Process
 	 */
 	public function __set ($k, $v)
 	{
-		$key = $this->__hashcode($k);
-		$val = $v ? $v : self::$nullVal;
-		
-		// avoid dirty write
-		$this->lock();
-		@shm_put_var($this->shared, $key, $val);
-		$this->unlock();
-		
-		return $val;
+		// set shared variables
+		return $this->shared->set($k, $v);
 	}
 	
 	/**
@@ -167,14 +164,8 @@ abstract class Hush_Process
 	 */
 	public function __get ($k)
 	{
-		$key = $this->__hashcode($k);
-		
-		// avoid dirty read
-		$this->lock();
-		$val = @shm_get_var($this->shared, $key);
-		$this->unlock();
-		
-		return $val ? $val : self::$nullVal;
+		// get shared variables
+		return $this->shared->get($k);
 	}
 	
 	/**
@@ -182,29 +173,13 @@ abstract class Hush_Process
 	 */
 	public function __global ($k, $v = null)
 	{
-		$key = $this->__hashcode($k);
-		
 		// get global variables
-		if (!isset($v)) 
-		{
-			$this->lock();
-			$val = @shm_get_var($this->global, $key);
-			$this->unlock();
-			
-			return $val ? $val : self::$nullVal;
+		if (!isset($v)) {
+			return $this->global->get($k);
 		}
 		
 		// set global variables
-		else 
-		{
-			$val = $v ? $v : self::$nullVal;
-			
-			$this->lock();
-			@shm_put_var($this->global, $key, $val);
-			$this->unlock();
-			
-			return $val;
-		}
+		return $this->global->set($k, $v);
 	}
 	
 	/**
@@ -237,23 +212,13 @@ abstract class Hush_Process
 		
 		if (!extension_loaded("pcntl") ||
 			!extension_loaded("posix") ||
-			!extension_loaded("sysvsem") ||
-			!extension_loaded("sysvshm") ||
-			!extension_loaded("sysvmsg")) {
-				throw new Hush_Process_Exception("You need to open pcntl, posix, sysv* extensions");
+			!extension_loaded("sysvsem")) {
+				throw new Hush_Process_Exception("You need to open pcntl, posix, sysvsem extensions");
 			}
 		
 		// init mutex for lock
 		$mutex_id = $this->ftbm + $this->pid;
 		$this->mutex = sem_get($mutex_id, 1);
-		
-		// init global space for all
-		$global_id = $this->ftbr + $this->gid;
-		$this->global = shm_attach($global_id, self::$globalMemorySize);
-		
-		// init shared space for group
-		$shared_id = $this->ftbr + $this->pid;
-		$this->shared = shm_attach($shared_id, self::$sharedMemorySize);
 		
 		// register callback functions
 		pcntl_signal(SIGTERM,	array(&$this, "__singal"));
@@ -291,10 +256,10 @@ abstract class Hush_Process
 	protected function __release ()
 	{
 		// release global space for vars
-		@shm_remove($this->global);
+		$this->global->remove();
 
 		// release shared space for vars
-		@shm_remove($this->shared);
+		$this->shared->remove();
 		
 		// remove mutex for lock
 		@sem_remove($this->mutex);
