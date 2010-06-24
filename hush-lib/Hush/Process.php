@@ -28,6 +28,11 @@ ini_set("max_input_time", "0");
 @set_time_limit(0);
 
 /**
+ * PAY ATTENTION !!!
+ * There is still some problem on PHP's shm_* methods in Multi-CPUs environment
+ * So please use the shared variables carefully !!!
+ * FYI : http://bugs.php.net/bug.php?id=8985
+ * 
  * @abstract
  * @package Hush_Process
  * @example Process.php Example for using Hush_Process class
@@ -58,6 +63,21 @@ abstract class Hush_Process
 	 * @staticvar int
 	 */
 	public static $parentPid = 0;
+
+	/**
+	 * @staticvar int
+	 */
+	public static $globalMemorySize = 16777216; // 1024 * 1024 * 16
+	
+	/**
+	 * @staticvar int
+	 */
+	public static $sharedMemorySize = 16777216; // 1024 * 1024 * 16
+
+	/**
+	 * @staticvar bool
+	 */
+	public static $stopAfterRun = true;
 
 	/**
 	 * @var int
@@ -99,7 +119,7 @@ abstract class Hush_Process
 	 */
 	public function __construct ($name = '')
 	{
-		// ftok base
+		// ftok base id
 		$this->ftbm = ftok(__FILE__, 'm');
 		$this->ftbr = ftok(__FILE__, 'r');
 		
@@ -148,7 +168,12 @@ abstract class Hush_Process
 	public function __get ($k)
 	{
 		$key = $this->__hashcode($k);
+		
+		// avoid dirty read
+		$this->lock();
 		$val = @shm_get_var($this->shared, $key);
+		$this->unlock();
+		
 		return $val ? $val : self::$nullVal;
 	}
 	
@@ -160,15 +185,24 @@ abstract class Hush_Process
 		$key = $this->__hashcode($k);
 		
 		// get global variables
-		if (!isset($v)) {
+		if (!isset($v)) 
+		{
+			$this->lock();
 			$val = @shm_get_var($this->global, $key);
+			$this->unlock();
+			
 			return $val ? $val : self::$nullVal;
 		}
 		
 		// set global variables
-		else {
+		else 
+		{
 			$val = $v ? $v : self::$nullVal;
+			
+			$this->lock();
 			@shm_put_var($this->global, $key, $val);
+			$this->unlock();
+			
 			return $val;
 		}
 	}
@@ -181,6 +215,7 @@ abstract class Hush_Process
 	private function __hashcode ($s)
 	{
 		$code = $this->ftbr + Hush_Util::str_hash($s);
+		
 		return $code ? $code : $this->ftbr;
 	}
 	
@@ -214,11 +249,11 @@ abstract class Hush_Process
 		
 		// init global space for all
 		$global_id = $this->ftbr + $this->gid;
-		$this->global = shm_attach($global_id, 1024 * 1024 * 2);
+		$this->global = shm_attach($global_id, self::$globalMemorySize);
 		
 		// init shared space for group
 		$shared_id = $this->ftbr + $this->pid;
-		$this->shared = shm_attach($shared_id, 1024 * 1024 * 1);
+		$this->shared = shm_attach($shared_id, self::$sharedMemorySize);
 		
 		// register callback functions
 		pcntl_signal(SIGTERM,	array(&$this, "__singal"));
@@ -230,6 +265,21 @@ abstract class Hush_Process
 		
 		// do init logic in subclasses
 		$this->__init();
+	}
+	
+	/**
+	 * Protect shared variables dirty read/write
+	 * Please use this method when data is important
+	 * Especially when do something for database in multi-processes
+	 * Pay attention that this method will have speed slower
+	 * 
+	 * @return void
+	 */
+	protected function __safewait ()
+	{
+		$rs = 11111 * self::$maxProcessNum;
+		$re = 33333 * self::$maxProcessNum;
+		$this->sleep(rand($rs, $re));
 	}
 	
 	/**
@@ -263,6 +313,7 @@ abstract class Hush_Process
 		if ($pid == -1) {
 			die("System could not fork\n");
 		}
+		
 		// we are the parent
 		elseif ($pid) {
 			
@@ -278,13 +329,16 @@ abstract class Hush_Process
 			
 			return $pid;
 		}
+		
 		// we are the child
 		else {
 			declare (ticks = 1) {
 				$this->run();
-				$this->stop();
+				// force to kill process after run
+				if (self::$stopAfterRun) {
+					$this->stop();
+				}
 			}
-			exit();
 		}
 	}
 	
@@ -320,21 +374,6 @@ abstract class Hush_Process
 				// TODO : Do somthing when caught SIGUSR1
 				break;
 		}
-	}
-	
-	/**
-	 * Protect shared variables dirty read/write
-	 * Please use this method when data is important
-	 * Especially when do something for database in multi-processes
-	 * Pay attention that this method will have speed slower
-	 * 
-	 * @return void
-	 */
-	protected function __safewait ()
-	{
-		$rs = 44444 * self::$maxProcessNum;
-		$re = 55555 * self::$maxProcessNum;
-		$this->sleep(rand($rs, $re));
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////////////////////
@@ -421,9 +460,12 @@ abstract class Hush_Process
 	{
 		$pids = array();
 		$sumProcessNum = $this->getSumProcessNum();
+		
 		for ($i = $sumProcessNum; $i < self::$maxProcessNum; $i++) {
+			$this->__safewait(); // stagger each process
 			$pids[] = $this->__process();
 		}
+		
 		$this->__waitpid($pids);
 	}
 	
@@ -446,8 +488,11 @@ abstract class Hush_Process
 	 */
 	public function stop ()
 	{
+		$this->__release(); // must release all resource first
+		
 		$sumProcessNum = $this->getSumProcessNum();
 		$this->setSumProcessNum(--$sumProcessNum);
+		
 		posix_kill(posix_getpid(), SIGKILL);
 	}
 	
