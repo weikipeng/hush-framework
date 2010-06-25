@@ -75,6 +75,16 @@ abstract class Hush_Process
 	public static $stopAfterRun = true;
 
 	/**
+	 * @staticvar bool
+	 */
+	public static $getLock = false;
+
+	/**
+	 * @staticvar bool
+	 */
+	public static $setLock = false;
+
+	/**
 	 * @var int
 	 */
 	public $ftbm = 0;
@@ -156,7 +166,10 @@ abstract class Hush_Process
 	public function __set ($k, $v)
 	{
 		// set shared variables
-		return $this->shared->set($k, $v);
+		if (self::$setLock) $this->lock();
+		$res = $this->shared->set($k, $v);
+		if (self::$setLock) $this->unlock();
+		return $res;
 	}
 	
 	/**
@@ -165,7 +178,10 @@ abstract class Hush_Process
 	public function __get ($k)
 	{
 		// get shared variables
-		return $this->shared->get($k);
+		if (self::$getLock) $this->lock();
+		$res = $this->shared->get($k);
+		if (self::$getLock) $this->unlock();
+		return $res;
 	}
 	
 	/**
@@ -175,11 +191,17 @@ abstract class Hush_Process
 	{
 		// get global variables
 		if (!isset($v)) {
-			return $this->global->get($k);
+			if (self::$getLock) $this->lock();
+			$res = $this->global->get($k);
+			if (self::$getLock) $this->unlock();
+			return $res;
 		}
 		
 		// set global variables
-		return $this->global->set($k, $v);
+		if (self::$setLock) $this->lock();
+		$res = $this->global->set($k, $v);
+		if (self::$setLock) $this->unlock();
+		return $res;
 	}
 	
 	/**
