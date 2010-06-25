@@ -4,7 +4,7 @@
  * Hush Framework
  *
  * @category   Hush
- * @package    Hush_Process_Storage
+ * @package    Hush_Process
  * @author     James.Huang <shagoo@gmail.com>
  * @license    http://www.apache.org/licenses/LICENSE-2.0
  * @version    $Id$
@@ -16,7 +16,7 @@
 require_once 'Hush/Process/Exception.php';
 
 /**
- * @see Hush_Storage
+ * @see Hush_Process_Storage
  */
 require_once 'Hush/Process/Storage.php';
 
@@ -26,7 +26,7 @@ require_once 'Hush/Process/Storage.php';
 require_once 'Hush/Util.php';
 
 /**
- * @package Hush_Process_Storage
+ * @package Hush_Process
  */
 class Hush_Process_Storage_File extends Hush_Process_Storage 
 {
