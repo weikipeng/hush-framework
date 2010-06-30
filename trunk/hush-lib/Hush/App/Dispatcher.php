@@ -355,8 +355,9 @@ class Hush_App_Dispatcher
 			
 			require_once 'Hush/Page.php';
 			
-			Hush_Page::closeAutoLoad();
-			Zend_Loader::loadClass($className, $app_dir); // debug should be closed
+			Hush_Page::closeAutoLoad(); // close page autoload mechanism
+			
+			@Zend_Loader::loadClass($className, $app_dir); // debug should be closed
 			
 			if (!class_exists($className)) {
 				require_once 'Hush/App/Exception.php';
