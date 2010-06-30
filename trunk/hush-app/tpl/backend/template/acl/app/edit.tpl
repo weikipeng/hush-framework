@@ -18,12 +18,18 @@
 		<td class="field">创建类型</td>
 		<td class="value">{if $app.is_app eq 'YES'}应用{else}菜单{/if}</td>
 	</tr>
+	{if $app.pid eq '0'}
+	<tr>
+		<td class="field">顶部位置</td>
+		<td class="value"><input style="width:18px" maxlength="2" type="text" name="order" value="{$app.order}" />
+		(从左到右,1~99)</td>
+	</tr>
+	{else}
 	<tr>
 		<td class="field">显示层次</td>
-		<td class="value">
-		{if $app.pid eq '0'}顶级菜单（不可修改）{else}<select id="sel_pid" class="common" name="pid"></select>{/if}
-		</td>
+		<td class="value"><select id="sel_pid" class="common" name="pid"></select></td>
 	</tr>
+	{/if}
 	<tr>
 		<td class="field">显示名称 *</td>
 		<td class="value"><input class="common" type="text" name="name" value="{$app.name}" /></td>
