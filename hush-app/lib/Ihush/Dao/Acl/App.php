@@ -112,7 +112,7 @@ class Acl_App extends Ihush_Dao_Acl
 		}
 		
 		$sql->group("{$this->t1}.id")
-			->order(array("{$this->t1}.pid", "{$this->t1}.id"));
+			->order(array("{$this->t1}.pid", "{$this->t1}.order", "{$this->t1}.id"));
 		
 		$rawAppList = $this->db->fetchAll($sql);
 		
@@ -123,7 +123,7 @@ class Acl_App extends Ihush_Dao_Acl
 			$tree->setNode($app['id'], $app['pid'], $app);
 		}
 		
-		// get top 
+		// get top list
 		$topAppList = array();
 		$topAppListIds = $tree->getChild(0);
 		foreach ($topAppListIds as $id) {
