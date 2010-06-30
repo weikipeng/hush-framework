@@ -411,6 +411,7 @@ class AclPage extends Ihush_App_Backend_Page
 				// prepare data
 				$data['name'] = $this->param('name');
 				$data['path'] = $this->param('path');
+				$data['order'] = $this->param('order');
 				if ($this->param('pid')) {
 					$data['pid'] = $this->param('pid');
 				}

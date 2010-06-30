@@ -20,6 +20,7 @@ CREATE TABLE `app` (
   `name` varchar(50) NOT NULL,
   `path` varchar(50) NOT NULL DEFAULT '',
   `pid` int(10) NOT NULL DEFAULT '0',
+  `order` int(10) NOT NULL DEFAULT '0',
   `is_app` enum('YES','NO') NOT NULL DEFAULT 'YES',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC;
@@ -28,7 +29,7 @@ CREATE TABLE `app` (
 
 LOCK TABLES `app` WRITE;
 
-insert  into `app`(`id`,`name`,`path`,`pid`,`is_app`) values (1,'系统管理','',0,'NO'),(2,'权限管理','',1,'NO'),(3,'角色管理','/acl/rolelist',2,'YES'),(4,'用户管理','/acl/userlist',2,'YES'),(5,'资源管理','/acl/resourcelist',2,'YES'),(6,'菜单管理','/acl/applist',2,'YES'),(7,'常用工具','',0,'NO'),(8,'测试菜单','',7,'NO'),(9,'测试应用','/test/',8,'YES'),(10,'日常管理','',1,'NO'),(11,'欢迎界面','/common/',10,'YES'),(12,'个人设置','/common/personal',10,'YES');
+insert  into `app`(`id`,`name`,`path`,`pid`,`order`,`is_app`) values (1,'系统管理','',0,0,'NO'),(2,'权限管理','',1,0,'NO'),(3,'角色管理','/acl/rolelist',2,0,'YES'),(4,'用户管理','/acl/userlist',2,0,'YES'),(5,'资源管理','/acl/resourcelist',2,0,'YES'),(6,'菜单管理','/acl/applist',2,0,'YES'),(7,'常用工具','',0,0,'NO'),(8,'测试菜单','',7,0,'NO'),(9,'测试应用','/test/',8,0,'YES'),(10,'日常管理','',1,0,'NO'),(11,'欢迎界面','/common/',10,0,'YES'),(12,'个人设置','/common/personal',10,0,'YES');
 
 UNLOCK TABLES;
 
