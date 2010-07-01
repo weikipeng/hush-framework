@@ -112,7 +112,7 @@ class Acl_App extends Ihush_Dao_Acl
 		}
 		
 		$sql->group("{$this->t1}.id")
-			->order(array("{$this->t1}.pid", "{$this->t1}.order", "{$this->t1}.id"));
+			->order(array("{$this->t1}.is_app desc", "{$this->t1}.pid", "{$this->t1}.order", "{$this->t1}.id"));
 		
 		$rawAppList = $this->db->fetchAll($sql);
 		
