@@ -8,7 +8,7 @@ body.hidemenu{background:none}
 .cl{clear:both}
 
 ul{list-style:none}
-.head{width:100%; height:58px; overflow:hidden; z-index:8; position:relative; background:url(../img/header_top_bg.gif) left top repeat-x}
+.head{width:100%; height:53px; overflow:hidden; z-index:8; position:relative; background:url(../img/header_top_bg.gif) left top repeat-x}
 .head .top_logo{float:left; width:187px; text-align:center}
 .head .top_link{float:right; padding:25px 10px 0 0}
 .head .top_link ul{float:left; padding:8px 0px 0px 0px; line-height:13px; overflow:hidden}
