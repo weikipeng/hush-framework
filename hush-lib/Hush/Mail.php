@@ -31,7 +31,7 @@ class Hush_Mail extends Zend_Mail
 	public function __construct($config)
 	{	
 		$charset = isset($config['charset']) ? $config['charset'] : 'gbk';
-		$type = isset($config['type']) ? $config['type'] : 'gbk';
+		$type = isset($config['type']) ? $config['type'] : 'sendmail';
 		$host = isset($config['host']) ? $config['host'] : 'localhost';
 		
 		unset($config['charset']);
