@@ -62,7 +62,7 @@ abstract class Hush_Process
 	/**
 	 * @staticvar int
 	 */
-	public static $maxProcessNum = 5;
+	public static $maxProcessNum = 256;
 	
 	/**
 	 * @staticvar int
