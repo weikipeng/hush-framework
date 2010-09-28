@@ -62,7 +62,7 @@ abstract class Hush_Process
 	/**
 	 * @staticvar int
 	 */
-	public static $maxProcessNum = 256;
+	public static $maxProcessNum = 5;
 	
 	/**
 	 * @staticvar int
@@ -264,8 +264,8 @@ abstract class Hush_Process
 	 */
 	protected function __safewait ()
 	{
-		$rs = 11111 * self::$maxProcessNum;
-		$re = 33333 * self::$maxProcessNum;
+		$rs = intval(10000 * sqrt(self::$maxProcessNum));
+		$re = intval(30000 * sqrt(self::$maxProcessNum));
 		$this->sleep(rand($rs, $re));
 	}
 	
