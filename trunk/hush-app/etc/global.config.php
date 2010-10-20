@@ -16,7 +16,7 @@ define('__CACHE_DIR', realpath(__DAT_DIR . '/cache'));
  * Common libraries paths
  * TODO : Copy Zend Framework and Smarty libraries to this path !!!
  */
-define('__COMM_LIB_DIR', realpath(__ROOT . '/../../apps/lib'));
+define('__COMM_LIB_DIR', realpath(__ROOT . '/../../phplibs'));
 
 /**
  * Hush libraries paths
