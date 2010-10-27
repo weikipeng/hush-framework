@@ -159,6 +159,18 @@ class Ihush_Dao
 	}
 	
 	/**
+	 * Set connection charset
+	 * 
+	 * @param string $charset Db connection's charset
+	 * @return Ihush_Dao
+	 */
+	public function charset ($charset = 'utf8')
+	{
+		if ($charset) $this->db->query('set names ' . $charset);
+		return $this;
+	}
+	
+	/**
 	 * Autoload Ihush Daos
 	 * 
 	 * @param string $dao
@@ -168,6 +180,7 @@ class Ihush_Dao
 	{
 		require_once 'Ihush/Dao/' . str_replace('_', '/', $class_name) . '.php';
 		$daoClass = new $class_name();
+		$daoClass->charset('utf8');
 		return $daoClass;
 	}
 }

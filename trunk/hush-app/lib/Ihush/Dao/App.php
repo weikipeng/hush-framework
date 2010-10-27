@@ -21,7 +21,6 @@ class Ihush_Dao_App extends Ihush_Dao
 		// read database ini file and build pool
 		$this->db_pool = Hush_Db::pool(__DB_INI_FILE_APP);
 		$this->db = Hush_Db::rand($db_type);
-		$this->db->query('set names utf8');
 		
 		// do some preparation in subclass
 		parent::__construct();
