@@ -22,7 +22,7 @@ class Hush_Socket
 	/**
 	 * @var string
 	 */
-	public $host = '127.0.0.1';
+	public $host = '0.0.0.0';
 	
 	/**
 	 * @var string
