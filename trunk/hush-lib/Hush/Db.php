@@ -13,7 +13,10 @@
  * @see Zend_Db
  */
 require_once 'Zend/Db.php';
-require_once 'Zend/Db/Exception.php';
+
+/**
+ * @see Hush_Db_Exception
+ */
 require_once 'Hush/Db/Exception.php';
 
 /**
