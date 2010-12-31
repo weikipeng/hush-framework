@@ -39,7 +39,7 @@
 				<td align="left">{$app1.role}</td>
 				<td align="right">
 					<a href="appedit?id={$app1.id}">编辑</a>
-					{if $_admin.name eq $_sa} | <a href="javascript:$.form.confirm('appdel?id={$app.id}', '确认删除{if $app.is_app eq 'YES'}应用{else}菜单{/if}“{$app.name}”？');">删除</a>{/if}
+					{if $_admin.name eq $_sa} | <a href="javascript:$.form.confirm('appdel?id={$app1.id}', '确认删除{if $app.is_app eq 'YES'}应用{else}菜单{/if}“{$app.name}”？');">删除</a>{/if}
 				</td>
 			</tr>
 				{foreach $app1.list as $app2}
@@ -51,7 +51,7 @@
 					<td align="left">{$app2.role}</td>
 					<td align="right">
 						<a href="appedit?id={$app2.id}">编辑</a>
-						{if $_admin.name eq $_sa} | <a href="javascript:$.form.confirm('appdel?id={$app.id}', '确认删除{if $app.is_app eq 'YES'}应用{else}菜单{/if}“{$app.name}”？');">删除</a>{/if}
+						{if $_admin.name eq $_sa} | <a href="javascript:$.form.confirm('appdel?id={$app2.id}', '确认删除{if $app.is_app eq 'YES'}应用{else}菜单{/if}“{$app.name}”？');">删除</a>{/if}
 					</td>
 				</tr>
 				{/foreach}
