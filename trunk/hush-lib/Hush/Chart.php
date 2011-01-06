@@ -105,6 +105,20 @@ class Hush_Chart
 	public $types = array('line', 'bar', 'pie');
 	
 	/**
+	 * Magic method
+	 * Use to call pChart.class's method
+	 */
+	public function __call ($method, $arguments)
+	{
+		if (is_object($this->chart)) {
+			if (method_exists($this->chart, $method)) {
+				return call_user_func_array(array($this->chart, $method), $arguments);
+			}
+		}
+		return false;
+	}
+	
+	/**
 	 * Contruct
 	 * @param string $t Chart name
 	 * @param int $w Chart width
