@@ -68,6 +68,12 @@ class Hush_Chart
 	public $serie = array();
 	
 	/**
+	 * Show Series array
+	 * @var array
+	 */
+	public $shows = array();
+	
+	/**
 	 * Chart font style
 	 * @var string
 	 */
@@ -147,6 +153,7 @@ class Hush_Chart
 	public function setTitle ($title) 
 	{
 		$this->title = $title;
+		return $this;
 	}
 	
 	/**
@@ -156,6 +163,7 @@ class Hush_Chart
 	public function setFont ($font)
 	{
 		$this->fontn = $font;
+		return $this;
 	}
 	
 	/**
@@ -176,16 +184,27 @@ class Hush_Chart
 	}
 	
 	/**
+	 * Show serie's value
+	 * @param string $serie
+	 */
+	public function showSerie ($serie)
+	{
+		if ($this->_checkSerieExists($serie)) {
+			$this->shows[] = $serie;
+		}
+		return $this;
+	}
+	
+	/**
 	 * Set standard label serie
 	 * @param string $serie
 	 */
 	public function setLabelSerie ($serie)
 	{
-		if (!$serie && !in_array($serie, $this->serie)) {
-			require_once 'Hush/Chart/Exception.php';
-			throw new Hush_Chart_Exception('Non-exists serie \'' . $serie . '\', please add series first');
+		if ($this->_checkSerieExists($serie)) {
+			$this->label = $serie;
 		}
-		$this->label = $serie;
+		return $this;
 	}
 	
 	/**
@@ -209,7 +228,7 @@ class Hush_Chart
 		$this->setLabelSerie('DEFAULT_SCALE');
 		$this->margin = $margin;
 		$this->skip = $skip;
-		
+		return $this;
 	}
 	
 	/**
@@ -221,10 +240,16 @@ class Hush_Chart
 		if (empty($this->cdata)) {
 			require_once 'Hush/Chart/Exception.php';
 			throw new Hush_Chart_Exception('Empty data exception, please add data first');
-		}
+		}$this->showValue('score');
 		$method = 'draw' . ucfirst($this->type);
 		if (method_exists($this, $method)) {
 			$this->$method();
+			// insert show serie logic
+			if (count($this->shows) > 0) {
+				foreach ($this->shows as $serie) {
+					$this->chart->writeValues($this->data->GetData(),$this->data->GetDataDescription(), $serie);
+				}
+			}
 			$this->chart->Stroke();
 		}
 	}
@@ -266,8 +291,8 @@ class Hush_Chart
 		$chart_h	= $this->h - 40;	// Chart frame heigth
 		$title_w	= $this->w - 200;	// Title width
 		$title_h	= 45;				// Title height
-		$legend_w	= $chart_w + 30;	// Title width
-		$legend_h	= 40;				// Title height
+		$legend_w	= $chart_w + 30;	// Legend width
+		$legend_h	= 40;				// Legend height
 		
 		// chart styles
 		$grid	= isset($this->p['grid']) ? $this->p['grid'] : false;
@@ -342,8 +367,8 @@ class Hush_Chart
 		$chart_h	= $this->h - 40;	// Chart frame heigth
 		$title_w	= $this->w - 200;	// Title width
 		$title_h	= 45;				// Title height
-		$legend_w	= $chart_w + 30;	// Title width
-		$legend_h	= 40;				// Title height
+		$legend_w	= $chart_w + 30;	// Legend width
+		$legend_h	= 40;				// Legend height
 		
 		// chart styles
 		$grid	= isset($this->p['grid']) ? $this->p['grid'] : false;
@@ -396,8 +421,8 @@ class Hush_Chart
 		$pie_r		= intval($pie_x - 50);			// Pie radius
 		$title_w	= $this->w - 200;				// Title width
 		$title_h	= 50;							// Title height
-		$legend_w	= $this->w - 120;				// Title width
-		$legend_h	= 50;							// Title height
+		$legend_w	= $this->w - 120;				// Legend width
+		$legend_h	= 50;							// Legend height
 		
 		// chart styles
 		$flat	= isset($this->p['flat']) ? $this->p['flat'] : false;
@@ -448,6 +473,21 @@ class Hush_Chart
 		} else {
 			$this->data->SetAbsciseLabelSerie();
 		}
+	}
+	
+	/**
+	 * Check if serie exists
+	 * @param string $serie
+	 * @access private
+	 */
+	public function _checkSerieExists ($serie)
+	{
+		if (!$serie && !in_array($serie, $this->serie)) {
+			require_once 'Hush/Chart/Exception.php';
+			throw new Hush_Chart_Exception('Non-exists serie \'' . $serie . '\', please add series first');
+			return false;
+		}
+		return true;
 	}
 }
 ?>
