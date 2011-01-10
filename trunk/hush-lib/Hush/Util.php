@@ -41,6 +41,22 @@ class Hush_Util
 	}
 	
 	/**
+	 * Run shell and return results into an array
+	 * @static
+	 * @param string $cmd
+	 * @return array
+	 */
+	public static function shell ($cmd)
+	{
+		$default_time_limit = ini_get("max_execution_time");
+		$results = null;
+		set_time_limit(0);
+		exec($cmd, $results);
+		set_time_limit($default_time_limit);
+		return $results;
+	}
+	
+	/**
 	 * Trace exception for more readable
 	 * @static
 	 * @param Exception $e
@@ -240,6 +256,25 @@ class Hush_Util
 	}
 	
 	/**
+	 * Upload file from $_FILES variable
+	 * @static
+	 * @param string $formCol Form file column's name
+	 * @param string $targetPath The directory file upload to 
+	 * @param string $targetFile Upload file's name, default to be original name
+	 * @return bool
+	 */
+	public static function upload ($formCol, $targetPath, $targetFile = '')
+	{
+		if (!empty($_FILES)) {
+			$tempFile = $_FILES[$formCol]['tmp_name'];
+			$targetPath = is_dir($targetPath) ? $targetPath : '/tmp';
+			$targetFile = strlen($targetFile) ? $targetFile : $_FILES[$formCol]['name'];
+			return move_uploaded_file($tempFile, $targetPath . '/' . $targetFile);
+		}
+		return false;
+	}
+	
+	/**
 	 * Flush output buffer
 	 * @static
 	 */
@@ -271,6 +306,22 @@ class Hush_Util
 	}
 	
 	/**
+	 * 
+	 * Ping whether server's port is open
+	 * @param string $host
+	 * @param string $port
+	 * @return bool
+	 */
+	public static function ping ($host, $port)
+	{
+		$ip = (!preg_match('/^\d/i', $host)) ? gethostbyname($host) : $host;
+		$fp = @fsockopen($ip, $port, $errno, $errstr, 1);
+		if(!$fp) return false;
+		@fclose($fp);
+		return true;
+	}
+	
+	/**
 	 * Get string hash code
 	 * Each string has different hash code
 	 * @param string $str
@@ -285,6 +336,21 @@ class Hush_Util
 			$si++;
 		}
 		return $hc;
+	}
+	
+	/**
+	 * Strip all slashed string
+	 * @static
+	 * @param string $str
+	 * @return string
+	 */
+	public static function str_strip ($str)
+	{
+		$str = trim($str);
+		if (get_magic_quotes_gpc()) {
+			$str = stripslashes($str);
+		}
+		return $str;
 	}
 	
 	/**
@@ -416,5 +482,23 @@ class Hush_Util
 	public static function is_json ($str) 
 	{
 		return (is_string($str) && is_object(json_decode($str))) ? true : false;
+	}
+	
+	/**
+	 * Read data from csv file
+	 * @static
+	 * @param string $csvText Csv file's text
+	 * @param string $csvSP Csv each column's separator, default is '\t'
+	 */
+	public static function parse_csv ($csvText, $csvSP = "\t")
+	{
+		$results = array();
+		$lines = explode("\n", $csvText);
+		foreach ((array) $lines as $line) {
+			$line = trim($line);
+			if (!strlen($line)) continue;
+			$results[] = explode($csvSP, trim($line));
+		}
+		return $results;
 	}
 }
