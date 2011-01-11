@@ -303,7 +303,7 @@ class Hush_Page
 		
 		// display passed template
 		// TODO : Smarty 3 bug in caching
-		if ($this->view->templateExists($tpl_name)) {
+		if ($tpl_name && $this->view->templateExists($tpl_name)) {
 			$this->view->display($tpl_name);
 		}
 		
