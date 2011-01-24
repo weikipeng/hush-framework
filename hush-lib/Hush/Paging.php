@@ -64,7 +64,7 @@ class Hush_Paging
 	 * ModeArg	: is a array() ; args used for different Mode (used when Mode is 2)
 	 * PageTag	: now page style includes. eg : array('<span>','</span>')
 	 * Spacing	: spacing between each page string
-	 * TrimPag	: if show prev or next string when they don't need to be shown
+	 * TrimPag	: whether show prev or next string when they don't need to be shown
 	 * Suffix	: followed 
 	 */
 	public function __construct($items, $each, $page, $pattern = null) 
@@ -103,8 +103,8 @@ class Hush_Paging
 		$this->frStr		= 0;
 		$this->toStr		= 0;
 		$this->pageStr		= '';
-		$this->prev			= 'Prev';
-		$this->next			= 'Next';
+		$this->prevStr		= 'Prev';
+		$this->nextStr		= 'Next';
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -112,22 +112,22 @@ class Hush_Paging
 
 	public function getPrevStr () 
 	{
-		return $this->prev;
+		return $this->prevStr;
 	}
 
 	public function setPrevStr ($str) 
 	{
-		$this->prev = $str;
+		$this->prevStr = $str;
 	}
 
 	public function getNextStr () 
 	{
-		return $this->next;
+		return $this->nextStr;
 	}
 
 	public function setNextStr ($str) 
 	{
-		$this->next = $str;
+		$this->nextStr = $str;
 	}
 
 	public function getFirstPage () 
@@ -138,6 +138,16 @@ class Hush_Paging
 	public function setFirstPage ($pageID) 
 	{
 		$this->firstPage = $pageID;
+	}
+
+	public function getTotalPage () 
+	{
+		return $this->totalPage;
+	}
+
+	public function setTotalPage ($pageTotal) 
+	{
+		$this->totalPage = $pageTotal;
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -157,8 +167,8 @@ class Hush_Paging
 			'toNum'		=> $this->toNum,
 			'frStr'		=> $this->frStr,
 			'toStr'		=> $this->toStr,
-			'prevStr'	=> $this->prev,
-			'nextStr'	=> $this->next,
+			'prevStr'	=> $this->prevStr,
+			'nextStr'	=> $this->nextStr,
 			'pageArr'	=> $this->pageArr,
 			'pageStr'	=> $this->pageStr,
 		);
@@ -172,11 +182,11 @@ class Hush_Paging
 	 */
 	public function paging () 
 	{
-		// do paging when necessary
+		// do paging when have total count
 		if ($this->totalNum > 0) {
 			
 			// for paging field
-			$this->totalPage = ceil($this->totalNum / $this->each);
+			$this->totalPage = $this->totalPage ? $this->totalPage : ceil($this->totalNum / $this->each);
 			$this->page = ($this->page > $this->totalPage) ? $this->totalPage : $this->page;
 			$this->frNum = $this->each * ($this->page - 1);
 			$this->frStr = $this->frNum + 1;
@@ -271,28 +281,40 @@ class Hush_Paging
 					$this->pageArr[] = $this->items[$i];
 				}
 			}
+		}
+		
+		// do paging when have no total count
+		else {
 			
-			// for prev/next field
-			$prevStr = (array_key_exists('Prev', $this->pattern)) ? $this->pattern['Prev'] : $this->prev;
-			$nextStr = (array_key_exists('Next', $this->pattern)) ? $this->pattern['Next'] : $this->next;
+			$this->frNum = $this->each * ($this->page - 1);
+			$this->frStr = $this->frNum + 1;
+			$this->toNum = $this->each * $this->page;
+			$this->toStr = $this->toNum;
+			
+		}
+		
+		// for prev/next field
+		if (1) {
+			$prevStr = (array_key_exists('Prev', $this->pattern)) ? $this->pattern['Prev'] : $this->prevStr;
+			$nextStr = (array_key_exists('Next', $this->pattern)) ? $this->pattern['Next'] : $this->nextStr;
 			if ($this->page != 1) {
 				$page = $this->page - 1;
-				$this->prev = $this->makeURL($page, $prevStr);
+				$this->prevStr = $this->makeURL($page, $prevStr);
 			} else {
 				if (!array_key_exists('TrimPag', $this->pattern)) {
-					$this->prev = $prevStr;
+					$this->prevStr = $prevStr;
 				} else {
-					$this->prev = '';
+					$this->prevStr = '';
 				}
 			}
 			if ($this->page != $this->totalPage) {
 				$page = $this->page + 1;
-				$this->next = $this->makeURL($page, $nextStr);
+				$this->nextStr = $this->makeURL($page, $nextStr);
 			} else {
 				if (!array_key_exists('TrimPag', $this->pattern)) {
-					$this->next = $nextStr;
+					$this->nextStr = $nextStr;
 				} else {
-					$this->next = '';
+					$this->nextStr = '';
 				}
 			}
 		}
