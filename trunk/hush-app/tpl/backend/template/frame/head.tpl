@@ -5,6 +5,7 @@
 <title>iHush Tracking Console System</title>
 <link href="{$_root}css/main.css" rel="stylesheet" type="text/css" />
 <link href="{$_root}css/jquery.css" rel="stylesheet" type="text/css" />
+<script src="{$_root}js/json.js" language="javascript" type="text/javascript"></script>
 <script src="{$_root}js/string.js" language="javascript" type="text/javascript"></script>
 <script src="{$_root}js/jquery.js" language="javascript" type="text/javascript"></script>
 <script src="{$_root}js/jquery.ui.js" language="javascript" type="text/javascript"></script>
