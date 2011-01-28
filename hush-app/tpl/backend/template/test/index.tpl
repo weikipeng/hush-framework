@@ -1,7 +1,10 @@
 {include file="frame/head.tpl"}
 
+<link href="{$_root}css/jquery.time.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="{$_root}js/jquery.time.js"></script>
+
 <div class="maintop">
-<img src="{$_root}img/icon_arrow_right.png" class="icon" /> <b>测试应用</b>
+	<img src="{$_root}img/icon_arrow_right.png" class="icon" /> <b>测试应用</b>
 </div>
 
 <div class="mainbox">
@@ -25,14 +28,20 @@
 	</ul>
 	
 	<h1 style="font-size:14pt">JQuery UI Demos :</h1>
-	
+	<div id="timedebug"></div>
 	<div id="jquery-ui-demos">
 		<div style="margin:10px;">
-			<p>Date: <input type="text" id="datepicker"></p>
+			<table>
+				<tr><td>Date-picker : </td><td><input type="text" id="datepicker"></td></tr>
+				<tr><td>Time-picker : </td><td><input type="text" id="timepicker"></td></tr>
+				<tr><td>Datetime-picker : </td><td><input type="text" id="datetimepicker"></td></tr>
+			</p>
 		</div>
 		<script type="text/javascript">
 		$(function() {
 			$("#datepicker").datepicker({ dateFormat: 'yy-mm-dd' });
+			$("#timepicker").timepicker({ timeFormat: 'hh:mm:ss' });
+			$("#datetimepicker").datetimepicker({ dateFormat: 'yy-mm-dd' });
 		});
 		</script>
 	</div>
