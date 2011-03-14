@@ -78,7 +78,7 @@ function ChangeNav(nav){//菜单跳转
 	$("#nav").find("a").removeClass("thisclass");
 	$("#nav").find("a[_for='"+nav+"']").addClass("thisclass").blur();
 	$("body").attr("class","showmenu");
-	$("#menu").find("div[id^=items]").hide();
+	$("#menu").find("div[class^=items]").hide(); // hide all first then show menu
 	$("#menu").find(".items_"+nav).show().find("dl dd").show().find("ul li a").removeClass("thisclass");
 	$("#menu").find(".items_"+nav).css("display", "inline"); // fix bug in firefox
 	// judge which link should be selected by link name
