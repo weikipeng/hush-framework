@@ -51,7 +51,6 @@ function bindQuickMenu(){//快捷菜单
 	});
 }
 
-
 function bindAdminMenu(){
 	$("#nav").find("a").click(function(){
 		ChangeNav($(this).attr("_for"));
@@ -62,10 +61,10 @@ function bindAdminMenu(){
 		dd = $(this).next("dd");
 		if(dd.css("display")=="none"){
 			dd.slideDown("fast");
-			dt.css("background-position","left bottom");
+			dt.css("background-position","left top");
 		}else{
 			dd.slideUp("fast");
-			dt.css("background-position","left top");
+			dt.css("background-position","left bottom");
 		}
 	});
 
@@ -80,11 +79,11 @@ function ChangeNav(nav){//菜单跳转
 	$("#nav").find("a[_for='"+nav+"']").addClass("thisclass").blur();
 	$("body").attr("class","showmenu");
 	$("#menu").find("div[id^=items]").hide();
-	$("#menu").find("#items_"+nav).show().find("dl dd").show().find("ul li a").removeClass("thisclass");
-//	$("#menu").find("#items_"+nav).show().find("dd ul li a").eq(0).addClass("thisclass").blur();
+	$("#menu").find(".items_"+nav).show().find("dl dd").show().find("ul li a").removeClass("thisclass");
+	$("#menu").find(".items_"+nav).css("display", "inline"); // fix bug in firefox
 	// judge which link should be selected by link name
 	link_name = arguments[1] ? arguments[1] : current_link;
-	$("#menu").find("#items_"+nav).show().find("dd ul li a:contains('"+link_name+"')").addClass("thisclass").blur();
+	$("#menu").find(".items_"+nav).find("dd ul li a:contains('"+link_name+"')").addClass("thisclass").blur();
 	current_link = link_name;
 }
 
