@@ -150,6 +150,11 @@ class Hush_View_Smarty extends Hush_View implements Zend_View_Interface
 	 */
 	public function templateExists ($name)
 	{
+		// adapt with smarty 3
+		if (method_exists($this->_smarty, 'templateExists')) {
+			return $this->_smarty->templateExists($name);
+		}
+		// adapt with smarty 2
 		return $this->_smarty->template_exists($name);
 	}
 
