@@ -102,7 +102,7 @@ class Hush_Util
 	public static function cookie ($cname, $value = null) 
 	{
 		// set into $_COOKIE array
-		if ($value === '') unset($_SESSION[$cname]);
+		if ($value === '') unset($_COOKIE[$cname]);
 		// set into $_COOKIE array
 		if ($value) $_COOKIE[$cname] = $value;
 		// get from $_COOKIE array
