@@ -4,8 +4,8 @@
 	
 	{foreach $appList as $topAppList}
 		{foreach $topAppList.list as $groupList}
-		<div id="items_top_{$topAppList.id}">
-			<dl id="dl_items_{$topAppList@index + 1}_{$groupList@index + 1}">
+		<div class="items_top_{$topAppList.id}">
+			<dl class="dl_items_{$topAppList@index + 1}_{$groupList@index + 1}">
 			<dt>{$groupList.name}</dt>
 			<dd>
 				<ul>
