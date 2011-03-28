@@ -67,7 +67,7 @@ function bindAdminMenu() //菜单点击
 	$("#menu").find("dt").click(function(){
 		
 		if (close_others) {
-			$("#menu").find("dt").css("background-position","left bottom");
+			$("#menu").find("dt").css("background-position","left top");
 			$("#menu").find("dt").next("dd").slideUp("fast");
 		}
 		
@@ -75,10 +75,10 @@ function bindAdminMenu() //菜单点击
 		click_dd = $(this).next("dd");
 		if(click_dd.css("display") == "none"){
 			click_dd.slideDown("fast");
-			click_dt.css("background-position","left top");
+			click_dt.css("background-position","left bottom");
 		}else{
 			click_dd.slideUp("fast");
-			click_dt.css("background-position","left bottom");
+			click_dt.css("background-position","left top");
 		}
 	});
 
@@ -104,13 +104,13 @@ function ChangeNav(nav) //菜单跳转
 	curr_link.addClass("thisclass").blur();
 	
 	if (close_others) {
-		$("#menu").find("dt").css("background-position","left bottom");
+		$("#menu").find("dt").css("background-position","left top");
 		$("#menu").find("dt").next("dd").hide();
 		curr_dl = curr_link.parent().parent().parent().parent();
 		curr_dt = curr_dl.children("dt");
 		curr_dd = curr_dl.children("dd");
 		curr_dd.slideDown("fast");
-		curr_dt.css("background-position","left top");
+		curr_dt.css("background-position","left bottom");
 	}
 	
 	current_link = link_name;
