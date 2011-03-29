@@ -197,8 +197,8 @@ function TopMenuSlide(direction) //顶部菜单滑动
 		
 		top_menus = $("#nav").find("li");
 		top_menus.each(function(i){
-			if (i == hide_menu_id) $(this).hide("slow");
-			if (i == show_menu_id) $(this).show("slow");
+			if (i == hide_menu_id) $(this).hide("fast");
+			if (i == show_menu_id) $(this).show("fast");
 		});
 	}
 }
