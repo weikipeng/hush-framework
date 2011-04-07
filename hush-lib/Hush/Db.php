@@ -160,6 +160,7 @@ class Hush_Db extends Zend_Db
 				self::$db_pref = $db_link_arr['PREF'];
 			}
 			
+			// create db connection here ...
 			self::$db_link[$db_file_ini][$type] = self::factory($db_link_arr['TYPE'], array(
 				'host'     => $db_link_arr['HOST'],
 				'port'     => $db_link_arr['PORT'],
