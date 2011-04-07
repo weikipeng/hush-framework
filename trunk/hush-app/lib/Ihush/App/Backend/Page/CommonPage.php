@@ -30,7 +30,7 @@ class CommonPage extends Ihush_App_Backend_Page
 	
 	public function personalAction () 
 	{
-		$aclUserDao = $this->dao->acl->load('Acl_User');
+		$aclUserDao = $this->dao->load('Acl_User');
 		$userId = $this->admin['id'] ? $this->admin['id'] : 0;
 		$user = $aclUserDao->read($this->admin['id']);
 		

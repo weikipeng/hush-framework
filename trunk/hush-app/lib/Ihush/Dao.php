@@ -41,10 +41,7 @@ class Ihush_Dao
 	 */
 	public function __construct ($type = 'READ')
 	{
-		if (!$this->db) {
-			require_once 'Ihush/Dao/Exception.php';
-			throw new Ihush_Dao_Exception('Can not initialize class \'' . __CLASS__ . '\'');
-		}
+		if (!$this->db) return ;
 		
 		if (Hush_Debug::showDebug('sql')) {
 			$this->db->_debug = true;
@@ -59,6 +56,8 @@ class Ihush_Dao
 	 */
 	public function __destruct ()
 	{
+		if (!$this->db) return ;
+		
 		$this->db->closeConnection();
 	}
 	

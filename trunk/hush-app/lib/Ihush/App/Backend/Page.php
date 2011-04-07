@@ -24,11 +24,11 @@ class Ihush_App_Backend_Page extends Ihush_App_Backend
 	 */
 	public function __init ()
 	{
+		// Auto load dao
+		$this->dao = new Ihush_Dao();
+		
 		// Super admin
 		$this->view->_sa = $this->sa = defined('__ACL_SA') ? __ACL_SA : 'sa';
-		
-		// Auto load dao
-		$this->dao->acl = new Ihush_Dao_Acl();
 		
 		// Setting acl control object
 		$this->view->_acl = $this->acl = Ihush_Acl_Backend::getInstance();

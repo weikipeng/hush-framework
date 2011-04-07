@@ -25,7 +25,7 @@ class IndexPage extends Ihush_App_Backend_Page
 	public function indexAction () 
 	{
 		// get app menu list
-		$appDao = $this->dao->acl->load('Acl_App');
+		$appDao = $this->dao->load('Acl_App');
 		$appList = $appDao->getAppListByRole($this->admin['role']);
 		$this->view->appList = $appList;
 	}
