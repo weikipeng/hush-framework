@@ -30,22 +30,22 @@ class Hush_Db extends Zend_Db
 	const ADAPTER_NAME_SPACE = 'Hush_Db_Adapter'; // default name space
 	
 	/**
-	 * Db links' pool array
-	 * @var array
-	 */
-	public static $db_pool = array();
-	
-	/**
 	 * Db file name
 	 * @var string
 	 */
 	public static $db_file = '';
 	
 	/**
-	 * Db link configuration
+	 * Db settings pool array
+	 * @var array
+	 */
+	public static $db_pool = array();
+	
+	/**
+	 * Db links pool array
 	 * @var Zend_Db_Adaptor
 	 */
-	public static $db_link = null;
+	public static $db_link = array();
 	
 	/**
 	 * Db prefix string
@@ -132,42 +132,44 @@ class Hush_Db extends Zend_Db
 			throw new Hush_Db_Exception('Please init db pool first');
 		}
 		
-		// if not get the ini file, get last ini file
+		// get the ini file and check if ini config file is ok
 		If (!$db_file_ini) $db_file_ini = self::$db_file;
-		
 		if (!array_key_exists($db_file_ini, self::$db_pool)) {
 			throw new Hush_Db_Exception('Can not found \'' . $db_file_ini . '\' in db pool');
 		}
 		
-		$db_pool_arr = (array) self::$db_pool[$db_file_ini][$type];
-		$db_link_key = array_rand($db_pool_arr);
-		$db_link_arr = $db_pool_arr[$db_link_key];
-		
-		if (!isset($db_link_arr['TYPE']) ||
-			!isset($db_link_arr['HOST']) ||
-			!isset($db_link_arr['USER']) ||
-			!isset($db_link_arr['PASS']) ||
-			!isset($db_link_arr['NAME'])) {
-			throw new Hush_Db_Exception('Invalid db config file format');
+		// when a new db link is not existed in pool
+		if (!isset(self::$db_link[$db_file_ini][$type])) {
+			$db_pool_arr = (array) self::$db_pool[$db_file_ini][$type];
+			$db_link_key = array_rand($db_pool_arr);
+			$db_link_arr = $db_pool_arr[$db_link_key];
+			
+			if (!isset($db_link_arr['TYPE']) ||
+				!isset($db_link_arr['HOST']) ||
+				!isset($db_link_arr['USER']) ||
+				!isset($db_link_arr['PASS']) ||
+				!isset($db_link_arr['NAME'])) {
+				throw new Hush_Db_Exception('Invalid db config file format');
+			}
+			
+			if (!isset($db_link_arr['PORT'])) {
+				$db_link_arr['PORT'] = '3306'; // default port
+			}
+			
+			if (isset($db_link_arr['PREF'])) {
+				self::$db_pref = $db_link_arr['PREF'];
+			}
+			
+			self::$db_link[$db_file_ini][$type] = self::factory($db_link_arr['TYPE'], array(
+				'host'     => $db_link_arr['HOST'],
+				'port'     => $db_link_arr['PORT'],
+				'username' => $db_link_arr['USER'],
+				'password' => $db_link_arr['PASS'],
+				'dbname'   => $db_link_arr['NAME']
+			));
 		}
 		
-		if (!isset($db_link_arr['PORT'])) {
-			$db_link_arr['PORT'] = '3306'; // default port
-		}
-		
-		if (isset($db_link_arr['PREF'])) {
-			self::$db_pref = $db_link_arr['PREF'];
-		}
-		
-		self::$db_link = self::factory($db_link_arr['TYPE'], array(
-			'host'     => $db_link_arr['HOST'],
-			'port'     => $db_link_arr['PORT'],
-			'username' => $db_link_arr['USER'],
-			'password' => $db_link_arr['PASS'],
-			'dbname'   => $db_link_arr['NAME']
-		));
-		
-		return self::$db_link;
+		return self::$db_link[$db_file_ini][$type];
 	}
 	
 	/**
