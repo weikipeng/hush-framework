@@ -25,7 +25,6 @@ class Ihush_App_Frontend_Page extends Ihush_App_Page
 	public function __init ()
 	{
 		// Auto load dao
-		$this->dao->acl = new Ihush_Dao_Acl();
-		$this->dao->app = new Ihush_Dao_App();
+		$this->dao = new Ihush_Dao();
 	}
 }

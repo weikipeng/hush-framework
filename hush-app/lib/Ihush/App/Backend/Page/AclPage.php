@@ -39,14 +39,14 @@ class AclPage extends Ihush_App_Backend_Page
 	
 	public function userListAction () 
 	{
-		$aclUserDao = $this->dao->acl->load('Acl_User');
+		$aclUserDao = $this->dao->load('Acl_User');
 		$this->view->userList = $aclUserDao->getUserList();
 		$this->render('acl/user/list.tpl');
 	}
 	
 	public function userAddAction ()
 	{
-		$aclUserDao = $this->dao->acl->load('Acl_User');
+		$aclUserDao = $this->dao->load('Acl_User');
 		
 		// do post
 		if ($_POST) {
@@ -77,7 +77,7 @@ class AclPage extends Ihush_App_Backend_Page
 		$this->view->user = $_POST;
 		
 		// fill role select box
-		$aclRoleDao = $this->dao->acl->load('Acl_Role');
+		$aclRoleDao = $this->dao->load('Acl_Role');
 		$this->view->allroles = $aclRoleDao->getAllPrivs($this->admin['role']);
 		
 		$this->render('acl/user/add.tpl');
@@ -86,7 +86,7 @@ class AclPage extends Ihush_App_Backend_Page
 	public function userDelAction ()
 	{
 		if ($this->param('id')) {
-			$aclUserDao = $this->dao->acl->load('Acl_User');
+			$aclUserDao = $this->dao->load('Acl_User');
 			$aclUserDao->delete($this->param('id'));
 			$aclUserDao->updateRoles($this->param('id'));
 		}
@@ -95,7 +95,7 @@ class AclPage extends Ihush_App_Backend_Page
 	
 	public function userEditAction ()
 	{
-		$aclUserDao = $this->dao->acl->load('Acl_User');
+		$aclUserDao = $this->dao->load('Acl_User');
 		
 		$user = $aclUserDao->read($this->param('id'));
 		
@@ -129,7 +129,7 @@ class AclPage extends Ihush_App_Backend_Page
 		$this->view->user = $user;
 		
 		// fill role select box
-		$aclRoleDao = $this->dao->acl->load('Acl_Role');
+		$aclRoleDao = $this->dao->load('Acl_Role');
 		$this->view->allroles = $aclRoleDao->getAllPrivs($this->admin['role']);
 		$this->view->selroles = $aclRoleDao->getRoleByUserId($this->param('id'), $this->getRoleIds($this->view->allroles));
 		$this->view->oldroles = $this->buildRoles($this->filterOldRoles($this->view->selroles));
@@ -141,14 +141,14 @@ class AclPage extends Ihush_App_Backend_Page
 	
 	public function roleListAction ()
 	{
-		$aclRoleDao = $this->dao->acl->load('Acl_Role');
+		$aclRoleDao = $this->dao->load('Acl_Role');
 		$this->view->roleList = $aclRoleDao->getRoleList();
 		$this->render('acl/role/list.tpl');
 	}
 	
 	public function roleAddAction ()
 	{
-		$aclRoleDao = $this->dao->acl->load('Acl_Role');
+		$aclRoleDao = $this->dao->load('Acl_Role');
 		
 		// do post
 		if ($_POST) {
@@ -176,7 +176,7 @@ class AclPage extends Ihush_App_Backend_Page
 		$this->view->role = $_POST;
 
 		// fill role select box
-		$aclRoleDao = $this->dao->acl->load('Acl_Role');
+		$aclRoleDao = $this->dao->load('Acl_Role');
 		$this->view->allroles = $aclRoleDao->getAllRoles();
 
 		$this->render('acl/role/add.tpl');
@@ -184,7 +184,7 @@ class AclPage extends Ihush_App_Backend_Page
 	
 	public function roleEditAction ()
 	{
-		$aclRoleDao = $this->dao->acl->load('Acl_Role');
+		$aclRoleDao = $this->dao->load('Acl_Role');
 
 		$role = $aclRoleDao->read($this->param('id'));
 		
@@ -211,7 +211,7 @@ class AclPage extends Ihush_App_Backend_Page
 		$this->view->role = $role;
 		
 		// fill role select box
-		$aclRoleDao = $this->dao->acl->load('Acl_Role');
+		$aclRoleDao = $this->dao->load('Acl_Role');
 		$this->view->allroles = $aclRoleDao->getAllRoles();
 		$this->view->selroles = $aclRoleDao->getPrivByRoleId($this->param('id'));
 		
@@ -223,14 +223,14 @@ class AclPage extends Ihush_App_Backend_Page
 	
 	public function resourceListAction ()
 	{
-		$aclResDao = $this->dao->acl->load('Acl_Resource');
+		$aclResDao = $this->dao->load('Acl_Resource');
 		$this->view->resourceList = $aclResDao->getResourceList();
 		$this->render('acl/resource/list.tpl');
 	}
 	
 	public function resourceAddAction ()
 	{
-		$aclResDao = $this->dao->acl->load('Acl_Resource');
+		$aclResDao = $this->dao->load('Acl_Resource');
 		
 		// do post
 		if ($_POST) {
@@ -265,7 +265,7 @@ class AclPage extends Ihush_App_Backend_Page
 		$this->view->appopts = $this->getAppOpts();
 		
 		// fill role select box
-		$aclRoleDao = $this->dao->acl->load('Acl_Role');
+		$aclRoleDao = $this->dao->load('Acl_Role');
 		$this->view->allroles = $aclRoleDao->getAllPrivs($this->admin['role']);
 		
 		$this->render('acl/resource/add.tpl');
@@ -274,7 +274,7 @@ class AclPage extends Ihush_App_Backend_Page
 	public function resourceDelAction ()
 	{
 		if ($this->param('id')) {
-			$aclResDao = $this->dao->acl->load('Acl_Resource');
+			$aclResDao = $this->dao->load('Acl_Resource');
 			$aclResDao->delete($this->param('id'));
 			$aclResDao->updateRoles($this->param('id'));
 		}
@@ -283,7 +283,7 @@ class AclPage extends Ihush_App_Backend_Page
 	
 	public function resourceEditAction ()
 	{
-		$aclResDao = $this->dao->acl->load('Acl_Resource');
+		$aclResDao = $this->dao->load('Acl_Resource');
 		
 		$user = $aclResDao->read($this->param('id'));
 		
@@ -319,7 +319,7 @@ class AclPage extends Ihush_App_Backend_Page
 		$this->view->appopts = $this->getAppOpts();
 		
 		// fill role select box
-		$aclRoleDao = $this->dao->acl->load('Acl_Role');
+		$aclRoleDao = $this->dao->load('Acl_Role');
 		$this->view->allroles = $aclRoleDao->getAllPrivs($this->admin['role']);
 		$this->view->selroles = $aclRoleDao->getRoleByResourceId($this->param('id'), $this->getRoleIds($this->view->allroles));
 		$this->view->oldroles = $this->buildRoles($this->filterOldRoles($this->view->selroles));
@@ -332,7 +332,7 @@ class AclPage extends Ihush_App_Backend_Page
 	
 	public function appListAction ()
 	{
-		$appDao = $this->dao->acl->load('Acl_App');
+		$appDao = $this->dao->load('Acl_App');
 		$this->view->appTree = $appDao->getAppTree();
 //		Hush_Util::dump($this->view->appTree);
 		$this->render('acl/app/list.tpl');
@@ -340,7 +340,7 @@ class AclPage extends Ihush_App_Backend_Page
 	
 	public function appAddAction ()
 	{
-		$appDao = $this->dao->acl->load('Acl_App');
+		$appDao = $this->dao->load('Acl_App');
 		
 		// do post
 		if ($_POST) {
@@ -373,7 +373,7 @@ class AclPage extends Ihush_App_Backend_Page
 		$this->view->app = $_POST;
 		
 		// fill role select box
-		$aclRoleDao = $this->dao->acl->load('Acl_Role');
+		$aclRoleDao = $this->dao->load('Acl_Role');
 		$this->view->allroles = $aclRoleDao->getAllPrivs($this->admin['role']);
 		
 		$this->render('acl/app/add.tpl');
@@ -382,7 +382,7 @@ class AclPage extends Ihush_App_Backend_Page
 	public function appDelAction ()
 	{
 		if ($this->param('id')) {
-			$appDao = $this->dao->acl->load('Acl_App');
+			$appDao = $this->dao->load('Acl_App');
 			$appDao->delete($this->param('id'));
 			$appDao->updateRoles($this->param('id'));
 		}
@@ -391,7 +391,7 @@ class AclPage extends Ihush_App_Backend_Page
 	
 	public function appEditAction ()
 	{
-		$appDao = $this->dao->acl->load('Acl_App');
+		$appDao = $this->dao->load('Acl_App');
 		
 		$app = $appDao->read($this->param('id'));
 		$app_parent = $appDao->read($app['pid']);
@@ -429,7 +429,7 @@ class AclPage extends Ihush_App_Backend_Page
 		$this->view->app_parent = $app_parent;
 		
 		// fill role select box
-		$aclRoleDao = $this->dao->acl->load('Acl_Role');
+		$aclRoleDao = $this->dao->load('Acl_Role');
 		$this->view->allroles = $aclRoleDao->getAllPrivs($this->admin['role']);
 		$this->view->selroles = $aclRoleDao->getRoleByAppId($this->param('id'), $this->getRoleIds($this->view->allroles));
 		$this->view->oldroles = $this->buildRoles($this->filterOldRoles($this->view->selroles));
@@ -460,7 +460,7 @@ class AclPage extends Ihush_App_Backend_Page
 	
 	protected function getAppOpts ($level = 0)
 	{
-		$appDao = $this->dao->acl->load('Acl_App');
+		$appDao = $this->dao->load('Acl_App');
 		$appTreeList = $appDao->getAppTree();
 		
 //		Hush_Util::dump($appTreeList);
