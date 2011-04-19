@@ -25,7 +25,7 @@ class IndexPage extends Ihush_App_Frontend_Page
 		$user = $userDao->read(1);
 		$this->debug($user, 'From db ihush_acl :');
 		
-		$productDao = $this->dao->app->load('App_Product');
+		$productDao = $this->dao->load('App_Product');
 		$product = $productDao->read(1);
 		$this->debug($product, 'From db ihush_app :');
 	}
