@@ -34,8 +34,6 @@ require_once 'Hush/View.php';
  */
 require_once 'Hush/Util.php';
 
-session_start();
-
 /**
  * @package Hush_Page
  */
@@ -256,7 +254,7 @@ class Hush_Page
 	 * @return unknown
 	 */
 	public function __prepare () 
-	{			
+	{
 		// page execute time
 		if (Hush_Debug::showDebug('time')) {
 			$this->start_time = microtime(true);
