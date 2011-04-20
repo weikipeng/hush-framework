@@ -177,9 +177,12 @@ class Ihush_Dao
 	 */
 	public static function load ($class_name)
 	{
-		require_once 'Ihush/Dao/' . str_replace('_', '/', $class_name) . '.php';
-		$daoClass = new $class_name();
-		$daoClass->charset('utf8');
-		return $daoClass;
+	    static $_model = array();
+	    if(!isset($_model[$class_name])) {
+	    	require_once 'Ihush/Dao/' . str_replace('_', '/', $class_name) . '.php';
+	    	$_model[$class_name] = new $class_name();
+	    	$_model[$class_name]->charset('utf8');
+	    }
+	    return $_model[$class_name];
 	}
 }
