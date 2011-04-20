@@ -123,7 +123,7 @@ class Hush_Util
 	public static function session ($sname, $value = null) 
 	{
 		// start session first
-		if (!$_SESSION) session_start();
+		if ($_SESSION === null) session_start();
 		// set into $_SESSION array
 		if ($value === '') unset($_SESSION[$sname]);
 		// set into $_SESSION array
