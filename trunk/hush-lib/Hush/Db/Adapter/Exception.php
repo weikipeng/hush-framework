@@ -10,15 +10,12 @@
  */
 
 /**
- * Zend_Exception
+ * @see Hush_Db_Exception
  */
 require_once 'Hush/Db/Exception.php';
 
 /**
- * @category   Zend
- * @package    Zend_Db
- * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @package Hush_Db
  */
 class Hush_Db_Adapter_Exception extends Hush_Db_Exception
 {
