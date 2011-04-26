@@ -199,5 +199,22 @@ class Hush_App
 	public static function setPageView ($pageViewClass = true)
 	{
 		Hush_App_Dispatcher::$pageViewClass = $pageViewClass;
+		return $this;
+	}
+	
+	/**
+	 * Start session manually
+	 * @return Hush_App
+	 */
+	public static function startSession ()
+	{
+		static $started = false;
+		
+		if (!$started) {
+			session_start();
+			$started = true;
+		}
+		
+		return $this;
 	}
 }
