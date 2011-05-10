@@ -140,9 +140,9 @@ class Hush_Db extends Zend_Db
 		
 		// when a new db link is not existed in pool
 		if (!isset(self::$db_link[$db_file_ini][$type])) {
+			
 			$db_pool_arr = (array) self::$db_pool[$db_file_ini][$type];
-			$db_link_key = array_rand($db_pool_arr);
-			$db_link_arr = $db_pool_arr[$db_link_key];
+			$db_link_arr = $db_pool_arr[array_rand($db_pool_arr)];
 			
 			if (!isset($db_link_arr['TYPE']) ||
 				!isset($db_link_arr['HOST']) ||

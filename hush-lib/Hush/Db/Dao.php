@@ -40,6 +40,11 @@ class Hush_Db_Dao
 	public $table = null;
 	
 	/**
+	 * @var string
+	 */
+	public $charset = 'utf8';
+	
+	/**
 	 * Construct
 	 * Init the target db link
 	 * 
@@ -185,7 +190,8 @@ class Hush_Db_Dao
 	 */
 	public function charset ($charset = 'utf8')
 	{
-		if ($charset) $this->db->query('set names ' . $charset);
+		$this->charset = $charset; // override default charset
+		$this->db->query('set names ' . $this->charset);
 		return $this;
 	}
 	
@@ -223,7 +229,9 @@ class Hush_Db_Dao
 		if (!$this->db_pool) {
 			throw new Ihush_Dao_Exception('Please init db pool first');
 		}
-		return Hush_Db::rand($type);
+		$db = Hush_Db::rand($type);
+		$db->query('set names ' . $this->charset);
+		return $db;
 	}
 	
 	/**
