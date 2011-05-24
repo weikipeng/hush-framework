@@ -5,11 +5,15 @@
 <title>iHush Tracking Console System</title>
 <link href="{$_root}css/main.css" rel="stylesheet" type="text/css" />
 <link href="{$_root}css/jquery.css" rel="stylesheet" type="text/css" />
+{foreach $cssList as $css}<link href="{$_root}{$css}" rel="stylesheet" type="text/css" />
+{/foreach}
 <script src="{$_root}js/json.js" language="javascript" type="text/javascript"></script>
 <script src="{$_root}js/string.js" language="javascript" type="text/javascript"></script>
 <script src="{$_root}js/jquery.js" language="javascript" type="text/javascript"></script>
 <script src="{$_root}js/jquery.ui.js" language="javascript" type="text/javascript"></script>
 <script src="{$_root}js/ihush.js" language="javascript" type="text/javascript"></script>
+{foreach $jsList as $js}<script src="{$_root}{$js}" language="javascript" type="text/javascript"></script>
+{/foreach}
 </head>
 
 <body>

@@ -19,12 +19,12 @@
 		{foreach $userList as $user}
 		<tr>
 			<td align="left">{$user.id}</td>
-			<td align="left"><a href='useredit?id={$user.id}'><u>{$user.name}</u></a></td>
+			<td align="left"><a href='userEdit?id={$user.id}'><u>{$user.name}</u></a></td>
 			<td align="left">{$user.role}</td>
 			<td align="right">
-				<a href="useredit?id={$user.id}">编辑</a>
+				<a href="userEdit?id={$user.id}">编辑</a>
 				{if $_admin.name eq $_sa} | 
-				{if $user.name eq $_sa}删除{else}<a href="javascript:$.form.confirm('userdel?id={$user.id}', '确认删除用户“{$user.name}”？');">删除</a>{/if}
+				{if $user.name eq $_sa}删除{else}<a href="javascript:$.form.confirm('userDel?id={$user.id}', '确认删除用户“{$user.name}”？');">删除</a>{/if}
 				{/if}
 			</td>
 		</tr>
