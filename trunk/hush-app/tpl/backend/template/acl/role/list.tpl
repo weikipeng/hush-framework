@@ -20,11 +20,11 @@
 		{foreach $roleList as $role}
 		<tr>
 			<td align="left">{$role.id}</td>
-			<td align="left"><a href='roleedit?id={$role.id}'><u>{$role.name}</u></a></td>
+			<td align="left"><a href='roleEdit?id={$role.id}'><u>{$role.name}</u></a></td>
 			<td align="left">{$role.alias}</td>
 			<td align="left">{$role.role}</td>
 			<td align="right">
-				<a href="roleedit?id={$role.id}">编辑</a> | 删除
+				<a href="roleEdit?id={$role.id}">编辑</a> | 删除
 			</td>
 		</tr>
 		{/foreach}

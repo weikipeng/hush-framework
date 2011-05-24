@@ -21,13 +21,13 @@
 		{foreach $resourceList as $resource}
 		<tr>
 			<td align="left">{$resource.id}</td>
-			<td align="left"><a href='resourceedit?id={$resource.id}'><u>{$resource.name}</u></a></td>
+			<td align="left"><a href='resourceEdit?id={$resource.id}'><u>{$resource.name}</u></a></td>
 			<td align="left">{if $resource.app_id eq '0'}<img src="{$_root}img/icon_right.png" class="icon" />{/if}</td>
 			<td align="left">{$resource.description}</td>
 			<td align="left">{$resource.role}</td>
 			<td align="right">
-				<a href="resourceedit?id={$resource.id}">编辑</a>
-				{if $_admin.name eq $_sa} | <a href="javascript:$.form.confirm('resourcedel?id={$resource.id}', '确认删除权限资源“{$resource.name}”？');">删除</a>{/if}
+				<a href="resourceEdit?id={$resource.id}">编辑</a>
+				{if $_admin.name eq $_sa} | <a href="javascript:$.form.confirm('resourceDel?id={$resource.id}', '确认删除权限资源“{$resource.name}”？');">删除</a>{/if}
 			</td>
 		</tr>
 		{/foreach}
