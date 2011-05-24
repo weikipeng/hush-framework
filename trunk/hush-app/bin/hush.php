@@ -12,12 +12,12 @@ require_once '../etc/global.config.php';
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Constants definition
 
-define('__SQL_INI_BE', __ETC . '/database.ihush_acl.ini');
-define('__SQL_INI_FE', __ETC . '/database.ihush_app.ini');
-define('__SQL_INIT_BE', __ROOT . '/doc/sql/ihush_acl.sql');
-define('__SQL_INIT_FE', __ROOT . '/doc/sql/ihush_app.sql');
-define('__SQL_BACKUP_BE', __DAT_DIR . '/dbsql/database.ihush_acl.' . date('Y-m-d') . '.sql');
-define('__SQL_BACKUP_FE', __DAT_DIR . '/dbsql/database.ihush_app.' . date('Y-m-d') . '.sql');
+define('__SQL_INI_BE', __ETC . '/database.ihush_core.ini');
+define('__SQL_INI_FE', __ETC . '/database.ihush_apps.ini');
+define('__SQL_INIT_BE', __ROOT . '/doc/sql/ihush_core.sql');
+define('__SQL_INIT_FE', __ROOT . '/doc/sql/ihush_apps.sql');
+define('__SQL_BACKUP_BE', __DAT_DIR . '/dbsql/database.ihush_core.' . date('Y-m-d') . '.sql');
+define('__SQL_BACKUP_FE', __DAT_DIR . '/dbsql/database.ihush_apps.' . date('Y-m-d') . '.sql');
 
 define('__SQL_IMPORT_TOOL', 'mysql');
 define('__SQL_DUMPER_TOOL', 'mysqldump');
