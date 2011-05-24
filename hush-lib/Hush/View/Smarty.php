@@ -150,12 +150,7 @@ class Hush_View_Smarty extends Hush_View implements Zend_View_Interface
 	 */
 	public function templateExists ($name)
 	{
-		// adapt with smarty 3
-		if (method_exists($this->_smarty, 'templateExists')) {
-			return $this->_smarty->templateExists($name);
-		}
-		// adapt with smarty 2
-		return $this->_smarty->template_exists($name);
+		return $this->__autocall('template_exists', array($name));
 	}
 
 	/**
@@ -239,7 +234,7 @@ class Hush_View_Smarty extends Hush_View implements Zend_View_Interface
 	 */
 	public function isCached ($template)
 	{
-		return $this->_smarty->is_cached($template);
+		return $this->__autocall('is_cached', array($template));
 	}
 
 	/**
@@ -256,7 +251,7 @@ class Hush_View_Smarty extends Hush_View implements Zend_View_Interface
 	/**
 	 * Processes a template and display.
 	 * @param string $name The template to process.
-	 * @return void.
+	 * @return void
 	 */
 	public function display($name) 
 	{
@@ -273,5 +268,33 @@ class Hush_View_Smarty extends Hush_View implements Zend_View_Interface
 		return $this->_smarty->fetch($name);
 	}
 	
-
+	/**
+	 * Invoke methods adaptly with smarty2 and smarty3
+	 * Auto convert foo_bar_baz to fooBarBaz style names
+	 * @param string $method_name Smarty method name
+	 * @param array $method_args Smarty method args
+	 * @return mixed
+	 */
+	protected function __autocall($method_name, $method_args = array())
+	{
+		// adapt with smarty 2
+		if (method_exists($this->_smarty, $method_name)) {
+			return call_user_func_array(array($this->_smarty, $method_name), $method_args);
+		}
+		
+		// adapt with smarty 3
+		$name_parts = explode('_', $method_name);
+		foreach ($name_parts as $idx => $part) {
+			if ($idx == 0) $name_parts[$idx] = strtolower($part);
+			else $name_parts[$idx] = ucfirst($part);
+		}
+		$method_name = implode('',$name_parts);
+		
+		if(!method_exists($this->_smarty, $method_name)) {
+			throw new Exception("unknown smarty method '$method_name'");
+			return false;
+		}
+		
+		return call_user_func_array(array($this->_smarty, $method_name), $method_args);			
+	}
 }
