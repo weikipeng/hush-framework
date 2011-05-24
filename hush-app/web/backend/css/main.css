@@ -1,18 +1,18 @@
 @charset "utf-8";
 *{padding:0px; margin:0px;}
-body{color:#333; padding-bottom:50px; font-size:10pt;background:#fff;font-family:Tahoma,Verdana,Arial,Helvetica,sans-serif;}
+body{background:#fff; color:#333; padding-bottom:50px; font-size:12px; font-family:Tahoma,Verdana,Arial,Helvetica,sans-serif;}
 img{border:none; vertical-align:middle; border: none}
 img.icon {width:16px;height:16px;padding-bottom:2px}
 ul,dl{list-style:none;}
 a{color:#004b8d; text-decoration:none}
 a:hover{color:#4192d9; text-decoration:none}
+hr.common{margin-top:10px;margin-bottom:10px;}
 .fc_red{color:#f26101}
 .fc_blue{color:#004b8d}
 .fc_gray{color:#656565}
 button, input, select{vertical-align:middle}
 button{margin-right:5px;cursor:pointer;}
 .btn1{height:22px;padding:0 6px;font-size:10pt;line-height:22px;color:#333;border:1px solid #d9e8f5;background:url(../img/button_bg1.gif) repeat-x; cursor:pointer;}
-textarea{margin-left:5px!important}
 .highlight{background:#ffffe0}
 .disn{display:none}
 
@@ -24,6 +24,7 @@ textarea{margin-left:5px!important}
 
 table .title{color:#333;font-weight:bold;background:#d9e8f5;}
 table thead tr{height:24px;line-height:24px;}
+table thead th{padding:3px;color:#333;}
 
 .tlist{width:100%; margin:7px auto 0px; border-collapse:collapse}
 .tlist tbody tr{height:20px;line-height:20px;background:#fff;font-weight:normal;color:#333;border-bottom:1px dotted #d9e8f5}
@@ -33,17 +34,23 @@ table thead tr{height:24px;line-height:24px;}
 .tlist tfoot td{padding-left:0px;}
 
 .titem {border-collapse:separate;}
+.titem input {font-size:12px;}
+.titem select {font-size:12px;}
+.titem textarea {font-size:12px;}
 .titem td.field {border:#d9e8f5 solid 1px;background:#d9e8f5;padding:3px;width:80px}
 .titem td.value {border:#d9e8f5 solid 1px;padding:3px;}
 .titem td.value input.common {width:300px}
+.titem td.value textarea.common {width:300px}
 .titem select.common {width:304px}
 .titem select optgroup option {padding-left:23px}
 .titem td.submit {padding-top:10px;}
 .titem td.submit input {width:50px}
 
-.pagelist{padding:10px}
+.pagelist{padding:0px;}
+.pagelist b{overflow:hidden;display:inline; padding:4px;text-decoration:none; color:#333; border:1px solid #eeeeee;}
 .pagelist a{overflow:hidden;display:inline; padding:4px;text-decoration:none; color:#333; border:1px solid #ebebeb;}
 .pagelist a:hover,.pagelist strong{border:1px solid #ffd375;color:#f26101;padding:4px;}
+.pagelist span{margin:0 5px;}
 
 img.chart_common{width:800px;height:440px}
 img.chart_line{width:1000px;height:500px}
