@@ -152,7 +152,7 @@ class Hush_Bpm_Lang_Pbel extends Hush_Bpm_Lang
 		$code = trim(str_replace("pbel.", "\$lang->", $code));
 		if (!$code) return false;
 		
-		error_log($code); // for code debug
+//		error_log($code); // for code debug
 		
 		ob_start();
 		$return = false;
