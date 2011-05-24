@@ -23,5 +23,13 @@ CREATE TABLE `product` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
+/*Data for the table `product` */
+
+LOCK TABLES `product` WRITE;
+
+insert  into `product`(`id`,`name`,`desc`,`updatetime`) values (1,'Test product 1','Test product 1','2010-08-31 06:04:33');
+
+UNLOCK TABLES;
+
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
