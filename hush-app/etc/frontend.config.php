@@ -13,8 +13,8 @@ define('__HTTP_ROOT', '/');
  * DB config ini file
  * TODO : could be changed by yourself's settings !!!
  */
-define('__DB_INI_FILE_ACL', realpath(__ETC . '/database.ihush_acl.ini'));
-define('__DB_INI_FILE_APP', realpath(__ETC . '/database.ihush_app.ini'));
+define('__DB_INI_FILE_CORE', realpath(__ETC . '/database.ihush_core.ini'));
+define('__DB_INI_FILE_APPS', realpath(__ETC . '/database.ihush_apps.ini'));
 
 /**
  * MVC url mapping ini file
