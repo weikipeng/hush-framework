@@ -42,6 +42,11 @@ class Hush_Db_Dao
 	/**
 	 * @var string
 	 */
+	public $primkey = 'id';
+	
+	/**
+	 * @var string
+	 */
 	public $charset = 'utf8';
 	
 	/**
@@ -79,9 +84,10 @@ class Hush_Db_Dao
 	 * @param string $table Binded table name
 	 * @return unknown
 	 */
-	public function __bind ($table = '')
+	public function __bind ($table = '', $primkey = '')
 	{
-		if (!$this->table) $this->table = $table;
+		if ($table) $this->table = $table;
+		if ($primkey) $this->primkey = $primkey;
 	}
 	
 	/**
@@ -111,7 +117,7 @@ class Hush_Db_Dao
 	public function create ($data)
 	{
 		if (!$this->table) {
-			throw new Ihush_Dao_Exception('Please bind table name first');
+			throw new Hush_Db_Exception('Please bind table name first');
 		}
 		if ($this->db->insert($this->table, $data)) {
 			return $this->db->lastInsertId();
@@ -126,12 +132,13 @@ class Hush_Db_Dao
 	 * @param string $pk Primary key name
 	 * @return array
 	 */
-	public function read ($id, $pk = 'id')
+	public function read ($id, $primkey = '')
 	{
 		if (!$this->table) {
-			throw new Ihush_Dao_Exception('Please bind table name first');
+			throw new Hush_Db_Exception('Please bind table name first');
 		}
-		$sql = $this->db->select()->from($this->table)->where("$pk = ?", $id);
+		$primkey = $primkey ? $primkey : $this->primkey;
+		$sql = $this->db->select()->from($this->table)->where("$primkey = ?", $id);
 		return $this->db->fetchRow($sql);
 	}
 	
@@ -142,12 +149,18 @@ class Hush_Db_Dao
 	 * @param string $where Where sql expr
 	 * @return bool
 	 */
-	public function update ($data, $where)
+	public function update ($data, $wheresql = '')
 	{
 		if (!$this->table) {
-			throw new Ihush_Dao_Exception('Please bind table name first');
+			throw new Hush_Db_Exception('Please bind table name first');
 		}
-		return $this->db->update($this->table, $data, $where);
+		if (!$wheresql) {
+			if (!isset($data[$this->primkey])) {
+				throw new Hush_Db_Exception('Can not find primary key in data array');
+			}
+			$wheresql = $this->db->quoteInto("{$this->primkey} = ?", $data[$this->primkey]);
+		}
+		return $this->db->update($this->table, $data, $wheresql);
 	}
 	
 	/**
@@ -157,12 +170,13 @@ class Hush_Db_Dao
 	 * @param string $pk Primary key name
 	 * @return bool
 	 */
-	public function delete ($id, $pk = 'id')
+	public function delete ($id, $primkey = '')
 	{
 		if (!$this->table) {
-			throw new Ihush_Dao_Exception('Please bind table name first');
+			throw new Hush_Db_Exception('Please bind table name first');
 		}
-		return $this->db->delete($this->table, $this->db->quoteInto("$pk = ?", $id));
+		$primkey = $primkey ? $primkey : $this->primkey;
+		return $this->db->delete($this->table, $this->db->quoteInto("$primkey = ?", $id));
 	}
 	
 	/**
@@ -227,7 +241,7 @@ class Hush_Db_Dao
 	public function db ($type)
 	{
 		if (!$this->db_pool) {
-			throw new Ihush_Dao_Exception('Please init db pool first');
+			throw new Hush_Db_Exception('Please init db pool first');
 		}
 		$db = Hush_Db::rand($type);
 		$db->query('set names ' . $this->charset);

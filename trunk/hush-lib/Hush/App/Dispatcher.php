@@ -169,8 +169,7 @@ class Hush_App_Dispatcher
 	protected function getMapPageClass ($map_path)
 	{
 		$paths = $this->_parseMapPath($map_path);
-		array_pop($paths); // strip action name
-		$className = implode('', $paths);
+		$className = array_shift($paths);
 		$className = $className ? $className : $this->defaultClassName;
 		return ucfirst($className);
 	}
@@ -184,7 +183,9 @@ class Hush_App_Dispatcher
 	protected function getMapPageAction ($map_path)
 	{
 		$paths = $this->_parseMapPath($map_path);
-		$actionName = array_pop($paths);
+		array_shift($paths); // escape page name
+		$actionName = array_shift($paths);
+		$actionName = $actionName ? $actionName : $this->defaultActionName;
 		return $actionName;
 	}
 	
@@ -196,8 +197,7 @@ class Hush_App_Dispatcher
 	protected function getDefaultPageClass ()
 	{
 		$paths = $this->_parsePath($this->_path);
-		array_pop($paths); // strip action name
-		$className = implode('', $paths);
+		$className = array_shift($paths);
 		$className = $className ? $className : $this->defaultClassName;
 		return ucfirst($className) . $this->defaultClassSuffix;
 	}
@@ -210,8 +210,30 @@ class Hush_App_Dispatcher
 	protected function getDefaultPageAction ()
 	{
 		$paths = $this->_parsePath($this->_path);
-		$actionName = array_pop($paths);
+		array_shift($paths); // escape page name
+		$actionName = array_shift($paths);
+		$actionName = $actionName ? $actionName : $this->defaultActionName;
 		return $actionName . $this->defaultActionSuffix;
+	}
+	
+	/**
+	 * Get action args from request url
+	 * @return array
+	 */
+	protected function getActionArgs ()
+	{
+		$this->actionArgs = array(); // for debug
+		$paths = $this->_parsePath($this->_path);
+		array_shift($paths); // escape page name
+		array_shift($paths); // escape action name
+		foreach (array_chunk($paths, 2) as $group) {
+			$k = isset($group[0]) ? trim($group[0]) : '';
+			$v = isset($group[1]) ? trim($group[1]) : '';
+			if (strlen($k) > 0) { // key can not be empty
+				$_REQUEST[$k] = $_GET[$k] = $this->actionArgs[$k] = $v;
+			}
+		}
+		return $this->actionArgs;
 	}
 	
 	/**
@@ -241,11 +263,6 @@ class Hush_App_Dispatcher
 		// get raw url path
 		if (!$this->_path) {
 			$this->_path = $this->_request->getPathInfo();
-		}
-		
-		// add default action for url path
-		if (preg_match('/\/$/', $this->_path)) {
-			$this->_path .= $this->defaultActionName;
 		}
 	}
 	
@@ -366,6 +383,7 @@ class Hush_App_Dispatcher
 				throw new Hush_App_Exception('Can not find definition for class \'' . $className . '\'');
 			}
 			
+			// create page
 			$page = new $className();
 			
 			// prepare page view
@@ -381,7 +399,8 @@ class Hush_App_Dispatcher
 				$page->__init();
 			}
 			
-			$page->$actionName();
+			// call page action method
+			$page->$actionName($this->getActionArgs());
 			
 			// callback method implemented in page class
 			if (method_exists($page, '__done')) {
@@ -408,6 +427,7 @@ class Hush_App_Dispatcher
 				echo '<b>Dispatch Debug Info >>></b>' . "<br/>\n" . "<br/>\n";
 				echo 'Class Name : ' . $className . "<br/>\n";
 				echo 'Action Name : ' . $actionName . "<br/>\n";
+				echo 'Action Args : ' . json_encode($this->actionArgs) . "<br/>\n";
 				echo 'Template Name : ' . $tplName . "<br/>\n" . "<br/>\n";
 				echo '<b>Dispatch Exception Info >>></b>' . "<br/>\n";
 				Hush_Util::trace($e);

@@ -36,44 +36,38 @@ class Hush_Db_Adapter_Mysqli extends Zend_Db_Adapter_Mysqli
 	public $_debug = false; // for trace sql with 'Hush_Debug' lib
 	
 	/**
-	 * Replace into sql syntax
-	 * We can use this method to replace mutiple line's data oncely
-	 * @param string $table
-	 * @param array $cols
-	 * @param array $vals
-	 * @param bool $debug
-	 * @return mixed
+	 * Replace table rows with specified data based on a WHERE clause.
+	 *
+	 * @param  mixed $table The table to update.
+	 * @param  array $bind  Column-value pairs.
+	 * @param  mixed $where UPDATE WHERE clause(s).
+	 * @return int   The number of affected rows.
 	 */
-	public function replace ($table, $cols, $vals, $debug = false)
+	public function replace($table, array $bind, $where = '', $debug = false)
 	{
-		// param exception
-		if (!$vals || !$cols) {
-			require_once 'Zend/Db/Adapter/Exception.php';
-			throw new Zend_Db_Adapter_Exception("For table '{$table}' columns and values can not be empty");
+		/**
+		 * Build "col = ?" pairs for the statement,
+		 * except for Zend_Db_Expr which is treated literally.
+		 */
+		$set = array();
+		$i = 0;
+		foreach ($bind as $col => $val) {
+			$val = '?';
+			$set[] = $this->quoteIdentifier($col, true) . ' = ' . $val;
 		}
+
+		$where = $this->_whereExpr($where);
 		
-		// extract and quote vals names from the array keys
-		$cols_num = count($cols);
-		$vals_sql = array();
-		foreach ($vals as $bind) {
-			if (!is_array($bind) || $cols_num != count($bind)) {
-				continue;
-			}
-			foreach ($bind as $k => $v) {
-				$bind[$k] = $this->quote($v);
-			}
-			$vals_sql[] = '(' . implode(', ', $bind) . ')';
-		}
-		
-		// build the statement
-		$sql = "REPLACE INTO "
+		// Build the UPDATE statement
+		$sql = 'REPLACE INTO '
 			 . $this->quoteIdentifier($table, true)
-			 . ' (' . implode(', ', $cols) . ') VALUES ' . implode(', ', $vals_sql);
+			 . ' SET ' . implode(', ', $set)
+			 . (($where) ? " WHERE $where" : '');
 		
 		if ($debug) return $sql;
 		
-		// execute the statement and return the number of affected rows
-		$stmt = $this->query($sql);
+		// Execute the statement and return the number of affected rows
+		$stmt = $this->query($sql, array_values($bind));
 		
 		return $stmt->rowCount();
 	}
@@ -171,5 +165,4 @@ class Hush_Db_Adapter_Mysqli extends Zend_Db_Adapter_Mysqli
 		
 		return parent::query($sql, $bind);
 	}
-	
 }
