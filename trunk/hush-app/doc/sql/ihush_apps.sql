@@ -1,6 +1,6 @@
 /*
 SQLyog 企业版 - MySQL GUI v7.14 
-MySQL - 5.1.41 : Database - ihush_app
+MySQL - 5.1.41 : Database - ihush_apps
 *********************************************************************
 */
 
@@ -22,14 +22,6 @@ CREATE TABLE `product` (
   `updatetime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
-
-/*Data for the table `product` */
-
-LOCK TABLES `product` WRITE;
-
-insert  into `product`(`id`,`name`,`desc`,`updatetime`) values (1,'Test product','Test product','2010-05-26 03:08:17');
-
-UNLOCK TABLES;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
