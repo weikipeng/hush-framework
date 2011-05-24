@@ -10,8 +10,8 @@
  */
  
 require_once 'Ihush/App/Page.php';
-require_once 'Ihush/Dao/Acl.php';
-require_once 'Ihush/Dao/App.php';
+require_once 'Ihush/Dao/Core.php';
+require_once 'Ihush/Dao/Apps.php';
 
 /**
  * @package Ihush_App_Frontend

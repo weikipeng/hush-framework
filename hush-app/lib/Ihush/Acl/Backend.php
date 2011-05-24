@@ -50,7 +50,7 @@ class Ihush_Acl_Backend extends Ihush_Acl
 	public function __construct () 
 	{
 		// add roles for acl
-		$roleDao = Ihush_Dao::load('Acl_Role');
+		$roleDao = Ihush_Dao::load('Core_Role');
 		$roles = $roleDao->getAllRoles();
 		foreach ((array) $roles as $role) {
 			if (!isset($role['id'])) continue;
@@ -58,7 +58,7 @@ class Ihush_Acl_Backend extends Ihush_Acl
 		}
 		
 		// add app for acl
-		$appDao = Ihush_Dao::load('Acl_App');
+		$appDao = Ihush_Dao::load('Core_App');
 		$apps = $appDao->getAllApps();
 		foreach ((array) $apps as $app) {
 			if (!strlen($app['path'])) continue;
@@ -74,7 +74,7 @@ class Ihush_Acl_Backend extends Ihush_Acl
 		}
 		
 		// add resource for acl
-		$resourceDao = Ihush_Dao::load('Acl_Resource');
+		$resourceDao = Ihush_Dao::load('Core_Resource');
 		$resources = $resourceDao->getAllResources();
 		foreach ((array) $resources as $resource) {
 			if (!strlen($resource['name'])) continue;

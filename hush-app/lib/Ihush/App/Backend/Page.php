@@ -11,7 +11,7 @@
  
 require_once 'Ihush/App/Backend.php';
 require_once 'Ihush/Acl/Backend.php';
-require_once 'Ihush/Dao/Acl.php';
+require_once 'Ihush/Dao/Core.php';
 
 /**
  * @package Ihush_App_Backend
