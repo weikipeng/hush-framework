@@ -272,7 +272,7 @@ Actions:
     cache  >   [clean]
 
 Example:
-    hush cache clean
+    hush be cache clean
 
     This example will pass parameters to hush.php 
     And execute relevant method to implement the specific tasks.
