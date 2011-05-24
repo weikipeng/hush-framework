@@ -35,7 +35,7 @@ class AuthPage extends Ihush_App_Backend_Page
 		
 		// login process
 		if ($this->noError()) {
-			$aclUserDao = $this->dao->load('Acl_User');
+			$aclUserDao = $this->dao->load('Core_User');
 			$admin = $aclUserDao->authenticate($this->param('username'), $this->param('password'));
 			// login failed
 			if (!$admin) {

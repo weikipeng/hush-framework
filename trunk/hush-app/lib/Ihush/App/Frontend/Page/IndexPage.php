@@ -21,11 +21,11 @@ class IndexPage extends Ihush_App_Frontend_Page
 		$this->view->setCache(true, 5);
 		$this->view->welcome = 'Welcome to Hush Framework (Frontend) !';
 		
-		$userDao = $this->dao->load('Acl_User');
+		$userDao = $this->dao->load('Core_User');
 		$user = $userDao->read(1);
 		$this->debug($user, 'From db ihush_acl :');
 		
-		$productDao = $this->dao->load('App_Product');
+		$productDao = $this->dao->load('Apps_Product');
 		$product = $productDao->read(1);
 		$this->debug($product, 'From db ihush_app :');
 	}
