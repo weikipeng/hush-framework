@@ -31,7 +31,7 @@
 	</td></tr>
 	{if $pbelDocs}
 	<tr class="flow_node_helper_tab helper_pbel disn"><td>
-		<a href="javascript:addText('return true; // exit');">return true;</a><br/>
+		<a href="javascript:addText('return true; // exit');">逻辑结束 : return true;</a><br/>
 		{foreach $pbelDocs as $doc}<a href="javascript:addText('pbel.{$doc.method}');">{$doc.intros}</a><br/>
 		{/foreach}
 	</td></tr>
@@ -55,7 +55,7 @@
 	{foreach $modelList as $modelId => $fieldList}
 	<tr class="flow_node_helper_tab helper_quick"><td>
 		模型选择 : 
-		<a href="javascript:addText('pbel.model_form({$modelId})');">模型{$modelId}</a> &lt; 
+		<a href="javascript:addText('pbel.model_form_add({$modelId})');">模型{$modelId}</a> &lt; 
 		{foreach $fieldList as $field}<a href="javascript:addText('pbel.model_field({$field.bpm_model_field_id})');">{$field.bpm_model_field_name}</a>
 			{if $field@index != $field@total - 1} , {/if}
 		{/foreach}

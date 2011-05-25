@@ -33,9 +33,9 @@ class Ihush_Bpm_Lang_Pbel extends Hush_Bpm_Lang_Pbel
 	}
 	
 	/**
-	 * @pbel model_form(模块ID)
+	 * @pbel 添加模型 : model_form_add(模型ID)
 	 */
-	public function model_form ($modelId)
+	public function model_form_add ($modelId)
 	{
 		$bpmModelDao = $this->dao->load('Core_BpmModel');
 		$modelData = $bpmModelDao->read($modelId);
@@ -43,7 +43,17 @@ class Ihush_Bpm_Lang_Pbel extends Hush_Bpm_Lang_Pbel
 	}
 	
 	/**
-	 * @pbel model_field(字段ID)
+	 * @pbel 编辑模型 : model_form_edit(模型ID)
+	 */
+	public function model_form_edit ($modelId)
+	{
+		$bpmModelDao = $this->dao->load('Core_BpmModel');
+		$modelData = $bpmModelDao->read($modelId);
+		return $this->setReturn($modelData['bpm_model_form']);
+	}
+	
+	/**
+	 * @pbel 获取字段 : model_field(字段ID)
 	 */
 	public function model_field ($fieldId)
 	{
@@ -57,7 +67,7 @@ class Ihush_Bpm_Lang_Pbel extends Hush_Bpm_Lang_Pbel
 	}
 	
 	/**
-	 * @pbel audit_by_role(角色ID)
+	 * @pbel 角色审核 : audit_by_role(角色ID)
 	 */
 	public function audit_by_role ($roleId)
 	{
@@ -75,7 +85,7 @@ class Ihush_Bpm_Lang_Pbel extends Hush_Bpm_Lang_Pbel
 	}
 	
 	/**
-	 * @pbel audit_by_user(用户ID)
+	 * @pbel 用户审核 : audit_by_user(用户ID)
 	 */
 	public function audit_by_user ($userId)
 	{
@@ -93,7 +103,7 @@ class Ihush_Bpm_Lang_Pbel extends Hush_Bpm_Lang_Pbel
 	}
 	
 	/**
-	 * @pbel audit_check()
+	 * @pbel 审核结果 : audit_check()
 	 */
 	public function audit_check ()
 	{
@@ -107,7 +117,7 @@ class Ihush_Bpm_Lang_Pbel extends Hush_Bpm_Lang_Pbel
 	}
 	
 	/**
-	 * @pbel forward(节点ID)
+	 * @pbel 跳转节点 : forward(节点ID)
 	 */
 	public function forward ($nodeId)
 	{
