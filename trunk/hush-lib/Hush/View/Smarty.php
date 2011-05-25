@@ -249,6 +249,30 @@ class Hush_View_Smarty extends Hush_View implements Zend_View_Interface
 	}
 	
 	/**
+	 * Clear all cached files
+	 * @return void
+	 */
+	public function clearAllCache() 
+	{
+		return $this->__autocall('clear_all_cache');
+	}
+	
+	/**
+	 * Clear all compiled templates
+	 * @return void
+	 */
+	public function clearTemplates() 
+	{
+		// adapt with smarty 2
+		if (method_exists($this->_smarty, 'clear_compiled_tpl')) {
+			return $this->_smarty->clear_compiled_tpl();
+		}
+		
+		// adapt with smarty 3
+		return $this->_smarty->clear_compiled_template();
+	}
+	
+	/**
 	 * Processes a template and display.
 	 * @param string $name The template to process.
 	 * @return void
