@@ -29,7 +29,7 @@ define('__SQL_DUMPER_COMMAND', __SQL_DUMPER_TOOL . ' {PARAMS} --add-drop-databas
 
 class Hush_Console
 {
-	public function getDBParams ($db_ini_file)
+	public function getDBParams ($db_ini_file, $get_db_name = true)
 	{
 		$db_config = parse_ini_file($db_ini_file, true);
 		
@@ -41,7 +41,8 @@ class Hush_Console
 				. ' -P' . $db_config['WRITE']['PORT']
 				. ' -u' . $db_config['WRITE']['USER']
 				. ' -p' . $db_config['WRITE']['PASS']
-				. '   ' . $db_config['WRITE']['NAME'];
+				. ($get_db_name ? '   ' . $db_config['WRITE']['NAME'] : '')
+				;
 		
 		return $params;
 	}
@@ -79,17 +80,16 @@ class Hush_Console
 		Ihush_App_Page::closeAutoLoad();
 		$page = new Ihush_App_Page();
 		$page->__prepare();
+		$view = $page->getView();
 		switch ($params) {
 			case 'clean' :
-				$smarty = $page->getView()->getSmarty();
-				echo "\nTPL DIR : " . $smarty->compile_dir . "\n";
-				$smarty->clear_compiled_tpl();
+				echo "\nTPL DIR : " . $view->getSmarty()->compile_dir . "\n";
+				$view->clearTemplates();
 				echo "\nAll compiled templates cleaned ...\n";
 				break;
 			case 'cleancache':
-				$smarty = $page->getView()->getSmarty();
-				echo "\nTPL DIR : " . $smarty->compile_dir . "\n";
-				$smarty->clear_compiled_tpl();
+				echo "\nTPL DIR : " . $view->getSmarty()->cache_dir . "\n";
+				$view->clearAllCache();
 				echo "\nAll template caches cleaned ...\n";
 				break;
 			default :
@@ -197,12 +197,12 @@ NOTICE;
 	
 	if (!strcasecmp($classn, 'init')) {
 		$be_command = __SQL_IMPORT_COMMAND;
-		$be_command = str_replace('{PARAMS}', Hush_Console::getDBParams(__SQL_INI_BE), $be_command);
+		$be_command = str_replace('{PARAMS}', Hush_Console::getDBParams(__SQL_INI_BE, false), $be_command);
 		$be_command = str_replace('{SQLFILE}', __SQL_INIT_BE, $be_command);
 		echo "\nBACKEND SQL COMMAND : $be_command\n";
 		
 		$fe_command = __SQL_IMPORT_COMMAND;
-		$fe_command = str_replace('{PARAMS}', Hush_Console::getDBParams(__SQL_INI_FE), $fe_command);
+		$fe_command = str_replace('{PARAMS}', Hush_Console::getDBParams(__SQL_INI_FE, false), $fe_command);
 		$fe_command = str_replace('{SQLFILE}', __SQL_INIT_FE, $fe_command);
 		echo "\nFRONTEND SQL COMMAND : $fe_command\n\n";
 		
@@ -219,8 +219,10 @@ NOTICE;
 	$check_dirs = array(
 		__DAT_DIR . '/cache',
 		__DAT_DIR . '/dbsql',
-		__TPL_DIR . '/cache',
-		__TPL_DIR . '/template_c'
+		__TPL_DIR . '/backend/cache',
+		__TPL_DIR . '/backend/template_c',
+		__TPL_DIR . '/frontend/cache',
+		__TPL_DIR . '/frontend/template_c'
 	);
 	
 	foreach ($check_dirs as $dir) {
@@ -282,4 +284,9 @@ USAGE;
 	exit;
 }
 
-$classo->$method($params);
+try {
+	$classo->$method($params);
+} catch (Exception $e) {
+	echo $e;
+	exit;
+}

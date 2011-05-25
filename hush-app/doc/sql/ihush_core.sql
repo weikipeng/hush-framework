@@ -11,6 +11,10 @@ MySQL - 5.1.41 : Database - ihush_core
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
+CREATE DATABASE /*!32312 IF NOT EXISTS*/`ihush_core` /*!40100 DEFAULT CHARACTER SET utf8 */;
+
+USE `ihush_core`;
+
 /*Table structure for table `app` */
 
 DROP TABLE IF EXISTS `app`;
