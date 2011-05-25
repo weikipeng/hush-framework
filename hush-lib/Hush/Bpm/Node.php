@@ -23,7 +23,7 @@ abstract class Hush_Bpm_Node
 	 * @var array
 	 */
 	private $types = array(
-		1 => '普通节点',
+		1 => '任务节点',
 		2 => '判断节点',
 		3 => '跳转节点',
 		4 => '审核节点',

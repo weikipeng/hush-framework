@@ -82,7 +82,7 @@ class Hush_Console
 		$page->__prepare();
 		$view = $page->getView();
 		switch ($params) {
-			case 'clean' :
+			case 'cleantplc' :
 				echo "\nTPL DIR : " . $view->getSmarty()->compile_dir . "\n";
 				$view->clearTemplates();
 				echo "\nAll compiled templates cleaned ...\n";
@@ -115,7 +115,7 @@ class Hush_Console
 	
 	public function noAction ()
 	{
-		echo "\nDo nothing for Backend ...\n";
+		echo "\nDo nothing ...\n";
 	}
 }
 
@@ -270,7 +270,7 @@ Options:
 
 Actions:
     db     >   [backup|recover|import]
-    tpl    >   [clean|cleancache]
+    tpl    >   [cleantplc|cleancache]
     cache  >   [clean]
 
 Example:
