@@ -23,7 +23,8 @@ class Hush_Bpm_Lang_Pbel extends Hush_Bpm_Lang
 	 */
 	public $methods = array(
 		'model_field',
-		'model_form',
+		'model_form_add',
+		'model_form_edit',
 		'audit_by_role',
 		'audit_by_user',
 		'audit_check',
