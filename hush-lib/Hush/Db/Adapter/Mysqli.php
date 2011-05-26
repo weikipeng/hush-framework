@@ -145,7 +145,7 @@ class Hush_Db_Adapter_Mysqli extends Zend_Db_Adapter_Mysqli
 			require_once 'Hush/Debug.php';
 			$debug = Hush_Debug::getInstance();
 			
-			if (!($debug　instanceof Hush_Debug)) {
+			if (!($debug instanceof Hush_Debug)) {
 				require_once 'Zend/Db/Adapter/Exception.php';
 				throw new Zend_Db_Adapter_Exception("Can not initialize 'Hush_Debug' instance");
 			}
