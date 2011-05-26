@@ -157,6 +157,34 @@ class Hush_App
 	}
 	
 	/**
+	 * stripMagicQuotes if magic_quotes_gpc is On
+	 * @return Hush_App
+	 */
+	public function closeMagicQuotes ()
+	{
+		global $_GET, $_POST, $_COOKIE, $_REQUEST;
+		
+		$_GET = $this->_stripMagicQuotes($_GET);
+		$_POST = $this->_stripMagicQuotes($_POST);
+		$_COOKIE = $this->_stripMagicQuotes($_COOKIE);
+		$_REQUEST = $this->_stripMagicQuotes($_REQUEST);
+		
+		return $this;
+	}
+	
+	/**
+	 * callback function for closeMagicQuotes
+	 */
+	private function _stripMagicQuotes (&$value)
+	{
+		$value = (is_array($value)) 
+			? array_map(array($this, '_stripMagicQuotes'), $value) 
+			: stripslashes($value);
+		
+		return $value;
+	}
+	
+	/**
 	 * Start main router and dispatch process for App
 	 * @see Hush_App_Dispatcher
 	 * @throws Hush_App_Exception
@@ -186,7 +214,7 @@ class Hush_App
 			$mapper = new Hush_App_Mapper($this->getMapFiles());
 			$dispatcher->setMapper($mapper);
 		}
-
+		
 		// dispatch request to pages' actions
 		$dispatcher->dispatch($this->getAppDirs(), $this->getTplDir());
 	}

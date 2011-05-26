@@ -282,7 +282,41 @@ abstract class Hush_Db_Adapter_Simple_Abstract
 		
 		return false;
 	}
-
+	
+	/**
+	 * Replace table rows with specified data based on a WHERE clause.
+	 *
+	 * @param  mixed $table The table to update.
+	 * @param  array $bind  Column-value pairs.
+	 * @return int   The number of affected rows.
+	 */
+	public function replace($table, array $bind)
+	{
+		/**
+		 * Build "col = ?" pairs for the statement,
+		 * except for Zend_Db_Expr which is treated literally.
+		 */
+		$set = array();
+		$i = 0;
+		foreach ($bind as $col => $val) {
+			$val = '?';
+			$set[] = $this->quoteIdentifier($col, true) . ' = ' . $val;
+		}
+		
+		// Build the UPDATE statement
+		$sql = 'REPLACE INTO '
+			 . $this->quoteIdentifier($table, true)
+			 . ' SET ' . implode(', ', $set);
+		
+		// Execute the statement and return the number of affected rows
+		if ($this->query($sql, array_values($bind))) {
+			$result = $this->rowCount();
+			return $result;
+		}
+		
+		return false;
+	}
+	
 	/**
 	 * Convert an array, string, or Zend_Db_Expr object
 	 * into a string to put in a WHERE clause.
@@ -299,9 +333,14 @@ abstract class Hush_Db_Adapter_Simple_Abstract
 			$where = array($where);
 		}
 		foreach ($where as $cond => &$term) {
-			// $cond is the condition with placeholder,
-			// and $term is quoted into the condition
-			$term = $this->quoteInto($cond, $term);
+			// is $cond an int? (i.e. Not a condition)
+			if (is_int($cond)) {
+				$term = (string) $term;
+			} else {
+				// $cond is the condition with placeholder,
+				// and $term is quoted into the condition
+				$term = $this->quoteInto($cond, $term);
+			}
 			$term = '(' . $term . ')';
 		}
 
