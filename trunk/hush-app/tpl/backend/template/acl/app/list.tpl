@@ -31,7 +31,7 @@
 			</td>
 		</tr>
 			{foreach $app.list as $app1}
-			<tr class="menu{$app.id}">
+			<tr class="menu{$app.id} disn">
 				<td align="left">{$app1.id}</td>
 				<td align="left">└ <a href='appEdit?id={$app1.id}'><u>{$app1.name}</u></a></td>
 				<td align="left"></td>
@@ -43,7 +43,7 @@
 				</td>
 			</tr>
 				{foreach $app1.list as $app2}
-				<tr class="menu{$app.id}">
+				<tr class="menu{$app.id} disn">
 					<td align="left">{$app2.id}</td>
 					<td align="left">└ └ <a href='appEdit?id={$app2.id}'><u>{$app2.name}</u></a></td>
 					<td align="left"><img src="{$_root}img/icon_right.png" class="icon" /></td>
