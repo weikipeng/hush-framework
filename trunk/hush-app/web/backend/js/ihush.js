@@ -1,5 +1,12 @@
 (function($){
 
+	// string
+	$.string = {
+		striptags : function (s) {
+			return s.replace(/<[^>].*?>/g,"");
+		}
+	}
+	
 	// popup box
 	$.overlay = {
 		show : function () {
@@ -30,7 +37,7 @@
 		}
 	}
 	
-	// form method
+	// form funcs
 	$.form = {
 		select: function (selector) {
 			var select_ele = $(selector);
@@ -59,10 +66,30 @@
 				textArea.value = textArea.value.substr(0, textArea.selectionStart) + str + textArea.value.substring(textArea.selectionEnd, textLength);
 				textArea.setSelectionRange(startPos, endPos); 
 			}
+		},
+		filter: function (options) {
+			var filter_input = options.filter_input;
+			var filter_rows = options.filter_rows;
+			var filter_val = options.filter_val;
+			$(filter_input).keyup(function(){
+				input = $(this).val();
+				if (input == '') {
+					$(filter_rows).show();
+				} else {
+					$(filter_rows).hide();
+					filter_val.each(function(){
+						var text = $.string.striptags($(this).html());
+						var regexp = new RegExp("^" + input);
+						if (regexp.test(text)) {
+							$(this).parents("tr").show();
+						}
+					});
+				}
+			});
 		}
 	}
 	
-	// 
+	// toggle exts
 	$.toggle = {
 		input: function (selector) {
 			var toggle_ele = $(selector);
@@ -108,5 +135,7 @@ $(document).ready(function(){
 	}).mouseout(function(){
 		$(this).css({'background':'#FFFFFF'});
 	});
+	
+	// 
 	
 });

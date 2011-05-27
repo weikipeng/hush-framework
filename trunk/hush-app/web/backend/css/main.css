@@ -56,6 +56,8 @@ img.chart_common{width:800px;height:440px}
 img.chart_line{width:1000px;height:500px}
 img.chart_pie{width:500px;height:300px}
 
+input.filter_input{width:50px}
+
 div.errorbox{width:100%; border:#ff0000 solid 1px;margin-bottom:10px;}
 div.errorbox span{padding:3px 5px 3px 5px;display:block}
 
