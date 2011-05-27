@@ -383,13 +383,21 @@ class Hush_App_Dispatcher
 				throw new Hush_App_Exception('Can not find definition for class \'' . $className . '\'');
 			}
 			
-			// create page
-			$page = new $className();
-			
-			// prepare page view
+			/* USE PAGE VIEW PROCESS
+			 * close auto-load for page view class
+			 */
 			if (self::$pageViewClass) {
 				require_once 'Hush/Page.php';
 				Hush_Page::closeAutoLoad(); // close page autoload mechanism
+			}
+			
+			// create page
+			$page = new $className();
+			
+			/* USE PAGE VIEW PROCESS
+			 * set template for page view class
+			 */
+			if (self::$pageViewClass) {
 				if ($tpl_dir) $page->setTemplateDir($tpl_dir);
 				$page->__prepare();
 			}
@@ -407,7 +415,9 @@ class Hush_App_Dispatcher
 				$page->__done();
 			}
 			
-			// display page view
+			/* USE PAGE VIEW PROCESS
+			 * display template for page view class
+			 */
 			if (self::$pageViewClass) {
 				$page->__display($tplName);
 			}
