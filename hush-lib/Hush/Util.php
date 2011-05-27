@@ -489,6 +489,7 @@ class Hush_Util
 	 * @static
 	 * @param string $csvText Csv file's text
 	 * @param string $csvSP Csv each column's separator, default is '\t'
+	 * @return array
 	 */
 	public static function parse_csv ($csvText, $csvSP = "\t")
 	{
