@@ -9,17 +9,17 @@
 <table class="tlist" >
 	<thead>
 		<tr class="title">
-			<th align="left">&nbsp;ID</th>
-			<th align="left">用户名</th>
+			<th align="left" style="width:100px;">&nbsp;ID</th>
+			<th align="left">用户名&nbsp;<input type="text" class="filter_input" /></th>
 			<th align="left">所属角色列表</th>
 			<th align="right">操作&nbsp;</th>
 		</tr>  
 	</thead>
 	<tbody>
 		{foreach $userList as $user}
-		<tr>
+		<tr class="filter_rows">
 			<td align="left">{$user.id}</td>
-			<td align="left"><a href='userEdit?id={$user.id}'><u>{$user.name}</u></a></td>
+			<td align="left"><a href='userEdit?id={$user.id}'><u class="filter_name">{$user.name}</u></a></td>
 			<td align="left">{$user.role}</td>
 			<td align="right">
 				<a href="userEdit?id={$user.id}">编辑</a>
@@ -42,6 +42,14 @@
 </table>
 
 {include file="frame/page.tpl"}
+
+<script type="text/javascript">
+$.form.filter({
+	filter_input : $('.filter_input'),
+	filter_rows : $('.filter_rows'),
+	filter_val : $('.filter_name')
+});
+</script>
 
 </div>
 
