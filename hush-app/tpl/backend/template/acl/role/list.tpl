@@ -9,7 +9,7 @@
 <table class="tlist" >
 	<thead>
 		<tr class="title">
-			<th align="left">&nbsp;ID</th>
+			<th align="left" style="width:100px;">&nbsp;ID</th>
 			<th align="left">角色名</th>
 			<th align="left">角色别名</th>
 			<th align="left">可操作角色</th>

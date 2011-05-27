@@ -9,7 +9,7 @@
 <table class="tlist" >
 	<thead>
 		<tr class="title">
-			<th align="left">&nbsp;ID</th>
+			<th align="left" style="width:100px;">&nbsp;ID</th>
 			<th align="left">资源名</th>
 			<th align="left">全局资源</th>
 			<th align="left">资源说明</th>
