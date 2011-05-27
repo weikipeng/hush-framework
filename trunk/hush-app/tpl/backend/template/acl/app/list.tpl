@@ -9,17 +9,17 @@
 <table class="tlist" >
 	<thead>
 		<tr class="title">
-			<th align="left">&nbsp;ID</th>
-			<th align="left">用户名</th>
-			<th align="left">应用</th>
-			<th align="left">应用路径</th>
+			<th align="left" style="width:100px">&nbsp;ID</th>
+			<th align="left" style="width:300px">菜单名</th>
+			<th align="left" style="width:100px">应用</th>
+			<th align="left" style="width:300px">应用路径</th>
 			<th align="left">角色权限</th>
 			<th align="right">操作&nbsp;</th>
 		</tr>  
 	</thead>
 	<tbody>
 		{foreach $appTree as $app}
-		<tr>
+		<tr onclick="javascript:$('.menu{$app.id}').toggle();">
 			<td align="left">{$app.id}</td>
 			<td align="left"><a href='appEdit?id={$app.id}'><u>{$app.name}</u></a><img src="{$_root}img/sort_asc.gif" /></td>
 			<td align="left"></td>
@@ -31,7 +31,7 @@
 			</td>
 		</tr>
 			{foreach $app.list as $app1}
-			<tr>
+			<tr class="menu{$app.id} disn">
 				<td align="left">{$app1.id}</td>
 				<td align="left">└ <a href='appEdit?id={$app1.id}'><u>{$app1.name}</u></a></td>
 				<td align="left"></td>
@@ -43,7 +43,7 @@
 				</td>
 			</tr>
 				{foreach $app1.list as $app2}
-				<tr>
+				<tr class="menu{$app.id} disn">
 					<td align="left">{$app2.id}</td>
 					<td align="left">└ └ <a href='appEdit?id={$app2.id}'><u>{$app2.name}</u></a></td>
 					<td align="left"><img src="{$_root}img/icon_right.png" class="icon" /></td>
@@ -67,7 +67,7 @@
 	</tfoot>
 </table>
 
-{include file="frame/page.tpl"}
+{*include file="frame/page.tpl"*}
 
 </div>
 

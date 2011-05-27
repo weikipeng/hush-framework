@@ -10,7 +10,7 @@
 	<thead>
 		<tr class="title">
 			<th align="left" style="width:100px;">&nbsp;ID</th>
-			<th align="left">用户名&nbsp;<input type="text" class="filter_input" /></th>
+			<th align="left" style="width:300px;">用户名&nbsp;<input type="text" class="filter_input" /></th>
 			<th align="left">所属角色列表</th>
 			<th align="right">操作&nbsp;</th>
 		</tr>  
