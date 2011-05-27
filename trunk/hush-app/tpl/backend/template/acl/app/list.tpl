@@ -10,9 +10,9 @@
 	<thead>
 		<tr class="title">
 			<th align="left" style="width:100px">&nbsp;ID</th>
-			<th align="left" style="width:300px">菜单名</th>
+			<th align="left" style="width:200px">菜单名</th>
 			<th align="left" style="width:100px">应用</th>
-			<th align="left" style="width:300px">应用路径</th>
+			<th align="left" style="width:200px">应用路径</th>
 			<th align="left">角色权限</th>
 			<th align="right">操作&nbsp;</th>
 		</tr>  
