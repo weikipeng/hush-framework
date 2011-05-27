@@ -9,7 +9,7 @@
 <table class="tlist" >
 	<thead>
 		<tr class="title">
-			<th align="left">&nbsp;ID</th>
+			<th align="left" style="width:100px;">&nbsp;ID</th>
 			<th align="left">流程名</th>
 			<th align="left">流程类别</th>
 			<th align="left">流程状态</th>
