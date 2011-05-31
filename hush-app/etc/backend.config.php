@@ -33,7 +33,7 @@ define('__MSG_INI_FILE', realpath(__ETC . '/backend.errors.ini'));
  * TODO : could be changed by yourself's settings !!!
  */
 define('__LIB_PATH_PAGE', realpath(__LIB_DIR . '/Ihush/App/Backend/Page'));
-define('__LIB_PATH_REMOTE', realpath(__LIB_DIR . '/Track/App/Backend/Remote'));
+define('__LIB_PATH_REMOTE', realpath(__LIB_DIR . '/Ihush/App/Backend/Remote'));
 
 /**
  * Template relevant settings

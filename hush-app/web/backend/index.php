@@ -9,7 +9,8 @@ $app = new Hush_App();
 $app->setTplDir(__TPL_SMARTY_PATH)
 	->setErrorPage('html/404.htm')
 	->addMapFile(__MAP_INI_FILE)
-	->addAppDir(__LIB_PATH_PAGE);
+	->addAppDir(__LIB_PATH_PAGE)
+	->addAppDir(__LIB_PATH_REMOTE);
 
 /**
  * skip 404 page and trace exception
