@@ -222,7 +222,7 @@ class Hush_App_Dispatcher
 	 */
 	protected function getActionArgs ()
 	{
-		$this->actionArgs = array(); // for debug
+		$actionArgs = array(); // for debug
 		$paths = $this->_parsePath($this->_path);
 		array_shift($paths); // escape page name
 		array_shift($paths); // escape action name
@@ -230,10 +230,10 @@ class Hush_App_Dispatcher
 			$k = isset($group[0]) ? trim($group[0]) : '';
 			$v = isset($group[1]) ? trim($group[1]) : '';
 			if (strlen($k) > 0) { // key can not be empty
-				$_REQUEST[$k] = $_GET[$k] = $this->actionArgs[$k] = $v;
+				$_REQUEST[$k] = $_GET[$k] = $actionArgs[$k] = $v;
 			}
 		}
-		return $this->actionArgs;
+		return $actionArgs;
 	}
 	
 	/**
@@ -359,6 +359,11 @@ class Hush_App_Dispatcher
 		}
 		
 		/* MAIN PROCESS
+		 * Get action args
+		 */
+		$actionArgs = $this->getActionArgs();
+		
+		/* MAIN PROCESS
 		 * Get template name
 		 */
 		$tplName = $this->getTemplateName($className, $actionName);
@@ -408,7 +413,7 @@ class Hush_App_Dispatcher
 			}
 			
 			// call page action method
-			$page->$actionName($this->getActionArgs());
+			$page->$actionName($actionArgs);
 			
 			// callback method implemented in page class
 			if (method_exists($page, '__done')) {
@@ -437,7 +442,7 @@ class Hush_App_Dispatcher
 				echo '<b>Dispatch Debug Info >>></b>' . "<br/>\n" . "<br/>\n";
 				echo 'Class Name : ' . $className . "<br/>\n";
 				echo 'Action Name : ' . $actionName . "<br/>\n";
-				echo 'Action Args : ' . json_encode($this->actionArgs) . "<br/>\n";
+				echo 'Action Args : ' . json_encode($actionArgs) . "<br/>\n";
 				echo 'Template Name : ' . $tplName . "<br/>\n" . "<br/>\n";
 				echo '<b>Dispatch Exception Info >>></b>' . "<br/>\n";
 				Hush_Util::trace($e);
