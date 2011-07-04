@@ -474,6 +474,23 @@ class Hush_Util
 	}
 	
 	/**
+	 * Turnover a two-dimensional array
+	 * @static
+	 * @param array $array
+	 * @return array
+	 */
+	public function array_turn ($arr)
+	{
+		$res = array();
+		for ($i = 0; $i < count($arr); $i++) {
+			for ($j = 0; $j < count($arr[$i]); $j++) {
+				$res[$j][$i] = $arr[$i][$j];
+			}
+		}
+		return $res;
+	}
+	
+	/**
 	 * Check if item is json string
 	 * @static
 	 * @param array $str
