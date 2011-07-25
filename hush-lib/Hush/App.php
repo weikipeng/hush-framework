@@ -187,10 +187,11 @@ class Hush_App
 	/**
 	 * Start main router and dispatch process for App
 	 * @see Hush_App_Dispatcher
+	 * @param array $vars Dispatcher vars
 	 * @throws Hush_App_Exception
 	 * @return unknown
 	 */
-	public function run ()
+	public function run ($vars = array())
 	{
 		if (!$this->getAppDirs()) {
 			require_once 'Hush/App/Exception.php';
@@ -213,6 +214,11 @@ class Hush_App
 		if ($this->getMapFiles()) {
 			$mapper = new Hush_App_Mapper($this->getMapFiles());
 			$dispatcher->setMapper($mapper);
+		}
+		
+		// parse and set dispatch vars
+		foreach ((array) $vars as $key => $var) {
+			$dispatcher->$key = $var;
 		}
 		
 		// dispatch request to pages' actions
