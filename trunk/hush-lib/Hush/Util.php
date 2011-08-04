@@ -86,7 +86,7 @@ class Hush_Util
 		if ($value) $_REQUEST[$pname] = $value;
 		// get from $_REQUEST array
 		if (array_key_exists($pname, $_REQUEST)) {
-			return is_string($_REQUEST[$pname]) ? trim($_REQUEST[$pname]) : $_REQUEST[$pname];
+			return is_string($_REQUEST[$pname]) ? self::str_strip($_REQUEST[$pname]) : $_REQUEST[$pname];
 		}
 		return null;
 	}
@@ -107,7 +107,7 @@ class Hush_Util
 		if ($value) $_COOKIE[$cname] = $value;
 		// get from $_COOKIE array
 		if (array_key_exists($cname, $_COOKIE)) {
-			return is_string($_COOKIE[$cname]) ? trim($_COOKIE[$cname]) : $_COOKIE[$cname];
+			return is_string($_COOKIE[$cname]) ? self::str_strip($_COOKIE[$cname]) : $_COOKIE[$cname];
 		}
 		return null;
 	}
