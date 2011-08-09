@@ -136,6 +136,20 @@ class Hush_Util
 	}
 	
 	/**
+	 * Decode session data
+	 * @param string $data session data
+	 * @return mixed
+	 */
+	function session_decode($data) {
+		$vars = preg_split('/([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff^|]*)\|/',
+			$data,-1,PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
+		for($i = 0; isset($vars[$i]); $i++) {
+			$result[$vars[$i++]]=unserialize($vars[$i]);
+		}
+		return $result;
+	}
+	
+	/**
 	 * Client Ip address
 	 * @static
 	 * @return string
