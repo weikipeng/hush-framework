@@ -31,10 +31,14 @@ require_once 'Hush/Util.php';
 class Hush_Service
 {
 	/**
-	 * @access private
 	 * @var Hush_Debug
 	 */
-	private $_debug;	// Hush_Debug
+	private $_debug;
+	
+	/**
+	 * @var int
+	 */
+	protected $_rtime;
 	
 	/**
 	 * Construct
@@ -100,9 +104,7 @@ class Hush_Service
 	public function __init () 
 	{
 		// page execute time
-		if (Hush_Debug::showDebug('time')) {
-			$this->start_time = microtime(true);
-		}
+		$this->start_time = microtime(true);
 		
 		// set page debug object
 		$this->_debug = Hush_Debug::getInstance();
@@ -124,9 +126,12 @@ class Hush_Service
 	public function __done () 
 	{		
 		// page execute time
+		$this->end_time = microtime(true);
+		$this->_rtime = $this->end_time - $this->start_time;
+		
+		// whether display
 		if (Hush_Debug::showDebug('time')) {
-			$this->end_time = microtime(true);
-			$this->debug($this->end_time - $this->start_time, '<span style="color:red">Service Execute Time >>></span>', Hush_Debug::INFO);
+			$this->debug($this->_rtime, '<span style="color:red">Service Execute Time >>></span>', Hush_Debug::INFO);
 		}
 		
 		// print debug msg
