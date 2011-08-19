@@ -43,7 +43,7 @@ class Hush_Db_Adapter_Mysqli extends Zend_Db_Adapter_Mysqli
 	 * @param  mixed $where UPDATE WHERE clause(s).
 	 * @return int   The number of affected rows.
 	 */
-	public function replace($table, array $bind, $where = '', $debug = false)
+	public function replace($table, array $bind, $debug = false)
 	{
 		/**
 		 * Build "col = ?" pairs for the statement,
@@ -55,14 +55,11 @@ class Hush_Db_Adapter_Mysqli extends Zend_Db_Adapter_Mysqli
 			$val = '?';
 			$set[] = $this->quoteIdentifier($col, true) . ' = ' . $val;
 		}
-
-		$where = $this->_whereExpr($where);
 		
 		// Build the UPDATE statement
 		$sql = 'REPLACE INTO '
 			 . $this->quoteIdentifier($table, true)
-			 . ' SET ' . implode(', ', $set)
-			 . (($where) ? " WHERE $where" : '');
+			 . ' SET ' . implode(', ', $set);
 		
 		if ($debug) return $sql;
 		
