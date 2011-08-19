@@ -1,4 +1,5 @@
-> 框架说明
+> 框架概要说明
+
 hush-framework
 |
 |- hush-app					HF Demo 应用程序
