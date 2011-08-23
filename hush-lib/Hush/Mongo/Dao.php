@@ -357,7 +357,7 @@ class Hush_Mongo_Dao
 	 */
 	public function read($query = array(), $fields = array())
 	{
-		// read from master
+		// read from slave
 		if ($this->getSlave()) {
 			return $this->_mongo->find($query, $fields);
 		}
@@ -373,7 +373,7 @@ class Hush_Mongo_Dao
 	 */
 	public function readOne($query = array(), $fields = array())
 	{
-		// read from master
+		// read from slave
 		if ($this->getSlave()) {
 			return $this->_mongo->findOne($query, $fields);
 		}
