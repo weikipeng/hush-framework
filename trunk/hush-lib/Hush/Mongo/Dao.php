@@ -405,7 +405,7 @@ class Hush_Mongo_Dao
 	 * @param array $options Includeing safe / fsync / timeout
 	 * @return mixed
 	 */
-	public function delete($query, $options)
+	public function delete($query, $options = array())
 	{
 		// delete from master
 		if ($this->getMaster()) {
