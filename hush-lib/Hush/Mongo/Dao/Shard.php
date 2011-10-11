@@ -301,7 +301,7 @@ class Hush_Mongo_Dao_Shard extends Hush_Mongo_Dao
 	 * @param array $options Includeing safe / fsync / timeout
 	 * @return mixed
 	 */
-	public function delete($query, $options)
+	public function delete($query, $options = array())
 	{
 		return parent::delete($this->_doAutoShard($query), $options);
 	}
