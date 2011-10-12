@@ -20,17 +20,17 @@ class Ihush_Dao extends Hush_Db_Dao
 	/**
 	 * Autoload Ihush Daos
 	 * 
-	 * @param string $dao
+	 * @param string $class_name
 	 * @return Ihush_Dao
 	 */
 	public static function load ($class_name)
 	{
-	    static $_model = array();
-	    if(!isset($_model[$class_name])) {
+	    static $_daos = array();
+	    if(!isset($_daos[$class_name])) {
 	    	require_once 'Ihush/Dao/' . str_replace('_', '/', $class_name) . '.php';
-	    	$_model[$class_name] = new $class_name();
-	    	$_model[$class_name]->charset('utf8');
+	    	$_daos[$class_name] = new $class_name();
+	    	$_daos[$class_name]->charset('utf8');
 	    }
-	    return $_model[$class_name];
+	    return $_daos[$class_name];
 	}
 }
