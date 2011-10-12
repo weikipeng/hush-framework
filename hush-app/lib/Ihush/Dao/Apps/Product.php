@@ -10,6 +10,7 @@
  */
  
 require_once 'Ihush/Dao/Apps.php';
+
 /**
  * @package Ihush_Dao_Apps
  */
