@@ -64,11 +64,9 @@ class Hush_Util
 	 */
 	public static function trace (Exception $e) 
 	{
-		require_once 'Hush/Exception.php';
-		$he = new Hush_Exception($e->getMessage());
 		echo '<pre>';
-		echo 'Caught Hush Exception at ' . date('Y-m-d H:i:s') . ' : '.$he->getMessage() . "\n";
-		echo $he->getTraceAsString() . "\n";
+		echo 'Caught Hush Exception at ' . date('Y-m-d H:i:s') . ' : '.$e->getMessage() . "\n";
+		echo $e->getTraceAsString() . "\n";
 		echo '</pre>';
 	}
 	

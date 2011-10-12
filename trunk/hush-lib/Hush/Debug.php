@@ -86,8 +86,6 @@ class Hush_Debug
         }
         
         $this->setDebugLevel(self::DEBUG);
-        
-        self::$_debug = $this; // store for getInstance
     }
 	
 	/**
@@ -96,7 +94,10 @@ class Hush_Debug
 	 */
 	public static function getInstance () 
 	{
-		return self::$_debug ? self::$_debug : new Hush_Debug();
+		if (self::$_debug === null) {
+			self::$_debug = new Hush_Debug();
+		}
+		return self::$_debug;
 	}
 	
 	/**
@@ -204,9 +205,3 @@ class Hush_Debug
 		Zend_Debug::dump($msg, $label, true);
 	}
 }
-
-/**
- * Init the singleton debug object
- * Use Hush_Debug::getInstance() from now on !!!
- */
-new Hush_Debug();

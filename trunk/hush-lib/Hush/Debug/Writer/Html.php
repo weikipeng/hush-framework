@@ -144,12 +144,15 @@ class Hush_Debug_Writer_Html extends Hush_Debug_Writer
 		}
 		if ($style_pos) {
 			$tpl = '<style>body{margin:0px;height:100%;overflow:auto;}</style>'
-				 . '<div id="debug_box" style="position:fixed;z-index:9999;background:#ffffe0;border-top:#bbb solid 2px;height:320px;width:100%;'.$style_pos.'">'
-				 . '<div id="debug_box_nav" style="height:20px;padding-top:2px;width:auto;background:#eee;padding-left:10px;cursor:pointer;color:#888;font-weight:bold">Toggle Debug Info (NO IE6) ></div>'
-				 . '<div id="debug_box_body" style="height:300px;width:auto;overflow:auto;padding-left:10px;">{DEBUGMSG}</div></div>'
-				 . '<script>var ed=document.getElementById("debug_box");var edn=document.getElementById("debug_box_nav");var edb=document.getElementById("debug_box_body");'
-				 . 'edb.scrollTop = edb.scrollHeight;edn.onclick=function(){if(edb.style.display!="none"){ed.style.height="20px";edb.style.display="none";}else{ed.style.height="320px";edb.style.display=""}}</script>';
-			return $tpl;
+				 . '<div id="debug_box" style="position:fixed;z-index:99999;height:320px;width:100%;border-top:red solid 2px;background:#ffffe0;'.$style_pos.'">'
+				 . '<div id="debug_box_nav" style="height:20px;width:auto;padding-top:2px;padding-left:10px;background:#666;color:#fff;font-weight:bold;cursor:pointer;">Toggle Debug Info (NO IE6) ></div>'
+				 . '<div id="debug_box_body" style="height:300px;width:auto;overflow:auto;padding-left:10px;border-top:red solid 2px;">{DEBUGMSG}</div></div>'
+				 . '<script>var db=document.getElementById("debug_box");var dbn=document.getElementById("debug_box_nav");var dbb=document.getElementById("debug_box_body");'
+				 . 'function close_debug(){db.style.height="20px";dbb.style.display="none";}'
+				 . 'function open_debug(){db.style.height="320px";dbb.style.display="";}'
+				 . 'dbn.onclick=function(){if(dbb.style.display!="none"){close_debug();}else{open_debug()}};'
+				 . 'dbb.scrollTop = dbb.scrollHeight;close_debug();</script>';
+			return "\n<!-- Debug Info Html -->\n".$tpl;
 		}
 		return null;
 	}
