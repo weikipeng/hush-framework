@@ -491,7 +491,7 @@ class Hush_Util
 	 * @param array $array
 	 * @return array
 	 */
-	public function array_turn ($arr)
+	public static function array_turn ($arr)
 	{
 		$res = array();
 		for ($i = 0; $i < count($arr); $i++) {
@@ -503,9 +503,43 @@ class Hush_Util
 	}
 	
 	/**
+	 * Remove dir
+	 * @static
+	 * @param string $str
+	 */
+	public static function dir_remove ($dir)
+	{
+		if (is_file($dir)) {
+			return @unlink($dir);
+		}
+		if (is_dir($dir)) {
+			$scan = glob(rtrim($dir, '/') . '/*');
+			foreach($scan as $id => $path){
+				self::dir_remove($path);
+			}
+			return @rmdir($dir);
+		}
+	}
+	
+	/**
+	 * Clean all under dir
+	 * @static
+	 * @param string $str
+	 */
+	public static function dir_clean ($dir)
+	{
+		if (is_dir($dir)) {
+			$scan = glob(rtrim($dir, '/') . '/*');
+			foreach($scan as $id => $path){
+				self::dir_remove($path);
+			}
+		}
+	}
+	
+	/**
 	 * Check if item is json string
 	 * @static
-	 * @param array $str
+	 * @param string|object $str
 	 * @return bool
 	 */
 	public static function is_json ($str) 

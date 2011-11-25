@@ -34,15 +34,15 @@ class Core_BpmRequestAudit extends Ihush_Dao_Core
 		$this->t1 = self::TABLE_NAME;
 		$this->k1 = self::TABLE_PRIM;
 		
-		$this->__bind($this->t1, $this->k1);
+		$this->_bindTable($this->t1, $this->k1);
 	}
 	
 	public function isAudit ($reqId)
 	{
-		$sql = $this->db->select()
+		$sql = $this->dbr()->select()
 			->from($this->t1, array("count(1)"))
 			->where("{$this->t1}.bpm_request_id = ? and {$this->t1}.bpm_request_audit_status = 0", $reqId);
 		
-		return ($this->db->fetchOne($sql)) ? false : true;
+		return ($this->dbr()->fetchOne($sql)) ? false : true;
 	}
 }

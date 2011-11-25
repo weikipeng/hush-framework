@@ -37,16 +37,16 @@ class Core_BpmRequestOp extends Ihush_Dao_Core
 		$this->t2 = Core_User::TABLE_NAME;
 		$this->k2 = Core_User::TABLE_PRIM;
 		
-		$this->__bind($this->t1, $this->k1);
+		$this->_bindTable($this->t1, $this->k1);
 	}
 	
 	public function getByReqId ($reqId)
 	{
-		$sql = $this->db->select()
+		$sql = $this->dbr()->select()
 			->from($this->t1, array("{$this->t1}.*", "{$this->t2}.name as user_name"))
 			->join($this->t2, "{$this->t1}.user_id = {$this->t2}.{$this->k2}", null)
 			->where("{$this->t1}.bpm_request_id = ?", $reqId);
 		
-		return $this->db->fetchAll($sql);
+		return $this->dbr()->fetchAll($sql);
 	}
 }

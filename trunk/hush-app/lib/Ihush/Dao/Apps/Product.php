@@ -28,7 +28,19 @@ class Apps_Product extends Ihush_Dao_Apps
 	{
 		$this->t1 = self::TABLE_NAME;
 		
-		$this->__bind($this->t1);
+		$this->_bindTable($this->t1);
 	}
-
+	
+	/**
+	 * Get all products
+	 * @return array
+	 */
+	public function getAll ($is_app = false)
+	{
+		$sql = $this->dbr()->select()->from($this->t1, "*");
+		
+		if ($is_app) $sql->where("{$this->t1}.is_app = ?", 'YES');
+		
+		return $this->dbr()->fetchAll($sql);
+	}
 }

@@ -10,13 +10,6 @@ define('__HTTP_HOST', 'http://' . $_SERVER['HTTP_HOST']);
 define('__HTTP_ROOT', '/');
 
 /**
- * DB config ini file
- * TODO : could be changed by yourself's settings !!!
- */
-define('__DB_INI_FILE_CORE', realpath(__ETC . '/database.ihush_core.ini'));
-define('__DB_INI_FILE_APPS', realpath(__ETC . '/database.ihush_apps.ini'));
-
-/**
  * MVC url mapping ini file
  * TODO : could be changed by yourself's settings !!!
  */
@@ -48,8 +41,6 @@ define('__TPL_SMARTY_PATH', realpath(__TPL_DIR . '/backend'));
  * TODO : could be changed by yourself's settings !!!
  */
 define('__FILECACHE_DIR', realpath(__DAT_DIR . '/cache'));
-define('__MEMCACHE_HOST', '192.168.1.213');
-define('__MEMCACHE_PORT', '11211');
 
 /**
  * Acl's settings

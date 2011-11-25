@@ -16,13 +16,20 @@ require_once 'Ihush/Dao.php';
  */
 class Ihush_Dao_Apps extends Ihush_Dao
 {
-	public function __construct ($db_type = 'READ')
+	/**
+	 * @static
+	 */
+	const DB_NAME = 'ihush_apps';
+	
+	/**
+	 * Construct
+	 */
+	public function __construct ()
 	{
-		// read database ini file and build pool
-		$this->db_pool = Hush_Db::pool(__DB_INI_FILE_APPS);
-		$this->db = Hush_Db::rand($db_type);
+		// initialize dao
+		parent::__construct(DbConfig::getInstance());
 		
-		// do some preparation in subclass
-		parent::__construct();
+		// set default dao settings
+		$this->_bindDb(self::DB_NAME);
 	}
 }

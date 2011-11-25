@@ -9,6 +9,31 @@
 
 require_once '../etc/global.config.php';
 
+require_once 'Hush/Util.php';
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// Constants definition
+
+define('__MYSQL_IMPORT_TOOL', 'mysql');
+define('__MYSQL_DUMPER_TOOL', 'mysqldump');
+define('__MYSQL_IMPORT_COMMAND', __MYSQL_IMPORT_TOOL . ' {PARAMS} < {SQLFILE}');
+define('__MYSQL_DUMPER_COMMAND', __MYSQL_DUMPER_TOOL . ' {PARAMS} --add-drop-database > {SQLFILE}');
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// Main process
+
+try {
+	require_once 'Ihush/Cli.php';
+	$cli = new Ihush_Cli();
+	$cli->run();
+	
+} catch (Exception $e) {
+	Hush_Util::trace($e);
+	exit;
+}
+
+exit;
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Constants definition
 
@@ -255,16 +280,26 @@ if (!method_exists($classo, $method)) {
 	echo 
 <<<USAGE
 
-Usage: hush [ENVIRONMENT] [OPTIONS] <ACTIONS>
+System Command :
+  hush init
+  hush check config
+  hush check dir
+
+File Command :
+  hush [fe|be] tpl [cleantplc|cleancache]
+  hush [fe|be] cache clean
+
+Database Command :
+  hush db [backup|recover|import] <DB>
 
 Enviornment:
     init   :   Initialize the framework first time
     dir    :   Check all dir operation only
     fe     :   Frontend relavant operation
     be     :   Backend relavant operation
+    db     :   Database operation
 
-Options: 
-    db     :   Database operation (be|fe)
+Options:
     tpl    :   Template (Smarty) operation (be|fe)
     cache  :   Cache operation (be|fe)
 

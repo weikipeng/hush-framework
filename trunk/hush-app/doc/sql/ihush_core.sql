@@ -104,7 +104,7 @@ CREATE TABLE `bpm_flow_role` (
   `bpm_flow_id` int(11) NOT NULL,
   `role_id` int(11) NOT NULL,
   PRIMARY KEY (`bpm_flow_id`,`role_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Data for the table `bpm_flow_role` */
 
@@ -194,7 +194,7 @@ CREATE TABLE `bpm_node_path` (
   `bpm_node_id_from` int(11) NOT NULL,
   `bpm_node_id_to` int(11) NOT NULL,
   PRIMARY KEY (`bpm_flow_id`,`bpm_node_id_from`,`bpm_node_id_to`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Data for the table `bpm_node_path` */
 
@@ -239,7 +239,7 @@ CREATE TABLE `bpm_request_audit` (
   `bpm_request_audit_done` int(11) NOT NULL DEFAULT '0',
   `bpm_request_audit_status` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`bpm_request_audit_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Data for the table `bpm_request_audit` */
 

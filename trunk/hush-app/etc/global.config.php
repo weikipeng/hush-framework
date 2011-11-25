@@ -1,11 +1,11 @@
 <?php
-
 /**
  * Common Directories
  */
 define('__ETC', dirname(__FILE__));
 define('__ROOT', realpath(__ETC . '/../'));
 define('__LIB_DIR', realpath(__ROOT . '/lib'));
+define('__ETC_DIR', realpath(__ROOT . '/etc'));
 define('__BIN_DIR', realpath(__ROOT . '/bin'));
 define('__WEB_DIR', realpath(__ROOT . '/web'));
 define('__TPL_DIR', realpath(__ROOT . '/tpl'));
@@ -27,10 +27,21 @@ define('__HUSH_LIB_DIR', realpath(__ROOT . '/../hush-lib'));
 set_include_path('.' . PATH_SEPARATOR . __LIB_DIR . PATH_SEPARATOR . __COMM_LIB_DIR . PATH_SEPARATOR . __HUSH_LIB_DIR . PATH_SEPARATOR . get_include_path());
 
 /**
+ * Data Source Configs
+ */
+require_once __ETC . '/configs/DbConfig.php';
+require_once __ETC . '/configs/MongoConfig.php';
+
+/**
  * Global environment settings
  */
 error_reporting(E_ALL ^ E_NOTICE);
 date_default_timezone_set('PRC');
+
+/**
+ * App Name
+ */
+define('__APP_NAME', 'iHush');
 
 /**
  * Enviornment settings

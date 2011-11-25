@@ -15,7 +15,16 @@
 abstract class Hush_Mongo_Config
 {
 	/**
-	 * 默认策略
+	 * 默认Mongo参数
+	 * @static
+	 */
+	const DEFAULT_HOST = '127.0.0.1';
+	const DEFAULT_PORT = '27017';
+	const DEFAULT_USER = null;
+	const DEFAULT_PASS = null;
+	
+	/**
+	 * 必须实现单例
 	 * @param string $dbName
 	 * @param string $tbName
 	 */
@@ -26,7 +35,7 @@ abstract class Hush_Mongo_Config
 	 * @param string $dbName
 	 * @param string $tbName
 	 */
-	abstract public function useDefault($dbName, $tbName);
+	abstract public function getDefault($dbName, $tbName);
 	
 	/**
 	 * ReplicaSet策略
@@ -34,7 +43,7 @@ abstract class Hush_Mongo_Config
 	 * @param string $tbName
 	 * @param int|string $shardId
 	 */
-	abstract public function useReplicaSet($dbName, $tbName);
+	abstract public function getReplicaSet($dbName, $tbName);
 	
 	/**
 	 * 分库策略
@@ -42,7 +51,7 @@ abstract class Hush_Mongo_Config
 	 * @param string $tbName
 	 * @param int|string $shardId
 	 */
-	abstract public function shardDatabase($dbName, $tbName, $shardId);
+	abstract public function getShardDatabase($dbName, $tbName, $shardId);
 	
 	/**
 	 * 分表策略
@@ -50,5 +59,5 @@ abstract class Hush_Mongo_Config
 	 * @param string $tbName
 	 * @param int|string $shardId
 	 */
-	abstract public function shardCollection($dbName, $tbName, $shardId);
+	abstract public function getShardCollection($dbName, $tbName, $shardId);
 }
