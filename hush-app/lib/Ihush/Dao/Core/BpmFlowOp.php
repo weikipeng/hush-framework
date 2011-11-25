@@ -34,12 +34,12 @@ class Core_BpmFlowOp extends Ihush_Dao_Core
 		$this->t1 = self::TABLE_NAME;
 		$this->k1 = self::TABLE_PRIM;
 		
-		$this->__bind($this->t1, $this->k1);
+		$this->_bindTable($this->t1, $this->k1);
 	}
 	
 	public function getByFlowId ($flowId)
 	{
-		$sql = $this->db->select()
+		$sql = $this->dbr()->select()
 			->from($this->t1, array("{$this->t1}.*"))
 			->where("{$this->t1}.bpm_flow_id = ?", $flowId);
 		

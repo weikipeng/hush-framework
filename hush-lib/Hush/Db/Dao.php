@@ -25,19 +25,30 @@ require_once 'Hush/Db/Exception.php';
 class Hush_Db_Dao
 {
 	/**
-	 * @var array
+	 * @var Hush_Db
 	 */
-	public $db_pool = null;
+	private $_dbr = null;
 	
 	/**
-	 * @var Zend_Db object
+	 * @var Hush_Db
 	 */
-	public $db = null;
+	private $_dbw = null;
+	
+	/**
+	 * db name
+	 * @var string
+	 */
+	public $dbName = null;
 	
 	/**
 	 * @var string
 	 */
-	public $table = null;
+	public $tableName = null;
+	
+	/**
+	 * @var string
+	 */
+	public $shardTableName = null;
 	
 	/**
 	 * @var string
@@ -50,21 +61,36 @@ class Hush_Db_Dao
 	public $charset = 'utf8';
 	
 	/**
+	 * @var Hush_Db_Config
+	 */
+	protected $_config = null;
+	
+	/**
+	 * @var int|string
+	 */
+	protected $_shardId = 0;
+	
+	/**
 	 * Construct
 	 * Init the target db link
 	 * 
 	 * @param $type 'READ' or 'WRITE'
 	 * @return unknown
 	 */
-	public function __construct ($type = 'READ')
+	public function __construct ($configClass = null)
 	{
-		if (!$this->db) return ;
-		
-		if (class_exists('Hush_Debug') && Hush_Debug::showDebug('sql')) {
-			$this->db->_debug = true;
+		// check config
+		if ($configClass != null) {
+			if (!($configClass instanceof Hush_Db_Config)) {
+				throw new Hush_Db_Exception('Bad DB config class');
+			}
 		}
 		
-		$this->__init(); // do some preparation in subclass
+		// set config
+		$this->_config = $configClass;
+		
+		// implemented in subclass
+		$this->__init();
 	}
 	
 	/**
@@ -73,40 +99,180 @@ class Hush_Db_Dao
 	 */
 	public function __destruct ()
 	{
-		if (!$this->db) return ;
-		
-		$this->db->closeConnection();
-	}
-	
-	/**
-	 * Bind table for CRUD method
-	 * 
-	 * @param string $table Binded table name
-	 * @return unknown
-	 */
-	public function __bind ($table = '', $primkey = '')
-	{
-		if ($table) $this->table = $table;
-		if ($primkey) $this->primkey = $primkey;
-	}
-	
-	/**
-	 * Return the db link's pool
-	 * 
-	 * @return array
-	 */
-	public function __pool ()
-	{
-		return $this->db_pool;
+		if ($this->dbr) {
+			$this->dbr->closeConnection();
+		}
+		if ($this->dbw) {
+			$this->dbw->closeConnection();
+		}
 	}
 	
 	/**
 	 * Do some preparation after construct
 	 * Should be implemented by subclass
-	 * 
-	 * @return unknown
 	 */
-	public function __init () {}
+	protected function __init () {}
+	
+	/**
+	 * Set database name
+	 * 
+	 * @param string $dbName
+	 */
+	protected function _bindDb ($dbName = '', $charset = '') 
+	{
+		if ($dbName) $this->dbName = $dbName;
+		if ($charset) $this->charset = $charset;
+	}
+	
+	/**
+	 * Bind table for CRUD method
+	 * 
+	 * @param string $tableName Binded table name
+	 */
+	protected function _bindTable ($tableName = '', $primkey = '')
+	{
+		if ($tableName) $this->tableName = $tableName;
+		if ($primkey) $this->primkey = $primkey;
+	}
+	
+	/**
+	 * Do sharding database by shardId
+	 * 
+	 * @param int $shardId
+	 */
+	private function _doShardDb ($shardId = 0)
+	{
+		if (!$this->dbName) {
+			throw new Hush_Db_Exception('Please bind db first');
+		}
+		// if using default shardId
+		$shardId = $shardId ? $shardId : $this->_shardId;
+		$this->_config->doShardDb($this->dbName, $this->tableName, $shardId);
+	}
+	
+	/**
+	 * Do sharding table by shardId
+	 * 
+	 * @param int $shardId
+	 */
+	private function _doShardTable ($shardId = 0)
+	{
+		if (!$this->tableName) {
+			throw new Hush_Db_Exception('Please bind table first');
+		}
+		// if using default shardId
+		$shardId = $shardId ? $shardId : $this->_shardId;
+		$this->_config->doShardTable($this->dbName, $this->tableName, $shardId);
+		// set sharded table name
+		$this->shardTableName = $this->_config->getTable();
+	}
+	
+	/**
+	 * Get specific master db from config file
+	 * 
+	 * @param int $cid Cluster index number
+	 * @param int $sid Server index number
+	 * @return bool
+	 */
+	protected function _getMaster ($cid = 0, $sid = 0)
+	{
+		// get master db
+		if ($cid && $sid) {
+			try {
+				$this->_config->getDb($this->dbName, $cid, 'master', $sid);
+			} catch (Exception $e) {
+				throw new Hush_Db_Exception('Can not found master db server');
+			}
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Get specific slave db from config file
+	 * 
+	 * @param int $cid Cluster index number
+	 * @param int $sid Server index number
+	 * @return bool
+	 */
+	protected function _getSlave ($cid = 0, $sid = 0)
+	{
+		// get slave db
+		if ($cid && $sid) {
+			try {
+				$this->_config->getDb($this->dbName, $cid, 'slave', $sid);
+			} catch (Exception $e) {
+				throw new Hush_Db_Exception('Can not found slave db server');
+			}
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Get read db link
+	 * 
+	 * @param int $cid Cluster index number
+	 * @param int $sid Server index number
+	 * @return Hush_Db_Dao
+	 */
+	public function dbr ($cid = 0, $sid = 0)
+	{
+		// try get db first
+		if (!$this->_getSlave($cid, $sid)) {
+			// do sharding
+			$this->_doShardDb();
+			$this->_doShardTable();
+		}
+		$options = $this->_config->getSlaveDb();
+		$options['name'] = $this->dbName; // set db name
+		return Hush_Db::dbPool($options, $this->charset);
+	}
+	
+	/**
+	 * Get write db link
+	 * 
+	 * @param int $cid Cluster index number
+	 * @param int $sid Server index number
+	 * @return Hush_Db_Dao
+	 */
+	public function dbw ($cid = 0, $sid = 0)
+	{
+		// try get db first
+		if (!$this->_getMaster($cid, $sid)) {
+			// do sharding
+			$this->_doShardDb();
+			$this->_doShardTable();
+		}
+		$options = $this->_config->getMasterDb();
+		$options['name'] = $this->dbName; // set db name
+		return Hush_Db::dbPool($options, $this->charset);
+	}
+	
+	/**
+	 * Set sharding Id
+	 * 
+	 * @param int $shardId
+	 * @return Hush_Db_Dao
+	 */
+	public function shard ($shardId = 0)
+	{
+		$this->_shardId = $shardId;
+		return $this;
+	}
+	
+	/**
+	 * Get sharding table name
+	 * 
+	 * @return string
+	 */
+	public function table ()
+	{
+		if (!$this->tableName) {
+			throw new Hush_Db_Exception('Please bind table first');
+		}
+		return $this->shardTableName ? $this->shardTableName : $this->tableName;
+	}
 	
 	/**
 	 * Create data by insert method
@@ -116,11 +282,8 @@ class Hush_Db_Dao
 	 */
 	public function create ($data)
 	{
-		if (!$this->table) {
-			throw new Hush_Db_Exception('Please bind table name first');
-		}
-		if ($this->db->insert($this->table, $data)) {
-			return $this->db->lastInsertId();
+		if ($this->dbw()->insert($this->table(), $data)) {
+			return $this->dbw()->lastInsertId();
 		}
 		return false;
 	}
@@ -134,12 +297,9 @@ class Hush_Db_Dao
 	 */
 	public function read ($id, $primkey = '')
 	{
-		if (!$this->table) {
-			throw new Hush_Db_Exception('Please bind table name first');
-		}
 		$primkey = $primkey ? $primkey : $this->primkey;
-		$sql = $this->db->select()->from($this->table)->where("$primkey = ?", $id);
-		return $this->db->fetchRow($sql);
+		$sql = $this->dbr()->select()->from($this->table())->where("$primkey = ?", $id);
+		return $this->dbr()->fetchRow($sql);
 	}
 	
 	/**
@@ -151,16 +311,13 @@ class Hush_Db_Dao
 	 */
 	public function update ($data, $wheresql = '')
 	{
-		if (!$this->table) {
-			throw new Hush_Db_Exception('Please bind table name first');
-		}
 		if (!$wheresql) {
 			if (!isset($data[$this->primkey])) {
-				throw new Hush_Db_Exception('Can not find primary key in data array');
+				throw new Hush_Db_Exception('Can not find primary key in data');
 			}
-			$wheresql = $this->db->quoteInto("{$this->primkey} = ?", $data[$this->primkey]);
+			$wheresql = $this->dbw()->quoteInto("{$this->primkey} = ?", $data[$this->primkey]);
 		}
-		return $this->db->update($this->table, $data, $wheresql);
+		return $this->dbw()->update($this->table(), $data, $wheresql);
 	}
 	
 	/**
@@ -172,11 +329,9 @@ class Hush_Db_Dao
 	 */
 	public function delete ($id, $primkey = '')
 	{
-		if (!$this->table) {
-			throw new Hush_Db_Exception('Please bind table name first');
-		}
 		$primkey = $primkey ? $primkey : $this->primkey;
-		return $this->db->delete($this->table, $this->db->quoteInto("$primkey = ?", $id));
+		$wheresql = $this->dbw()->quoteInto("$primkey = ?", $id);
+		return $this->dbw()->delete($this->table(), $wheresql);
 	}
 	
 	/**
@@ -188,83 +343,7 @@ class Hush_Db_Dao
 	 */
 	public function replace ($data)
 	{
-		if (!$this->table) {
-			require_once $this->exception_class;
-			throw new $this->exception_name('Please bind table name first');
-		}
-		$affect_rows = $this->db->replace($this->table, $data);
+		$affect_rows = $this->dbw()->replace($this->table(), $data);
 		return ($affect_rows !== false) ? true : false;
-	}
-	
-	/**
-	 * Set connection charset
-	 * 
-	 * @param string $charset Db connection's charset
-	 * @return Hush_Db_Dao
-	 */
-	public function charset ($charset = 'utf8')
-	{
-		$this->charset = $charset; // override default charset
-		$this->db->query('set names ' . $this->charset);
-		return $this;
-	}
-	
-	/**
-	 * Start transaction
-	 */
-	public function beginTransaction ()
-	{
-		return $this->db->beginTransaction();
-	}
-	
-	/**
-	 * Start transaction
-	 */
-	public function rollback ()
-	{
-		return $this->db->rollback();
-	}
-	
-	/**
-	 * Start transaction
-	 */
-	public function commit ()
-	{
-		return $this->db->commit();
-	}
-	
-	/**
-	 * Get db link (READ/WRITE)
-	 * 
-	 * @param string $type Db link type (READ/WRITE)
-	 */
-	public function db ($type)
-	{
-		if (!$this->db_pool) {
-			throw new Hush_Db_Exception('Please init db pool first');
-		}
-		$db = Hush_Db::rand($type);
-		$db->query('set names ' . $this->charset);
-		return $db;
-	}
-	
-	/**
-	 * Get read db link
-	 * 
-	 * @param string $type Db link type
-	 */
-	public function dbr ()
-	{
-		return $this->db('READ');
-	}
-	
-	/**
-	 * Get write db link
-	 * 
-	 * @param string $type Db link type
-	 */
-	public function dbw ()
-	{
-		return $this->db('WRITE');
 	}
 }

@@ -37,7 +37,7 @@ class Core_Resource extends Ihush_Dao_Core
 		$this->t2 = Core_Role::TABLE_NAME;
 		$this->rsh = Core_ResourceRole::TABLE_NAME;
 		
-		$this->__bind($this->t1);
+		$this->_bindTable($this->t1);
 	}
 	
 	/**
@@ -47,9 +47,9 @@ class Core_Resource extends Ihush_Dao_Core
 	 */
 	public function getAllResources ()
 	{
-		$sql = $this->db->select()->from($this->t1, "*");
+		$sql = $this->dbr()->select()->from($this->t1, "*");
 		
-		return $this->db->fetchAll($sql);
+		return $this->dbr()->fetchAll($sql);
 	}
 	
 	/**
@@ -60,12 +60,12 @@ class Core_Resource extends Ihush_Dao_Core
 	 */
 	public function getAclResources ()
 	{
-		$sql = $this->db->select()
+		$sql = $this->dbr()->select()
 			->from($this->t1, array("{$this->t1}.name as resource", "{$this->t2}.id as role"))
 			->join($this->rsh, "{$this->t1}.id = {$this->rsh}.resource_id", null)
 			->join($this->t2, "{$this->t2}.id = {$this->rsh}.role_id", null);
 		
-		return $this->db->fetchAll($sql);
+		return $this->dbr()->fetchAll($sql);
 	}
 	
 	/**
@@ -75,13 +75,13 @@ class Core_Resource extends Ihush_Dao_Core
 	 */
 	public function getResourceList ()
 	{
-		$sql = $this->db->select()
+		$sql = $this->dbr()->select()
 			->from($this->t1, array("{$this->t1}.*", "group_concat({$this->t2}.name) as role"))
 			->join($this->rsh, "{$this->t1}.id = {$this->rsh}.resource_id", null)
 			->join($this->t2, "{$this->t2}.id = {$this->rsh}.role_id", null)
 			->group("{$this->t1}.id");
 		
-		return $this->db->fetchAll($sql);
+		return $this->dbr()->fetchAll($sql);
 	}
 	
 	/**
@@ -93,7 +93,7 @@ class Core_Resource extends Ihush_Dao_Core
 	 public function updateRoles ($id, $roles = array())
 	 {
 	 	if ($id) {
-			$this->db->delete($this->rsh, $this->db->quoteInto("resource_id = ?", $id));
+			$this->dbw()->delete($this->rsh, $this->dbw()->quoteInto("resource_id = ?", $id));
 	 	} else {
 	 		return false;
 	 	}
@@ -105,7 +105,7 @@ class Core_Resource extends Ihush_Dao_Core
 				$vals[] = array($id, $role);
 			}
 			if ($cols && $vals) {
-				$this->db->insertMultiRow($this->rsh, $cols, $vals);
+				$this->dbw()->insertMultiRow($this->rsh, $cols, $vals);
 				return true;
 			}
 		} else {

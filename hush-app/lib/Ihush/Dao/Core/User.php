@@ -37,7 +37,7 @@ class Core_User extends Ihush_Dao_Core
 		$this->t2 = Core_Role::TABLE_NAME;
 		$this->rsh = Core_UserRole::TABLE_NAME;
 		
-		$this->__bind($this->t1);
+		$this->_bindTable($this->t1);
 	}
 	
 	/**
@@ -51,22 +51,22 @@ class Core_User extends Ihush_Dao_Core
 	{
 		$t1 = self::TABLE_NAME;
 		
-		$sql = $this->db->select()
+		$sql = $this->dbr()->select()
 			->from($this->t1, "*")
 			->where("name = ?", $user);
 		
-		$user = $this->db->fetchRow($sql);
+		$user = $this->dbr()->fetchRow($sql);
 		
 		if (!$user['id'] || !$user['pass']) return false;
 		
 		if (strcmp($user['pass'], Hush_Util::md5($pass))) return $user['id'];
 		
-		$sql = $this->db->select()
+		$sql = $this->dbr()->select()
 			->from($this->t2, "*")
 			->join($this->rsh, "{$this->t2}.id = {$this->rsh}.role_id", null)
 			->where("{$this->rsh}.user_id = ?", $user['id']);
 		
-		$roles = $this->db->fetchAll($sql);
+		$roles = $this->dbr()->fetchAll($sql);
 		
 		if (!sizeof($roles)) return false;
 		
@@ -85,9 +85,9 @@ class Core_User extends Ihush_Dao_Core
 	 */
 	public function getAllUsers ()
 	{
-		$sql = $this->db->select()->from($this->t1, "*");
+		$sql = $this->dbr()->select()->from($this->t1, "*");
 		
-		return $this->db->fetchAll($sql);
+		return $this->dbr()->fetchAll($sql);
 	}
 	
 	/**
@@ -97,13 +97,13 @@ class Core_User extends Ihush_Dao_Core
 	 */
 	public function getUserList ()
 	{
-		$sql = $this->db->select()
+		$sql = $this->dbr()->select()
 			->from($this->t1, array("{$this->t1}.*", "group_concat({$this->t2}.name) as role"))
 			->joinLeft($this->rsh, "{$this->t1}.id = {$this->rsh}.user_id", null)
 			->joinLeft($this->t2, "{$this->t2}.id = {$this->rsh}.role_id", null)
 			->group("{$this->t1}.id");
 		
-		return $this->db->fetchAll($sql);
+		return $this->dbr()->fetchAll($sql);
 	}
 	
 	/**
@@ -115,7 +115,7 @@ class Core_User extends Ihush_Dao_Core
 	 public function updateRoles ($id, $roles = array())
 	 {
 	 	if ($id) {
-			$this->db->delete($this->rsh, $this->db->quoteInto("user_id = ?", $id));
+			$this->dbw()->delete($this->rsh, $this->dbw()->quoteInto("user_id = ?", $id));
 	 	} else {
 	 		return false;
 	 	}
@@ -127,7 +127,7 @@ class Core_User extends Ihush_Dao_Core
 				$vals[] = array($id, $role);
 			}
 			if ($cols && $vals) {
-				$this->db->insertMultiRow($this->rsh, $cols, $vals);
+				$this->dbw()->insertMultiRow($this->rsh, $cols, $vals);
 				return true;
 			}
 		} else {

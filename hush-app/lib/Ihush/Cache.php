@@ -35,8 +35,8 @@ class Ihush_Cache
 		switch ($type) {
 			case 'Memcached' :
 				return Hush_Cache::factory('Memcached', array(
-					'memcache_host' => __MEMCACHE_HOST,
-					'memcache_port' => __MEMCACHE_PORT
+					'memcache_host' => Hush_Cache_Memcache::DEFAULT_HOST,
+					'memcache_port' => Hush_Cache_Memcache::DEFAULT_PORT
 				));
 			default :
 				return Hush_Cache::factory('File', array(

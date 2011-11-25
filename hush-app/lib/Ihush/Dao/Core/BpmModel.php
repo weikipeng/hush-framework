@@ -37,16 +37,16 @@ class Core_BpmModel extends Ihush_Dao_Core
 		$this->t2 = Core_BpmModelField::TABLE_NAME;
 		$this->k2 = Core_BpmModelField::TABLE_PRIM;
 		
-		$this->__bind($this->t1, $this->k1);
+		$this->_bindTable($this->t1, $this->k1);
 	}
 	
 	public function getAllByFlowId ($flowId)
 	{
-		$sql = $this->db->select()
+		$sql = $this->dbr()->select()
 			->from($this->t1, array("{$this->t1}.*"))
 			->where("{$this->t1}.bpm_flow_id = ?", $flowId);
 		
-		return $this->db->fetchAll($sql);
+		return $this->dbr()->fetchAll($sql);
 	}
 	
 	/**
@@ -56,12 +56,12 @@ class Core_BpmModel extends Ihush_Dao_Core
 	{
 		$flowFieldList = array();
 		
-		$sql = $this->db->select()
+		$sql = $this->dbr()->select()
 			->from($this->t1, array("{$this->t2}.*"))
 			->join($this->t2, "{$this->t1}.{$this->k1} = {$this->t2}.{$this->k1}", null)
 			->where("{$this->t1}.bpm_flow_id = ?", $flowId);
 		
-		$res = $this->db->fetchAll($sql);
+		$res = $this->dbr()->fetchAll($sql);
 		
 		foreach ($res as $row) {
 			$modelId = $row['bpm_model_id'];
@@ -78,12 +78,12 @@ class Core_BpmModel extends Ihush_Dao_Core
 	{
 		$flowFieldNameHash = array();
 		
-		$sql = $this->db->select()
+		$sql = $this->dbr()->select()
 			->from($this->t1, array("{$this->t2}.*"))
 			->join($this->t2, "{$this->t1}.{$this->k1} = {$this->t2}.{$this->k1}", null)
 			->where("{$this->t1}.bpm_flow_id = ?", $flowId);
 		
-		$res = $this->db->fetchAll($sql);
+		$res = $this->dbr()->fetchAll($sql);
 		
 		foreach ($res as $row) {
 			$fieldId = $row['bpm_model_field_id'];

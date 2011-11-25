@@ -37,7 +37,7 @@ class Core_App extends Ihush_Dao_Core
 		$this->t2 = Core_Role::TABLE_NAME;
 		$this->rsh = Core_AppRole::TABLE_NAME;
 		
-		$this->__bind($this->t1);
+		$this->_bindTable($this->t1);
 	}
 	
 	/**
@@ -46,11 +46,11 @@ class Core_App extends Ihush_Dao_Core
 	 */
 	public function getAllApps ($is_app = false)
 	{
-		$sql = $this->db->select()->from($this->t1, "*");
+		$sql = $this->dbr()->select()->from($this->t1, "*");
 		
 		if ($is_app) $sql->where("{$this->t1}.is_app = ?", 'YES');
 		
-		return $this->db->fetchAll($sql);
+		return $this->dbr()->fetchAll($sql);
 	}
 	
 	/**
@@ -61,12 +61,12 @@ class Core_App extends Ihush_Dao_Core
 	 */
 	public function getAclApps ()
 	{
-		$sql = $this->db->select()
+		$sql = $this->dbr()->select()
 			->from($this->t1, array("{$this->t1}.path as path", "{$this->t2}.id as role"))
 			->join($this->rsh, "{$this->t1}.id = {$this->rsh}.app_id", null)
 			->join($this->t2, "{$this->t2}.id = {$this->rsh}.role_id", null);
 		
-		return $this->db->fetchAll($sql);
+		return $this->dbr()->fetchAll($sql);
 	}
 	
 	/**
@@ -76,13 +76,13 @@ class Core_App extends Ihush_Dao_Core
 	 */
 	public function getAppList ()
 	{
-		$sql = $this->db->select()
+		$sql = $this->dbr()->select()
 			->from($this->t1, array("{$this->t1}.*", "group_concat({$this->t2}.name) as role"))
 			->join($this->rsh, "{$this->t1}.id = {$this->rsh}.app_id", null)
 			->join($this->t2, "{$this->t2}.id = {$this->rsh}.role_id", null)
 			->group("{$this->t1}.id");
 		
-		return $this->db->fetchAll($sql);
+		return $this->dbr()->fetchAll($sql);
 	}
 	
 	/**
@@ -103,7 +103,7 @@ class Core_App extends Ihush_Dao_Core
 	 */
 	public function getAppListByRole ($role_id)
 	{
-		$sql = $this->db->select()
+		$sql = $this->dbr()->select()
 			->from($this->t1, array("{$this->t1}.*", "group_concat({$this->t2}.name) as role"))
 			->joinLeft($this->rsh, "{$this->t1}.id = {$this->rsh}.app_id", null)
 			->joinLeft($this->t2, "{$this->t2}.id = {$this->rsh}.role_id", null);
@@ -119,7 +119,7 @@ class Core_App extends Ihush_Dao_Core
 		$sql->group("{$this->t1}.id")
 			->order(array("{$this->t1}.is_app desc", "{$this->t1}.pid", "{$this->t1}.order", "{$this->t1}.id"));
 		
-		$rawAppList = $this->db->fetchAll($sql);
+		$rawAppList = $this->dbr()->fetchAll($sql);
 		
 		// build app tree
 		require_once 'Hush/Tree.php';
@@ -166,7 +166,7 @@ class Core_App extends Ihush_Dao_Core
 	 public function updateRoles ($id, $roles = array())
 	 {
 	 	if ($id) {
-			$this->db->delete($this->rsh, $this->db->quoteInto("app_id = ?", $id));
+			$this->dbw()->delete($this->rsh, $this->dbw()->quoteInto("app_id = ?", $id));
 	 	} else {
 	 		return false;
 	 	}
@@ -178,7 +178,7 @@ class Core_App extends Ihush_Dao_Core
 				$vals[] = array($id, $role);
 			}
 			if ($cols && $vals) {
-				$this->db->insertMultiRow($this->rsh, $cols, $vals);
+				$this->dbw()->insertMultiRow($this->rsh, $cols, $vals);
 				return true;
 			}
 		} else {

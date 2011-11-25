@@ -15,6 +15,11 @@
 require_once 'Zend/Cache.php';
 
 /**
+ * Include subclasses
+ */
+require_once 'Hush/Cache/Memcache.php';
+
+/**
  * @package Hush_Cache
  */
 class Hush_Cache

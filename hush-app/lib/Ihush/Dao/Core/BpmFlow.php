@@ -36,15 +36,15 @@ class Core_BpmFlow extends Ihush_Dao_Core
 		$this->k1 = self::TABLE_PRIM;
 		$this->rsh = Core_BpmFlowRole::TABLE_NAME;
 		
-		$this->__bind($this->t1, $this->k1);
+		$this->_bindTable($this->t1, $this->k1);
 	}
 	
 	public function getByPage ()
 	{
-		$sql = $this->db->select()
+		$sql = $this->dbr()->select()
 			->from($this->t1, array("{$this->t1}.*"));
 		
-		return $this->db->fetchAll($sql);
+		return $this->dbr()->fetchAll($sql);
 	}
 	
 	/**
@@ -52,7 +52,7 @@ class Core_BpmFlow extends Ihush_Dao_Core
 	 */
 	public function getByRole ($role_id)
 	{
-		$sql = $this->db->select()
+		$sql = $this->dbr()->select()
 			->from($this->t1, array("{$this->t1}.*"))
 			->joinLeft($this->rsh, "{$this->t1}.{$this->k1} = {$this->rsh}.{$this->k1} and {$this->t1}.bpm_flow_status > 0", null);
 		
@@ -62,13 +62,13 @@ class Core_BpmFlow extends Ihush_Dao_Core
 			$sql->where("{$this->rsh}.role_id = ?", $role_id);
 		}
 		
-		return $this->db->fetchAll($sql);
+		return $this->dbr()->fetchAll($sql);
 	}
 	
 	public function updateRoles ($id, $roles = array())
 	{
 		if ($id) {
-			$this->db->delete($this->rsh, $this->db->quoteInto("{$this->k1} = ?", $id));
+			$this->dbw()->delete($this->rsh, $this->dbw()->quoteInto("{$this->k1} = ?", $id));
 		} else {
 			return false;
 		}
@@ -80,7 +80,7 @@ class Core_BpmFlow extends Ihush_Dao_Core
 				$vals[] = array($id, $role);
 			}
 			if ($cols && $vals) {
-				$this->db->insertMultiRow($this->rsh, $cols, $vals);
+				$this->dbw()->insertMultiRow($this->rsh, $cols, $vals);
 				return true;
 			}
 		} else {

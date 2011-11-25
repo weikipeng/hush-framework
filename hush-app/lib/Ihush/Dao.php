@@ -29,7 +29,6 @@ class Ihush_Dao extends Hush_Db_Dao
 	    if(!isset($_daos[$class_name])) {
 	    	require_once 'Ihush/Dao/' . str_replace('_', '/', $class_name) . '.php';
 	    	$_daos[$class_name] = new $class_name();
-	    	$_daos[$class_name]->charset('utf8');
 	    }
 	    return $_daos[$class_name];
 	}

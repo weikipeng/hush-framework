@@ -19,7 +19,9 @@ class TestDbPage extends Ihush_App_Frontend_Page
 {
 	public function __init ()
 	{
-		require_once __ETC . '/class/MongoConfig.php';
+		// init dao
+		parent::__init();
+		
 		$this->mongo = new Ihush_Mongo();
 	}
 	
@@ -35,24 +37,46 @@ class TestDbPage extends Ihush_App_Frontend_Page
 	
 	public function mysqlShardAction () 
 	{
-		echo '111'; 
+		$dao = $this->dao->load('Apps_Product');
+		
+		// test create
+		echo "<b>READ SHARDING 1 :</b>";
+		Hush_Util::dump($dao->shard(1)->read(1));
+		
+		// test create
+		echo "<b>READ SHARDING 2 :</b>";
+		Hush_Util::dump($dao->shard(2)->read(2));
 	}
 	
 	public function mongoShardAction () 
 	{
 		$mongo = $this->mongo->load('Foo_Foo');
+		
+		// test create
+		echo "<b>TEST CREATE :</b>";
 		$result = $mongo->create(array('foo' => 1, 'val' => 1, '_time' => time()));
 		Hush_Util::dump($result);
 		usleep(10000);
 		$result = $mongo->read(array('foo' => 1));
 		Hush_Util::dump(iterator_to_array($result));
+		usleep(10000);
+		
+		// test update
+		echo "<b>TEST UPDATE :</b>";
 		$result = $mongo->update(array('foo' => 1), array('foo' => 1, 'val' => 2, '_time' => time()));
 		Hush_Util::dump($result);
 		usleep(10000);
 		$result = $mongo->read(array('foo' => 1));
 		Hush_Util::dump(iterator_to_array($result));
+		usleep(10000);
+		
+		// test delete
+		echo "<b>TEST DELETE :</b>";
 		$result = $mongo->delete(array('foo' => 1));
 		Hush_Util::dump($result);
+		usleep(10000);
+		$result = $mongo->read(array('foo' => 1));
+		Hush_Util::dump(iterator_to_array($result));
 		ob_flush();
 		flush();
 	}

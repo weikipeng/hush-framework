@@ -293,17 +293,17 @@ class Hush_Mongo
 		if ($this->_configClass != null) {
 		
 			// init default db servers
-			$dbServers = $this->_configClass->useDefault($this->_database, $this->_collection);
+			$dbServers = $this->_configClass->getDefault($this->_database, $this->_collection);
 			
 			// force sharding db servers
 			if ($this->_dbShardKey) {
-				$dbServers = $this->_configClass->shardDatabase($this->_database, $this->_collection, $this->_dbShardVal);		
+				$dbServers = $this->_configClass->getShardDatabase($this->_database, $this->_collection, $this->_dbShardVal);		
 			}
 			
 			// force to be replica set
 			if ($this->_replicaSet) {
 				$type = self::REPLSET;
-				$dbServers = $this->_configClass->useReplicaSet();
+				$dbServers = $this->_configClass->getReplicaSet();
 			}
 			
 			// check mongo servers format
@@ -327,7 +327,7 @@ class Hush_Mongo
 			
 			// get sharding collection
 			if ($this->_colShardKey) {
-				$mongoConfig['collection'] = $this->_configClass->shardCollection($this->_database, $this->_collection, $this->_colShardVal);
+				$mongoConfig['collection'] = $this->_configClass->getShardCollection($this->_database, $this->_collection, $this->_colShardVal);
 			}
 		}
 		
@@ -348,9 +348,6 @@ class Hush_Mongo
 		} catch (Exception $e) {
 			die(__CLASS__ . " : " . $e->getMessage() . "\n");
 		}
-		
-		// mongo cursor object
-		return $this->_mongo;
 	}
 	
 	/**
@@ -361,8 +358,7 @@ class Hush_Mongo
 	public function getMaster()
 	{
 		$this->_getMongo(self::MASTER);
-		$this->doForMasterOnly();
-		return $this->_mongo;
+		return $this->doForMasterOnly();
 	}
 	
 	/**
@@ -373,8 +369,7 @@ class Hush_Mongo
 	public function getSlave()
 	{
 		$this->_getMongo(self::SLAVE);
-		$this->doForSlaveOnly();
-		return $this->_mongo;
+		return $this->doForSlaveOnly();
 	}
 	
 	/**
@@ -382,14 +377,20 @@ class Hush_Mongo
 	 *
 	 * @return void
 	 */
-	public function doForMasterOnly(){}
+	public function doForMasterOnly()
+	{
+		return true;
+	}
 	
 	/**
 	 * Reserved interface for task only for slave database
 	 *
 	 * @return void
 	 */
-	public function doForSlaveOnly(){}
+	public function doForSlaveOnly()
+	{
+		return true;
+	}
 	
 	/**
 	 * CRUD : Create
@@ -585,14 +586,13 @@ class Hush_Mongo
 	/**
 	 * Initialize common collections
 	 * 
-	 * @return void
+	 * @return bool
 	 */
 	protected function _initCollection($indexSets = array())
 	{
 		if (!$this->_collection) {
 			throw new Hush_Mongo_Exception('Please init capped collection first.');
 		}
-		
 		if (!$this->collectionExists($this->_collection)) {
 			$mongo = $this->_link->createCollection($this->_collection);
 			foreach ($indexSets as $indexSet) {
@@ -601,23 +601,22 @@ class Hush_Mongo
 				}
 			}
 		}
+		return true;
 	}
 	
 	/**
 	 * Initialize capped collections
 	 * 
-	 * @return void
+	 * @return bool
 	 */
 	protected function _initCappedCollection($indexSets = array())
 	{
 		if (!$this->_collection) {
 			throw new Hush_Mongo_Exception('Please init capped collection first.');
 		}
-		
 		if (!$this->_cappedConfig) {
 			throw new Hush_Mongo_Exception('Please init capped collection\'s configs.');
 		}
-		
 		if (!$this->collectionExists($this->_collection)) {
 			$mongo = $this->_link->createCollection($this->_collection, $this->_cappedConfig['capped'], $this->_cappedConfig['size'], $this->_cappedConfig['max']);
 			foreach ($indexSets as $indexSet) {
@@ -626,5 +625,6 @@ class Hush_Mongo
 				}
 			}
 		}
+		return true;
 	}
 }

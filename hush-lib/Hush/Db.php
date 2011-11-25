@@ -30,28 +30,10 @@ class Hush_Db extends Zend_Db
 	const ADAPTER_NAME_SPACE = 'Hush_Db_Adapter'; // default name space
 	
 	/**
-	 * Db file name
-	 * @var string
-	 */
-	public static $db_file = '';
-	
-	/**
 	 * Db settings pool array
 	 * @var array
 	 */
 	public static $db_pool = array();
-	
-	/**
-	 * Db links pool array
-	 * @var Zend_Db_Adaptor
-	 */
-	public static $db_link = array();
-	
-	/**
-	 * Db prefix string
-	 * @var string
-	 */
-	public static $db_pref = null;
 	
 	/**
 	 * Db adaptor factory
@@ -89,100 +71,41 @@ class Hush_Db extends Zend_Db
 	}
 	
 	/**
-	 * Make db pool from db link's ini file
-	 * @param string $db_link_ini
-	 * @return array
+	 * 
 	 */
-	public static function pool ($db_file_ini) 
+	public static function dbPool ($options = array(), $charset = null)
 	{
-		if (!is_readable($db_file_ini)) {
-			throw new Hush_Db_Exception('Could not read db config ini file \'' . $db_file_ini . '\'');
+		// check options
+		if (!isset($options['type']) ||
+			!isset($options['host']) ||
+			!isset($options['user']) ||
+			!isset($options['pass']) ||
+			!isset($options['name'])) {
+			throw new Hush_Db_Exception('Invalid db options');
 		}
 		
-		// store current db links ini file name here
-		self::$db_file = basename($db_file_ini);
-		
-		if (array_key_exists(self::$db_file, self::$db_pool)) {
-			return self::$db_pool;
+		// default port
+		if (!isset($options['port'])) {
+			$options['port'] = '3306'; 
 		}
 		
-		// initialize the db links ini file into db pool
-		$db_links = parse_ini_file($db_file_ini, true);
-		$db_write_links = array();
-		
-		foreach ((array) $db_links as $k => $v) {
-			$key_arr = explode('-', $k); // split by '-'
-			$key_grp = isset($key_arr[0]) ? strtoupper(trim($key_arr[0])) : null;
-			$key_num = isset($key_arr[1]) ? intval(trim($key_arr[1])) : 1; // start from 1
-			if (!$key_grp) continue; // group key can not be empty
-			self::$db_pool[self::$db_file][$key_grp][$key_num] = $v;
-		}
-		
-//		Hush_Util::dump(self::$db_pool);
-		return self::$db_pool;
-	}
-	
-	/**
-	 * Random the db link we need
-	 * @param string $type 'READ' or 'WRITE'
-	 */
-	public static function rand ($type, $db_file_ini = '')
-	{
-		if (!self::$db_pool) {
-			throw new Hush_Db_Exception('Please init db pool first');
-		}
-		
-		// get the ini file and check if ini config file is ok
-		If (!$db_file_ini) $db_file_ini = self::$db_file;
-		if (!array_key_exists($db_file_ini, self::$db_pool)) {
-			throw new Hush_Db_Exception('Can not found \'' . $db_file_ini . '\' in db pool');
-		}
-		
-		// when a new db link is not existed in pool
-		if (!isset(self::$db_link[$db_file_ini][$type])) {
-			
-			$db_pool_arr = (array) self::$db_pool[$db_file_ini][$type];
-			$db_link_arr = $db_pool_arr[array_rand($db_pool_arr)];
-			
-			if (!isset($db_link_arr['TYPE']) ||
-				!isset($db_link_arr['HOST']) ||
-				!isset($db_link_arr['USER']) ||
-				!isset($db_link_arr['PASS']) ||
-				!isset($db_link_arr['NAME'])) {
-				throw new Hush_Db_Exception('Invalid db config file format');
-			}
-			
-			if (!isset($db_link_arr['PORT'])) {
-				$db_link_arr['PORT'] = '3306'; // default port
-			}
-			
-			if (isset($db_link_arr['PREF'])) {
-				self::$db_pref = $db_link_arr['PREF'];
-			}
-			
+		// get db link from pool
+		$dbPoolKey = $options['type'].':'.$options['host'].':'.$options['port'].':'.$options['name'];
+		if (!isset(self::$db_pool[$dbPoolKey])) {
 			// create db connection here ...
-			self::$db_link[$db_file_ini][$type] = self::factory($db_link_arr['TYPE'], array(
-				'host'     => $db_link_arr['HOST'],
-				'port'     => $db_link_arr['PORT'],
-				'username' => $db_link_arr['USER'],
-				'password' => $db_link_arr['PASS'],
-				'dbname'   => $db_link_arr['NAME']
+			self::$db_pool[$dbPoolKey] = self::factory($options['type'], array(
+				'host'     => $options['host'],
+				'port'     => $options['port'],
+				'username' => $options['user'],
+				'password' => $options['pass'],
+				'dbname'   => $options['name']
 			));
+			// set connection charset
+			if ($charset) {
+				self::$db_pool[$dbPoolKey]->query('set names ' . $charset);
+			}
 		}
 		
-		return self::$db_link[$db_file_ini][$type];
-	}
-	
-	/**
-	 * Return the db link's prefix string
-	 * @return string
-	 */
-	public static function pref () 
-	{
-		if (!self::$db_pref) {
-			throw new Hush_Db_Exception('Please specify a db link first');
-		}
-		
-		return self::$db_pref;
+		return self::$db_pool[$dbPoolKey];
 	}
 }

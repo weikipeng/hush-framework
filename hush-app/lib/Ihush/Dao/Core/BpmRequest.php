@@ -50,7 +50,7 @@ class Core_BpmRequest extends Ihush_Dao_Core
 		$this->t6 = Core_User::TABLE_NAME;
 		$this->k6 = Core_User::TABLE_PRIM;
 		
-		$this->__bind($this->t1, $this->k1);
+		$this->_bindTable($this->t1, $this->k1);
 	}
 	
 	/**
@@ -59,7 +59,7 @@ class Core_BpmRequest extends Ihush_Dao_Core
 	public function getSendByPage ($uid)
 	{
 		$eachPageNum = 10;
-		$condition = $this->db->select()
+		$condition = $this->dbr()->select()
 			->join($this->t3, "{$this->t1}.{$this->k3} = {$this->t3}.{$this->k3}", null)
 			->join($this->t4, "{$this->t1}.{$this->k4} = {$this->t4}.{$this->k4}", null)
 			->where("{$this->t1}.author_id = ?", $uid)
@@ -69,14 +69,14 @@ class Core_BpmRequest extends Ihush_Dao_Core
 		$sql_list = $condition2->from($this->t1, array("{$this->t1}.*", "{$this->t3}.bpm_node_name", "{$this->t4}.bpm_flow_name"))
 			->limitPage(Hush_Util::param('p'), $eachPageNum);
 		
-		$total = $this->db->fetchOne($sql_count);
+		$total = $this->dbr()->fetchOne($sql_count);
 		$pager = new Ihush_Paging($total, $eachPageNum, null, array(
 			'Href' => '/request/sendList/p/{page}',
 			'Mode' => 2,
 		));
 		
 		return array(
-			'list' => $this->db->fetchAll($sql_list),
+			'list' => $this->dbr()->fetchAll($sql_list),
 			'page' => $pager->paging()
 		);
 	}
@@ -86,7 +86,7 @@ class Core_BpmRequest extends Ihush_Dao_Core
 	 */
 	public function getRecvByPage ($uid = 0, $rid = array())
 	{
-		$sql = $this->db->select()
+		$sql = $this->dbr()->select()
 			->from($this->t1, array("{$this->t1}.*", "{$this->t2}.*", "{$this->t4}.bpm_flow_name"))
 			->join($this->t4, "{$this->t1}.{$this->k4} = {$this->t4}.{$this->k4}", null)
 			->join($this->t2, "{$this->t1}.{$this->k1} = {$this->t2}.{$this->k1} and {$this->t1}.bpm_request_status > 0 and {$this->t2}.bpm_request_audit_done = 0", null)
@@ -94,12 +94,12 @@ class Core_BpmRequest extends Ihush_Dao_Core
 			->orWhere("{$this->t2}.user_id = ?", $uid)
 			->order("{$this->t1}.{$this->k1} desc");
 		
-		return $this->db->fetchAll($sql);
+		return $this->dbr()->fetchAll($sql);
 	}
 	
 	public function getDoneByPage ($uid = 0, $rid = array())
 	{
-		$sql = $this->db->select()
+		$sql = $this->dbr()->select()
 			->from($this->t1, array("{$this->t1}.*", "{$this->t2}.*", "{$this->t4}.bpm_flow_name"))
 			->join($this->t4, "{$this->t1}.{$this->k4} = {$this->t4}.{$this->k4}", null)
 			->join($this->t2, "{$this->t1}.{$this->k1} = {$this->t2}.{$this->k1} and {$this->t1}.bpm_request_status > 0 and {$this->t2}.bpm_request_audit_done = 1", null)
@@ -107,19 +107,19 @@ class Core_BpmRequest extends Ihush_Dao_Core
 			->orWhere("{$this->t2}.user_id = ?", $uid)
 			->order("{$this->t1}.{$this->k1} desc");
 		
-		return $this->db->fetchAll($sql);
+		return $this->dbr()->fetchAll($sql);
 	}
 	
 	public function getDetails ($reqId)
 	{
-		$sql = $this->db->select()
+		$sql = $this->dbr()->select()
 			->from($this->t1, array("{$this->t1}.*", "{$this->t2}.*", "{$this->t3}.bpm_node_name", "{$this->t6}.name as author_name"))
 			->join($this->t3, "{$this->t1}.{$this->k3} = {$this->t3}.{$this->k3}", null)
 			->join($this->t6, "{$this->t1}.author_id = {$this->t6}.{$this->k6}", null)
 			->joinLeft($this->t2, "{$this->t1}.{$this->k1} = {$this->t2}.{$this->k2}", null)
 			->where("{$this->t1}.{$this->k1} = ?", $reqId);
 		
-		$data = $this->db->fetchRow($sql);
+		$data = $this->dbr()->fetchRow($sql);
 		
 		// get field name hash
 		$bpmModelDao = Ihush_Dao::load('Core_BpmModel');

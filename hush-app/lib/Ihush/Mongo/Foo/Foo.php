@@ -55,11 +55,11 @@ class Foo_Foo extends Ihush_Mongo
 	 * Create Index for shard key
 	 * Do this action only for master connection
 	 * 
-	 * @return void
+	 * @return bool
 	 */
 	public function doForMasterOnly()
 	{
-		$this->_initCollection(array(
+		return $this->_initCollection(array(
 			array(
 				'indexKeys' => array('foo' => 1),
 				'indexOpts' => array()
