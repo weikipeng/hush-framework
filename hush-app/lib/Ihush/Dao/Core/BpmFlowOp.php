@@ -43,6 +43,6 @@ class Core_BpmFlowOp extends Ihush_Dao_Core
 			->from($this->t1, array("{$this->t1}.*"))
 			->where("{$this->t1}.bpm_flow_id = ?", $flowId);
 		
-		return $this->db->fetchAll($sql);
+		return $this->dbr()->fetchAll($sql);
 	}
 }
