@@ -26,16 +26,16 @@
 	<h1 style="font-size:14pt">Hush Url Mapping Engine Test :</h1>
 	
 	<ul style="margin:10px">
-		<li><img src="{$_root}img/icon_round.png" class="icon" /> 普通映射 : <a href="/test/mapping">/test/mapping</a></li>
-		<li><img src="{$_root}img/icon_round.png" class="icon" /> 分页演示 : <a href="/test/p/1">/test/p/*</a></li>
-		<li><img src="{$_root}img/icon_round.png" class="icon" /> 模糊匹配 : <a href="/test/*">/test/*</a></li>
+		<li><img src="{$_root}img/icon_round.png" class="icon" /> 普通映射 : <a href="/test/mapping?debug=time">/test/mapping</a></li>
+		<li><img src="{$_root}img/icon_round.png" class="icon" /> 分页演示 : <a href="/test/p/1?debug=time">/test/p/*</a></li>
+		<li><img src="{$_root}img/icon_round.png" class="icon" /> 模糊匹配 : <a href="/test/*?debug=time">/test/*</a></li>
 	</ul>
 	
 	<h1 style="font-size:14pt">Hush Sharding Database Test :</h1>
 	
 	<ul style="margin:10px">
-		<li><img src="{$_root}img/icon_round.png" class="icon" /> DB Mysql : <a href="/testDb/mysqlShard">/testDb/mysqlShard</a></li>
-		<li><img src="{$_root}img/icon_round.png" class="icon" /> DB Mongo : <a href="/testDb/mongoShard">/testDb/mongoShard</a></li>
+		<li><img src="{$_root}img/icon_round.png" class="icon" /> DB Mysql : <a href="/testDb/mysqlShard?debug=sql">/testDb/mysqlShard</a></li>
+		<li><img src="{$_root}img/icon_round.png" class="icon" /> DB Mongo : <a href="/testDb/mongoShard?debug=time">/testDb/mongoShard</a></li>
 	</ul>
 
 {include file="frame/foot.tpl"}

@@ -143,7 +143,7 @@ class Hush_Debug_Writer_Html extends Hush_Debug_Writer
 				break;
 		}
 		if ($style_pos) {
-			$tpl = '<style>body{margin:0px;height:100%;overflow:auto;}</style>'
+			$tpl = '<style>body{margin:0px;height:100%;overflow:auto;font-family: Tahoma,Verdana,Arial,Helvetica,sans-serif;font-size:10pt}</style>'
 				 . '<div id="debug_box" style="position:fixed;z-index:99999;height:320px;width:100%;border-top:red solid 2px;background:#ffffe0;'.$style_pos.'">'
 				 . '<div id="debug_box_nav" style="height:20px;width:auto;padding-top:2px;padding-left:10px;background:#666;color:#fff;font-weight:bold;cursor:pointer;">Toggle Debug Info (NO IE6) ></div>'
 				 . '<div id="debug_box_body" style="height:300px;width:auto;overflow:auto;padding-left:10px;border-top:red solid 2px;">{DEBUGMSG}</div></div>'
