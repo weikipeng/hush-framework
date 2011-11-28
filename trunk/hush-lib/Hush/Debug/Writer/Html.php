@@ -143,10 +143,13 @@ class Hush_Debug_Writer_Html extends Hush_Debug_Writer
 				break;
 		}
 		if ($style_pos) {
-			$tpl = '<style>body{margin:0px;height:100%;overflow:auto;font-family: Tahoma,Verdana,Arial,Helvetica,sans-serif;font-size:10pt}</style>'
-				 . '<div id="debug_box" style="position:fixed;z-index:99999;height:320px;width:100%;border-top:red solid 2px;background:#ffffe0;'.$style_pos.'">'
-				 . '<div id="debug_box_nav" style="height:20px;width:auto;padding-top:2px;padding-left:10px;background:#666;color:#fff;font-weight:bold;cursor:pointer;">Toggle Debug Info (NO IE6) ></div>'
-				 . '<div id="debug_box_body" style="height:300px;width:auto;overflow:auto;padding-left:10px;border-top:red solid 2px;">{DEBUGMSG}</div></div>'
+			$tpl = '<style>body{width:100%;overflow:auto;font-family:Tahoma,Verdana,Arial,Helvetica,sans-serif;font-size:10pt}'
+				 . '#debug_box{position:fixed;-position:absolute;*position:absolute;bottom:0;z-index:99999;height:320px;width:100%;border-top:red solid 2px;background:#ffffe0;*top:expression(eval(document.compatMode && document.compatMode=="CSS1Compat") ? documentElement.scrollTop+(documentElement.clientHeight-this.clientHeight):document.body.scrollTop+(document.body.clientHeight-this.clientHeight));}'
+				 . '#debug_box_nav{height:20px;width:auto;padding-top:2px;padding-left:10px;background:#666;color:#fff;font-weight:bold;cursor:pointer;}'
+				 . '#debug_box_body{height:300px;width:auto;overflow:auto;padding-left:10px;border-top:red solid 2px;}</style>'
+				 . '<div id="debug_box" style="'.$style_pos.'">'
+				 . '<div id="debug_box_nav">Toggle Debug Info (NO IE6) ></div>'
+				 . '<div id="debug_box_body">{DEBUGMSG}</div></div>'
 				 . '<script>var db=document.getElementById("debug_box");var dbn=document.getElementById("debug_box_nav");var dbb=document.getElementById("debug_box_body");'
 				 . 'function close_debug(){db.style.height="20px";dbb.style.display="none";}'
 				 . 'function open_debug(){db.style.height="320px";dbb.style.display="";}'
