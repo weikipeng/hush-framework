@@ -54,7 +54,7 @@ class Ihush_Cli_Check extends Ihush_Cli
 	{
 		// config classes
 		$check_classes = array(
-			'DbConfig',
+			'MysqlConfig',
 			'MongoConfig',
 		);
 		

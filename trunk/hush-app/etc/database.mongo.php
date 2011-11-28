@@ -1,7 +1,5 @@
 <?php
-/**
- * Mongo DB 全局配置类
- */
+
 require_once 'Hush/Mongo/Config.php';
 
 class MongoConfig extends Hush_Mongo_Config

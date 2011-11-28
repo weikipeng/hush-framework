@@ -29,8 +29,8 @@ set_include_path('.' . PATH_SEPARATOR . __LIB_DIR . PATH_SEPARATOR . __COMM_LIB_
 /**
  * Data Source Configs
  */
-require_once __ETC . '/configs/DbConfig.php';
-require_once __ETC . '/configs/MongoConfig.php';
+require_once __ETC . '/database.mysql.php';
+require_once __ETC . '/database.mongo.php';
 
 /**
  * Global environment settings
