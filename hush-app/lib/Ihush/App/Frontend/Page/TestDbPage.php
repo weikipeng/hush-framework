@@ -25,11 +25,6 @@ class TestDbPage extends Ihush_App_Frontend_Page
 		$this->mongo = new Ihush_Mongo();
 	}
 	
-	public function __done ()
-	{
-		exit; // I don't want to display any template
-	}
-	
 	public function indexAction () 
 	{
 		echo 'This is index action'; 

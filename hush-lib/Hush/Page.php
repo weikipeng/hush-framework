@@ -236,13 +236,11 @@ class Hush_Page
 	protected function debug ($msg, $label = null, $level = Hush_Debug::DEBUG)
 	{
 		if ($this->_debug) {
-			
-//			if (!$label) {
-				$reflection = new ReflectionClass('Hush_Debug');
-				$levels = $reflection->getConstants();
-				$label = '[' . array_search($level, $levels) . '] ' . $label;
-//			}
-			
+			// get label string
+			$reflection = new ReflectionClass('Hush_Debug');
+			$levels = $reflection->getConstants();
+			$label = '[' . array_search($level, $levels) . '] ' . $label;
+			// print debug info
 			$this->_debug->debug($msg, $label, $level);
 		}	
 	}

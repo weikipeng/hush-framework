@@ -17,10 +17,6 @@ require_once 'Ihush/Paging.php';
  */
 class TestPage extends Ihush_App_Frontend_Page
 {
-	public function __done ()
-	{
-		exit; // I don't want to display any template
-	}
 	
 	public function indexAction () 
 	{
@@ -48,7 +44,7 @@ class TestPage extends Ihush_App_Frontend_Page
 		}
 		
 		$page = new Ihush_Paging($data, 5, null, array(
-			'Href' => '/test/p/{page}',
+			'Href' => '/test/p/{page}?debug=time',
 			'Mode' => 3,
 		));
 		
