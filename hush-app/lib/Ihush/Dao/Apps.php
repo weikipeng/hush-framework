@@ -27,7 +27,7 @@ class Ihush_Dao_Apps extends Ihush_Dao
 	public function __construct ()
 	{
 		// initialize dao
-		parent::__construct(DbConfig::getInstance());
+		parent::__construct(MysqlConfig::getInstance());
 		
 		// set default dao settings
 		$this->_bindDb(self::DB_NAME);

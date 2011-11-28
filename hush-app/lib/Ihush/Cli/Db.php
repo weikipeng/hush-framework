@@ -20,7 +20,7 @@ class Ihush_Cli_Db extends Ihush_Cli
 	{
 		parent::__init();
 		$this->_printHeader();
-		$this->db_config = new DbConfig();
+		$this->db_config = new MysqlConfig();
 	}
 	
 	public function helpAction ()
