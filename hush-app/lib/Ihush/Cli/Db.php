@@ -9,8 +9,6 @@
  * @version    $Id$
  */
 
-require_once 'Hush/Db/Config.php';
-
 /**
  * @package Ihush_Cli
  */
