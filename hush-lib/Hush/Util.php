@@ -535,6 +535,34 @@ class Hush_Util
 			}
 		}
 	}
+
+	/**
+	 * Recursive copy
+	 * @static
+	 * @param string $src
+	 * @param string $dst
+	 */
+	public static function dir_copy ($src, $dst)
+	{
+		if (file_exists($dst)) {
+			self::dir_remove($dst);
+		}
+		if (is_dir($src)) {
+			@mkdir($dst, 0777, 1);
+			$files = scandir($src);
+			foreach ($files as $file) {
+				if ($file != "." && $file != "..") {
+					self::dir_copy("$src/$file", "$dst/$file");
+				}
+			}
+		} else if (file_exists($src)) {
+			copy($src, $dst);
+			// copy callback function
+			if (function_exists('dir_copy_wrapper')) {
+				call_user_func_array('dir_copy_wrapper', array($src, $dst));
+			}
+		}
+	}
 	
 	/**
 	 * Check if item is json string
