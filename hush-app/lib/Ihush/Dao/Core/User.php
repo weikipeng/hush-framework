@@ -49,8 +49,6 @@ class Core_User extends Ihush_Dao_Core
 	 */
 	public function authenticate ($user, $pass)
 	{
-		$t1 = self::TABLE_NAME;
-		
 		$sql = $this->dbr()->select()
 			->from($this->t1, "*")
 			->where("name = ?", $user);
