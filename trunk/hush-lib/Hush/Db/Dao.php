@@ -289,6 +289,20 @@ class Hush_Db_Dao
 	}
 	
 	/**
+	 * Check data exists by primary key id
+	 * 
+	 * @param mixed $id Primary key value
+	 * @param string $pk Primary key name
+	 * @return array
+	 */
+	public function exist ($id, $primkey = '')
+	{
+		$primkey = $primkey ? $primkey : $this->primkey;
+		$sql = $this->dbr()->select()->from($this->table(), '(1)')->where("$primkey = ?", $id);
+		return $this->dbr()->fetchOne($sql);
+	}
+	
+	/**
 	 * Load data by primary key id
 	 * 
 	 * @param mixed $id Primary key value
