@@ -77,7 +77,7 @@ class Core_BpmRequest extends Ihush_Dao_Core
 		
 		return array(
 			'list' => $this->dbr()->fetchAll($sql_list),
-			'page' => $pager->paging()
+			'page' => $pager->toArray()
 		);
 	}
 	

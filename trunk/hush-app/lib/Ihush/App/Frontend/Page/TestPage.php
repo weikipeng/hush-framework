@@ -45,10 +45,11 @@ class TestPage extends Ihush_App_Frontend_Page
 	 * ...
 	 * $sql = $this->dbr()->select()... // 查找语句
 	 * $page = new Ihush_Paging($totalNumber, $eachPageNumber, $thisPageNumber, array(...));
-	 * $sql->limit($page->frNum, $page->toNum); // 结合 Limit 分页
+	 * $paging = $page->paging(); // 进行分页，获取分页结果数组
+	 * $sql->limit($paging['frNum'], $paging['toNum']); // 结合 Limit 分页
 	 * ...
 	 * 当然如果你要使用 Zend Db 自带的 limitPage 方法也是可以的，具体的实例见：
-	 * hush-app/lib/Ihush/Dao/Core/BpmRequest.php 中的 getDetails() 方法的用法
+	 * hush-app/lib/Ihush/Dao/Core/BpmRequest.php 中的 getSendByPage() 方法的用法
 	 */
 	private function pagingDemo ()
 	{
@@ -73,8 +74,12 @@ class TestPage extends Ihush_App_Frontend_Page
 			'Mode' => 3,
 		));
 		
-//		$page->setTotalPage(5); // only if have no total count
-		
-		Hush_Util::dump($page->paging());
+		/*
+		 * 打印数组形式：
+		 * 
+		 * 此数组可以提供给 Smarty 等模板直接展示，非常方便！
+		 * 其中较常被展示的就是 totalPage（总页数）、prevStr（上页字串）、nextStr（下页字串）、pageStr（分页字串）
+		 */
+		Hush_Util::dump($page->toArray());
 	}
 }
