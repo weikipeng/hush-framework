@@ -38,7 +38,7 @@ class TestPage extends Ihush_App_Frontend_Page
 	/*
 	 * 分页使用“特别说明”：
 	 * 
-	 * 本框架的分页支持两种方式：
+	 * 本框架的分页支持三种方式：
 	 * 1、构造函数的第一个参数是数组：针对普通数组的分页，也就是本例，如果需要分页的数据是现成的话，建议使用这种简单方式
 	 * 2、构造函数的第一个参数是数字：常在 DAO 类中使用，参数表示查询出的总数，然后可使用分页类中的 frNum 和 toNum 数
 	 * 值结合 MySQL 的 limit 使用。举例如下：
@@ -50,6 +50,8 @@ class TestPage extends Ihush_App_Frontend_Page
 	 * ...
 	 * 当然如果你要使用 Zend Db 自带的 limitPage 方法也是可以的，具体的实例见：
 	 * hush-app/lib/Ihush/Dao/Core/BpmRequest.php 中的 getSendByPage() 方法的用法
+	 * 3、构造函数的第一个参数为空：这种方式经常用在后台数据量爆大的情况，由于不需要传入 count 总数，也避免了大数量的情况下
+	 * 出现的count的效率问题，大家可以灵活运用
 	 */
 	private function pagingDemo ()
 	{
