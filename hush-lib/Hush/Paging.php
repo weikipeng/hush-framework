@@ -71,6 +71,9 @@ class Hush_Paging
 	{
 		// initialize the attributes
 		$this->__initialize($items, $each, $page, $pattern);
+		
+		// do paging
+		$this->__paging();
 	}
 
 	/**
@@ -82,7 +85,7 @@ class Hush_Paging
 	 * @param array $pattern	Display pattern (include paging/prev/next field)
 	 * @return void
 	 */
-	public function __initialize ($items = null, $each = null, $page = null, $pattern = null) 
+	protected function __initialize ($items = null, $each = null, $page = null, $pattern = null) 
 	{
 		
 		// prepare pattern
@@ -106,53 +109,7 @@ class Hush_Paging
 		$this->prevStr		= 'Prev';
 		$this->nextStr		= 'Next';
 	}
-
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// get or set functions
-
-	public function getPrevStr () 
-	{
-		return $this->prevStr;
-	}
-
-	public function setPrevStr ($str) 
-	{
-		$this->prevStr = $str;
-	}
-
-	public function getNextStr () 
-	{
-		return $this->nextStr;
-	}
-
-	public function setNextStr ($str) 
-	{
-		$this->nextStr = $str;
-	}
-
-	public function getFirstPage () 
-	{
-		return $this->firstPage;
-	}
-
-	public function setFirstPage ($pageID) 
-	{
-		$this->firstPage = $pageID;
-	}
-
-	public function getTotalPage () 
-	{
-		return $this->totalPage;
-	}
-
-	public function setTotalPage ($pageTotal) 
-	{
-		$this->totalPage = $pageTotal;
-	}
-
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// main functions
-
+	
 	/**
 	 * Convert Paging class attributes to a array.
 	 *
@@ -173,6 +130,9 @@ class Hush_Paging
 			'pageStr'	=> $this->pageStr,
 		);
 	}
+	
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// main functions
 
 	/**
 	 * Cooperate with data class to fetch items for each page.
@@ -180,7 +140,7 @@ class Hush_Paging
 	 *
 	 * @return array
 	 */
-	public function paging () 
+	protected function __paging () 
 	{
 		// do paging when have total count
 		if ($this->totalNum > 0) {
