@@ -45,7 +45,7 @@ class TestPage extends Ihush_App_Frontend_Page
 	 * ...
 	 * $sql = $this->dbr()->select()... // 查找语句
 	 * $page = new Ihush_Paging($totalNumber, $eachPageNumber, $thisPageNumber, array(...));
-	 * $sql->limit($page['frNum'], $page['toNum']); // 结合 Limit 分页
+	 * $sql->limit($page->frNum, $page->toNum); // 结合 Limit 分页
 	 * ...
 	 * 当然如果你要使用 Zend Db 自带的 limitPage 方法也是可以的，具体的实例见：
 	 * hush-app/lib/Ihush/Dao/Core/BpmRequest.php 中的 getDetails() 方法的用法
