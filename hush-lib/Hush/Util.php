@@ -553,6 +553,10 @@ class Hush_Util
 			foreach ($files as $file) {
 				if ($file != "." && $file != "..") {
 					self::dir_copy("$src/$file", "$dst/$file");
+					// copy callback function
+					if (function_exists('dir_copy_wrapper')) {
+						call_user_func_array('dir_copy_wrapper', array("$src/$file", "$dst/$file"));
+					}
 				}
 			}
 		} else if (file_exists($src)) {
