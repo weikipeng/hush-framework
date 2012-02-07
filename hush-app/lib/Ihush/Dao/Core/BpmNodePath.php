@@ -39,7 +39,7 @@ class Core_BpmNodePath extends Ihush_Dao_Core
 	
 	public function getAllByFlowId ($flowId)
 	{
-		$sql = $this->dbr()->select()
+		$sql = $this->select()
 			->from($this->t1, array("{$this->t1}.*"))
 			->where("{$this->t1}.bpm_flow_id=?", $flowId);
 		

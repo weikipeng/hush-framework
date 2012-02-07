@@ -39,7 +39,7 @@ class Core_BpmRequestAudit extends Ihush_Dao_Core
 	
 	public function isAudit ($reqId)
 	{
-		$sql = $this->dbr()->select()
+		$sql = $this->select()
 			->from($this->t1, array("count(1)"))
 			->where("{$this->t1}.bpm_request_id = ? and {$this->t1}.bpm_request_audit_status = 0", $reqId);
 		

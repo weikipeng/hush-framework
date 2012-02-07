@@ -42,7 +42,7 @@ class Core_BpmModel extends Ihush_Dao_Core
 	
 	public function getAllByFlowId ($flowId)
 	{
-		$sql = $this->dbr()->select()
+		$sql = $this->select()
 			->from($this->t1, array("{$this->t1}.*"))
 			->where("{$this->t1}.bpm_flow_id = ?", $flowId);
 		
@@ -56,7 +56,7 @@ class Core_BpmModel extends Ihush_Dao_Core
 	{
 		$flowFieldList = array();
 		
-		$sql = $this->dbr()->select()
+		$sql = $this->select()
 			->from($this->t1, array("{$this->t2}.*"))
 			->join($this->t2, "{$this->t1}.{$this->k1} = {$this->t2}.{$this->k1}", null)
 			->where("{$this->t1}.bpm_flow_id = ?", $flowId);
@@ -78,7 +78,7 @@ class Core_BpmModel extends Ihush_Dao_Core
 	{
 		$flowFieldNameHash = array();
 		
-		$sql = $this->dbr()->select()
+		$sql = $this->select()
 			->from($this->t1, array("{$this->t2}.*"))
 			->join($this->t2, "{$this->t1}.{$this->k1} = {$this->t2}.{$this->k1}", null)
 			->where("{$this->t1}.bpm_flow_id = ?", $flowId);

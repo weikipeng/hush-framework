@@ -47,7 +47,7 @@ class Core_Resource extends Ihush_Dao_Core
 	 */
 	public function getAllResources ()
 	{
-		$sql = $this->dbr()->select()->from($this->t1, "*");
+		$sql = $this->select()->from($this->t1, "*");
 		
 		return $this->dbr()->fetchAll($sql);
 	}
@@ -60,7 +60,7 @@ class Core_Resource extends Ihush_Dao_Core
 	 */
 	public function getAclResources ()
 	{
-		$sql = $this->dbr()->select()
+		$sql = $this->select()
 			->from($this->t1, array("{$this->t1}.name as resource", "{$this->t2}.id as role"))
 			->join($this->rsh, "{$this->t1}.id = {$this->rsh}.resource_id", null)
 			->join($this->t2, "{$this->t2}.id = {$this->rsh}.role_id", null);
@@ -75,7 +75,7 @@ class Core_Resource extends Ihush_Dao_Core
 	 */
 	public function getResourceList ()
 	{
-		$sql = $this->dbr()->select()
+		$sql = $this->select()
 			->from($this->t1, array("{$this->t1}.*", "group_concat({$this->t2}.name) as role"))
 			->join($this->rsh, "{$this->t1}.id = {$this->rsh}.resource_id", null)
 			->join($this->t2, "{$this->t2}.id = {$this->rsh}.role_id", null)

@@ -49,7 +49,7 @@ class Core_User extends Ihush_Dao_Core
 	 */
 	public function authenticate ($user, $pass)
 	{
-		$sql = $this->dbr()->select()
+		$sql = $this->select()
 			->from($this->t1, "*")
 			->where("name = ?", $user);
 		
@@ -59,7 +59,7 @@ class Core_User extends Ihush_Dao_Core
 		
 		if (strcmp($user['pass'], Hush_Util::md5($pass))) return $user['id'];
 		
-		$sql = $this->dbr()->select()
+		$sql = $this->select()
 			->from($this->t2, "*")
 			->join($this->rsh, "{$this->t2}.id = {$this->rsh}.role_id", null)
 			->where("{$this->rsh}.user_id = ?", $user['id']);
@@ -83,7 +83,7 @@ class Core_User extends Ihush_Dao_Core
 	 */
 	public function getAllUsers ()
 	{
-		$sql = $this->dbr()->select()->from($this->t1, "*");
+		$sql = $this->select()->from($this->t1, "*");
 		
 		return $this->dbr()->fetchAll($sql);
 	}
@@ -95,7 +95,7 @@ class Core_User extends Ihush_Dao_Core
 	 */
 	public function getUserList ()
 	{
-		$sql = $this->dbr()->select()
+		$sql = $this->select()
 			->from($this->t1, array("{$this->t1}.*", "group_concat({$this->t2}.name) as role"))
 			->joinLeft($this->rsh, "{$this->t1}.id = {$this->rsh}.user_id", null)
 			->joinLeft($this->t2, "{$this->t2}.id = {$this->rsh}.role_id", null)

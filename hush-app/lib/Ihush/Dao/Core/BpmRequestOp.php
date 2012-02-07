@@ -42,7 +42,7 @@ class Core_BpmRequestOp extends Ihush_Dao_Core
 	
 	public function getByReqId ($reqId)
 	{
-		$sql = $this->dbr()->select()
+		$sql = $this->select()
 			->from($this->t1, array("{$this->t1}.*", "{$this->t2}.name as user_name"))
 			->join($this->t2, "{$this->t1}.user_id = {$this->t2}.{$this->k2}", null)
 			->where("{$this->t1}.bpm_request_id = ?", $reqId);

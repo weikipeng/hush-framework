@@ -55,7 +55,7 @@ class Core_Role extends Ihush_Dao_Core
 	 */
 	public function getRoleByUserId ($id, $privs = array())
 	{
-		$sql = $this->dbr()->select()
+		$sql = $this->select()
 			->from($this->t1, "{$this->t1}.*")
 			->join($this->rsh1, "{$this->t1}.id = {$this->rsh1}.role_id", null)
 			->where("{$this->rsh1}.user_id=?", $id);
@@ -78,7 +78,7 @@ class Core_Role extends Ihush_Dao_Core
 	 */
 	public function getRoleByAppId ($id, $privs = array())
 	{
-		$sql = $this->dbr()->select()
+		$sql = $this->select()
 			->from($this->t1, "{$this->t1}.*")
 			->join($this->rsh2, "{$this->t1}.id = {$this->rsh2}.role_id", null)
 			->where("{$this->rsh2}.app_id=?", $id);
@@ -101,7 +101,7 @@ class Core_Role extends Ihush_Dao_Core
 	 */
 	public function getRoleByResourceId ($id, $privs = array())
 	{
-		$sql = $this->dbr()->select()
+		$sql = $this->select()
 			->from($this->t1, "{$this->t1}.*")
 			->join($this->rsh3, "{$this->t1}.id = {$this->rsh3}.role_id", null)
 			->where("{$this->rsh3}.resource_id=?", $id);
@@ -124,7 +124,7 @@ class Core_Role extends Ihush_Dao_Core
 	 */
 	public function getRoleByFlowId ($id, $privs = array())
 	{
-		$sql = $this->dbr()->select()
+		$sql = $this->select()
 			->from($this->t1, "{$this->t1}.*")
 			->join($this->rsh5, "{$this->t1}.id = {$this->rsh5}.role_id", null)
 			->where("{$this->rsh5}.bpm_flow_id=?", $id);
@@ -144,7 +144,7 @@ class Core_Role extends Ihush_Dao_Core
 	 */
 	public function getAllRoles ()
 	{
-		$sql = $this->dbr()->select()->from($this->t1, "*");
+		$sql = $this->select()->from($this->t1, "*");
 		
 		return $this->dbr()->fetchAll($sql);
 	}
@@ -157,7 +157,7 @@ class Core_Role extends Ihush_Dao_Core
 	public function getRoleList ()
 	{
 		// Join self demo !!!
-		$sql = $this->dbr()->select()
+		$sql = $this->select()
 			->from($this->t1, array("{$this->t1}.*", "group_concat({$this->t1}_2.name) as role"))
 			->joinLeft($this->rsh4, "{$this->t1}.id = {$this->rsh4}.role_id", null)
 			->joinLeft($this->t1, "{$this->t1}_2.id = {$this->rsh4}.priv_id", null)
@@ -176,7 +176,7 @@ class Core_Role extends Ihush_Dao_Core
 	{
 		if (!$roles || !sizeof($roles)) return array();
 		
-		$sql = $this->dbr()->select()
+		$sql = $this->select()
 			->from($this->t1, "{$this->t1}.*")
 			->join($this->rsh4, "{$this->t1}.id = {$this->rsh4}.priv_id", null)
 			->where("{$this->rsh4}.role_id IN (?)", implode(',', $roles));
@@ -192,7 +192,7 @@ class Core_Role extends Ihush_Dao_Core
 	 */
 	public function getPrivByRoleId ($id)
 	{
-		$sql = $this->dbr()->select()
+		$sql = $this->select()
 			->from($this->t1, "{$this->t1}.*")
 			->join($this->rsh4, "{$this->t1}.id = {$this->rsh4}.priv_id", null)
 			->where("{$this->rsh4}.role_id=?", $id);

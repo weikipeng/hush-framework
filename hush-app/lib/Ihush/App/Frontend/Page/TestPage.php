@@ -43,7 +43,7 @@ class TestPage extends Ihush_App_Frontend_Page
 	 * 2、构造函数的第一个参数是数字：常在 DAO 类中使用，参数表示查询出的总数，然后可使用分页类中的 frNum 和 toNum 数
 	 * 值结合 MySQL 的 limit 使用。举例如下：
 	 * ...
-	 * $sql = $this->dbr()->select()... // 查找语句
+	 * $sql = $this->select()... // 查找语句
 	 * $page = new Ihush_Paging($totalNumber, $eachPageNumber, $thisPageNumber, array(...));
 	 * $paging = $page->paging(); // 进行分页，获取分页结果数组
 	 * $sql->limit($paging['frNum'], $paging['toNum']); // 结合 Limit 分页

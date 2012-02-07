@@ -45,7 +45,7 @@ class Core_BpmNode extends Ihush_Dao_Core
 	 */
 	public function checkNodes ($flowId, $nodeIds)
 	{
-		$sql = $this->dbr()->select()
+		$sql = $this->select()
 			->from($this->t1, array("{$this->t1}.bpm_node_id"))
 			->where("{$this->t1}.bpm_flow_id=?", $flowId);
 		
@@ -66,7 +66,7 @@ class Core_BpmNode extends Ihush_Dao_Core
 	
 	public function canBeRemoved ($nodeId)
 	{
-		$sql = $this->dbr()->select()
+		$sql = $this->select()
 			->from($this->t2, array("count(1)"))
 			->where("{$this->t2}.bpm_node_id_from=?", $nodeId)
 			->orWhere("{$this->t2}.bpm_node_id_to=?", $nodeId);
@@ -76,7 +76,7 @@ class Core_BpmNode extends Ihush_Dao_Core
 	
 	public function getAllByFlowId ($flowId)
 	{
-		$sql = $this->dbr()->select()
+		$sql = $this->select()
 			->from($this->t1, array("{$this->t1}.*"))
 			->where("{$this->t1}.bpm_flow_id=?", $flowId);
 		
@@ -85,7 +85,7 @@ class Core_BpmNode extends Ihush_Dao_Core
 	
 	public function getFirstByFlowId ($flowId)
 	{
-		$sql = $this->dbr()->select()
+		$sql = $this->select()
 			->from($this->t1, array("{$this->t1}.*"))
 			->where("{$this->t1}.bpm_node_attr=?", 1)
 			->where("{$this->t1}.bpm_flow_id=?", $flowId);

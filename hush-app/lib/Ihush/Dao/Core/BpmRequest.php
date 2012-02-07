@@ -59,7 +59,7 @@ class Core_BpmRequest extends Ihush_Dao_Core
 	public function getSendByPage ($uid)
 	{
 		$eachPageNum = 10;
-		$condition = $this->dbr()->select()
+		$condition = $this->select()
 			->join($this->t3, "{$this->t1}.{$this->k3} = {$this->t3}.{$this->k3}", null)
 			->join($this->t4, "{$this->t1}.{$this->k4} = {$this->t4}.{$this->k4}", null)
 			->where("{$this->t1}.author_id = ?", $uid)
@@ -86,7 +86,7 @@ class Core_BpmRequest extends Ihush_Dao_Core
 	 */
 	public function getRecvByPage ($uid = 0, $rid = array())
 	{
-		$sql = $this->dbr()->select()
+		$sql = $this->select()
 			->from($this->t1, array("{$this->t1}.*", "{$this->t2}.*", "{$this->t4}.bpm_flow_name"))
 			->join($this->t4, "{$this->t1}.{$this->k4} = {$this->t4}.{$this->k4}", null)
 			->join($this->t2, "{$this->t1}.{$this->k1} = {$this->t2}.{$this->k1} and {$this->t1}.bpm_request_status > 0 and {$this->t2}.bpm_request_audit_done = 0", null)
@@ -99,7 +99,7 @@ class Core_BpmRequest extends Ihush_Dao_Core
 	
 	public function getDoneByPage ($uid = 0, $rid = array())
 	{
-		$sql = $this->dbr()->select()
+		$sql = $this->select()
 			->from($this->t1, array("{$this->t1}.*", "{$this->t2}.*", "{$this->t4}.bpm_flow_name"))
 			->join($this->t4, "{$this->t1}.{$this->k4} = {$this->t4}.{$this->k4}", null)
 			->join($this->t2, "{$this->t1}.{$this->k1} = {$this->t2}.{$this->k1} and {$this->t1}.bpm_request_status > 0 and {$this->t2}.bpm_request_audit_done = 1", null)
@@ -112,7 +112,7 @@ class Core_BpmRequest extends Ihush_Dao_Core
 	
 	public function getDetails ($reqId)
 	{
-		$sql = $this->dbr()->select()
+		$sql = $this->select()
 			->from($this->t1, array("{$this->t1}.*", "{$this->t2}.*", "{$this->t3}.bpm_node_name", "{$this->t6}.name as author_name"))
 			->join($this->t3, "{$this->t1}.{$this->k3} = {$this->t3}.{$this->k3}", null)
 			->join($this->t6, "{$this->t1}.author_id = {$this->t6}.{$this->k6}", null)
