@@ -46,7 +46,7 @@ class Core_App extends Ihush_Dao_Core
 	 */
 	public function getAllApps ($is_app = false)
 	{
-		$sql = $this->dbr()->select()->from($this->t1, "*");
+		$sql = $this->select()->from($this->t1, "*");
 		
 		if ($is_app) $sql->where("{$this->t1}.is_app = ?", 'YES');
 		
@@ -61,7 +61,7 @@ class Core_App extends Ihush_Dao_Core
 	 */
 	public function getAclApps ()
 	{
-		$sql = $this->dbr()->select()
+		$sql = $this->select()
 			->from($this->t1, array("{$this->t1}.path as path", "{$this->t2}.id as role"))
 			->join($this->rsh, "{$this->t1}.id = {$this->rsh}.app_id", null)
 			->join($this->t2, "{$this->t2}.id = {$this->rsh}.role_id", null);
@@ -76,7 +76,7 @@ class Core_App extends Ihush_Dao_Core
 	 */
 	public function getAppList ()
 	{
-		$sql = $this->dbr()->select()
+		$sql = $this->select()
 			->from($this->t1, array("{$this->t1}.*", "group_concat({$this->t2}.name) as role"))
 			->join($this->rsh, "{$this->t1}.id = {$this->rsh}.app_id", null)
 			->join($this->t2, "{$this->t2}.id = {$this->rsh}.role_id", null)
@@ -103,7 +103,7 @@ class Core_App extends Ihush_Dao_Core
 	 */
 	public function getAppListByRole ($role_id)
 	{
-		$sql = $this->dbr()->select()
+		$sql = $this->select()
 			->from($this->t1, array("{$this->t1}.*", "group_concat({$this->t2}.name) as role"))
 			->joinLeft($this->rsh, "{$this->t1}.id = {$this->rsh}.app_id", null)
 			->joinLeft($this->t2, "{$this->t2}.id = {$this->rsh}.role_id", null);

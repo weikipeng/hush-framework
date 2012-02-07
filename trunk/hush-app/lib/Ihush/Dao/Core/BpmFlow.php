@@ -41,7 +41,7 @@ class Core_BpmFlow extends Ihush_Dao_Core
 	
 	public function getByPage ()
 	{
-		$sql = $this->dbr()->select()
+		$sql = $this->select()
 			->from($this->t1, array("{$this->t1}.*"));
 		
 		return $this->dbr()->fetchAll($sql);
@@ -52,7 +52,7 @@ class Core_BpmFlow extends Ihush_Dao_Core
 	 */
 	public function getByRole ($role_id)
 	{
-		$sql = $this->dbr()->select()
+		$sql = $this->select()
 			->from($this->t1, array("{$this->t1}.*"))
 			->joinLeft($this->rsh, "{$this->t1}.{$this->k1} = {$this->rsh}.{$this->k1} and {$this->t1}.bpm_flow_status > 0", null);
 		

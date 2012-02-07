@@ -275,6 +275,16 @@ class Hush_Db_Dao
 	}
 	
 	/**
+	 * Rewrite select method
+	 * 
+	 * @return mixed
+	 */
+	public function select ()
+	{
+		return $this->dbr()->select();
+	}
+	
+	/**
 	 * Create data by insert method
 	 * 
 	 * @param array $data
