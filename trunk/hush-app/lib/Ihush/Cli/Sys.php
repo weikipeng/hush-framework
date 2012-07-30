@@ -77,6 +77,7 @@ NOTICE;
 		if (!$be_res && !$be_res) {
 			echo "Import database ok.\n";
 		} else {
+			echo "Import database failed.\n";
 			exit;
 		}
 		
