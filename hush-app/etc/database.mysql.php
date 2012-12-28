@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * MySQL config file
+ */
 require_once 'Hush/Db/Config.php';
 
 class MysqlConfig extends Hush_Db_Config

@@ -7,6 +7,8 @@
  * @version    $Id$
  */
 
+define('__HUSH_CLI', 1);
+
 require_once '../etc/global.config.php';
 
 require_once 'Hush/Util.php';

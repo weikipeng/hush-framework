@@ -9,7 +9,7 @@
  * @version    $Id$
  */
 
-require_once 'Hush/Db/Config.php';
+//require_once 'Hush/Db/Config.php';
 
 /**
  * @package Ihush_Cli
@@ -29,6 +29,7 @@ class Ihush_Cli_Sys extends Ihush_Cli
 		// command description
 		$this->_printHeader();
 		echo "hush sys init\n";
+		echo "hush sys uplib\n";
 	}
 	
 	public function initAction () 
@@ -44,9 +45,10 @@ Please pay attention to this action !!!
 
 Because you will do following things :
 
-1. Import original databases (Please make sure your current databases were already backuped).
-2. Check all the runtime environment variables and directories.
-3. Clean all caches and runtime data.
+1. Check or download the related libraries.
+2. Import original databases (Please make sure your current databases were already backuped).
+3. Check all the runtime environment variables and directories.
+4. Clean all caches and runtime data.
 
 Are you sure to do all above things [Y/N] : 
 NOTICE;
@@ -55,6 +57,12 @@ NOTICE;
 		$input = fgets(fopen("php://stdin", "r"));
 		if (strcasecmp(trim($input), 'y')) {
 			exit;
+		}
+		
+		// upgrade libraries
+		$zendDir = __COMM_LIB_DIR . DIRECTORY_SEPARATOR . 'Zend';
+		if (!is_dir($zendDir)) {
+			$this->uplibAction();
 		}
 		
 		// import backend and frontend
@@ -95,5 +103,80 @@ NOTICE;
 Thank you for using Hush Framework !!!
 
 NOTICE;
+	}
+	
+	public function uplibAction ()
+	{
+		// see in etc/global.config.php
+		$libDir = __COMM_LIB_DIR;
+		if (!is_dir($libDir)) {
+			mkdir($libDir, 0777, true);
+		}
+		
+		require_once 'Hush/Util/Download.php';
+		$down = new Hush_Util_Download();
+		
+		// download Zend Framework
+		echo "\nInstalling Zend Framework ..\n";
+		$downFile = 'http://hush-framework.googlecode.com/files/ZendFramework-1.10.2.zip';
+		$saveFile = $libDir . 'ZendFramework-1.10.2.zip';
+		$savePath = $libDir . '.';
+		if ($down->download($downFile, $saveFile)) {
+			echo "Extracting.. ";
+			$zip = new ZipArchive;
+			$zip->open($saveFile);
+			$zip->extractTo($savePath);
+			$zip->close();
+			unset($zip);
+			echo "Done!\n";
+		}
+		
+		// download Phpdoc
+		echo "\nInstalling Php Documentor ..\n";
+		$downFile = 'http://hush-framework.googlecode.com/files/Phpdoc.zip';
+		$saveFile = $libDir . 'Phpdoc.zip';
+		$savePath = $libDir . '.';
+		if ($down->download($downFile, $saveFile)) {
+			echo "Extracting.. ";
+			$zip = new ZipArchive;
+			$zip->open($saveFile);
+			$zip->extractTo($savePath);
+			$zip->close();
+			unset($zip);
+			echo "Done!\n";
+		}
+		
+		// download Smarty_2
+		echo "\nInstalling Smarty 2.x ..\n";
+		$downFile = 'http://hush-framework.googlecode.com/files/Smarty-2.6.25.zip';
+		$saveFile = $libDir . 'Smarty-2.6.25.zip';
+		$savePath = $libDir . '.';
+		if ($down->download($downFile, $saveFile)) {
+			echo "Extracting.. ";
+			$zip = new ZipArchive;
+			$zip->open($saveFile);
+			$zip->extractTo($savePath);
+			$zip->close();
+			unset($zip);
+			echo "Done!\n";
+		}
+		
+		// download Smarty_3
+		echo "\nInstalling Smarty 3.x ..\n";
+		$downFile = 'http://hush-framework.googlecode.com/files/Smarty-3beta.zip';
+		$saveFile = $libDir . 'Smarty-3beta.zip';
+		$savePath = $libDir . '.';
+		if ($down->download($downFile, $saveFile)) {
+			echo "Extracting.. ";
+			$zip = new ZipArchive;
+			$zip->open($saveFile);
+			$zip->extractTo($savePath);
+			$zip->close();
+			unset($zip);
+			echo "Done!\n";
+		}
+		
+		unset($down);
+		return true;
 	}
 }

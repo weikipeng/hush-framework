@@ -23,11 +23,25 @@ define('__COMM_LIB_DIR', realpath(__ROOT . '/../../phplibs'));
  */
 define('__HUSH_LIB_DIR', realpath(__ROOT . '/../hush-lib'));
 
-// initialize the include path env
+/**
+ * Check libraries
+ */
+if (!defined('__HUSH_CLI')) {
+	$zendDir = __COMM_LIB_DIR . DIRECTORY_SEPARATOR . 'Zend';
+	$hushDir = __HUSH_LIB_DIR . DIRECTORY_SEPARATOR . 'Hush';
+	if (!is_dir($zendDir) || !is_dir($hushDir)) {
+		echo "Please enter 'hush_app/bin' and use 'hush sys init' command to complete the installation.";
+		exit(1);
+	}
+}
+
+/**
+ * Set system's include path
+ */
 set_include_path('.' . PATH_SEPARATOR . __LIB_DIR . PATH_SEPARATOR . __COMM_LIB_DIR . PATH_SEPARATOR . __HUSH_LIB_DIR . PATH_SEPARATOR . get_include_path());
 
 /**
- * Data Source Configs
+ * Data source config logics
  */
 require_once __ETC . '/database.mysql.php';
 require_once __ETC . '/database.mongo.php';
