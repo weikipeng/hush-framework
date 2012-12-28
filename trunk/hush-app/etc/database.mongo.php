@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * MongoDB config file
+ */
 require_once 'Hush/Mongo/Config.php';
 
 class MongoConfig extends Hush_Mongo_Config
@@ -7,15 +9,15 @@ class MongoConfig extends Hush_Mongo_Config
 	// 手动配置
 	private $_servers = array(
 		// cluster1
-		'm1' => array('host' => '192.168.41.60', 'port' => '27017', 'username' => null, 'password' => null),
-		's1' => array('host' => '192.168.41.60', 'port' => '27018', 'username' => null, 'password' => null),
+		'm1' => array('host' => '127.0.0.1', 'port' => '27017', 'username' => null, 'password' => null),
+		's1' => array('host' => '127.0.0.1', 'port' => '27018', 'username' => null, 'password' => null),
 		// cluster2
-		'm2' => array('host' => '192.168.41.60', 'port' => '27017', 'username' => null, 'password' => null),
-		's2' => array('host' => '192.168.41.60', 'port' => '27018', 'username' => null, 'password' => null),
+		'm2' => array('host' => '127.0.0.1', 'port' => '27017', 'username' => null, 'password' => null),
+		's2' => array('host' => '127.0.0.1', 'port' => '27018', 'username' => null, 'password' => null),
 		// replica set
-		'r1' => array('host' => '192.168.41.60', 'port' => '27019', 'username' => null, 'password' => null),
-		'r2' => array('host' => '192.168.41.60', 'port' => '27020', 'username' => null, 'password' => null),
-		'r3' => array('host' => '192.168.41.60', 'port' => '27021', 'username' => null, 'password' => null),
+		'r1' => array('host' => '127.0.0.1', 'port' => '27019', 'username' => null, 'password' => null),
+		'r2' => array('host' => '127.0.0.1', 'port' => '27020', 'username' => null, 'password' => null),
+		'r3' => array('host' => '127.0.0.1', 'port' => '27021', 'username' => null, 'password' => null),
 	);
 	
 	// 主从策略（默认）

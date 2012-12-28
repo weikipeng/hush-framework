@@ -8,16 +8,11 @@
  * @license    http://www.apache.org/licenses/LICENSE-2.0
  * @version    $Id$
  */
- 
-/**
- * @see Zend_Exception
- */
-require_once 'Zend/Exception.php';
 
 /**
  * @package Hush_Exception
  */
-class Hush_Exception extends Zend_Exception
+class Hush_Exception extends Exception
 {
 	public function __construct($msg = '', $code = 0, Exception $e = null)
 	{
