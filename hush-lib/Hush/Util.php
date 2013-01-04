@@ -541,29 +541,43 @@ class Hush_Util
 	 * @static
 	 * @param string $src
 	 * @param string $dst
+	 * @param array $escape_dir
+	 * @param callback $callback_func
 	 */
-	public static function dir_copy ($src, $dst)
+	public static function dir_copy ($src, $dst, $escape_dir = array(), $callback_func = null)
 	{
+		// default callback
+		$default_callback_func = 'dir_copy_wrapper';
+		if (!$callback_func && function_exists($default_callback_func)) {
+			$callback_func = $default_callback_func;
+		}
+		// remove first
 		if (file_exists($dst)) {
 			self::dir_remove($dst);
 		}
+		// copy dir
 		if (is_dir($src)) {
 			@mkdir($dst, 0777, 1);
 			$files = scandir($src);
 			foreach ($files as $file) {
+				if ($escape_dir && in_array($file, $escape_dir)) {
+					continue;
+				}
 				if ($file != "." && $file != "..") {
-					self::dir_copy("$src/$file", "$dst/$file");
-					// copy callback function
-					if (function_exists('dir_copy_wrapper')) {
-						call_user_func_array('dir_copy_wrapper', array("$src/$file", "$dst/$file"));
-					}
+					// call copy recursively
+					self::dir_copy("$src/$file", "$dst/$file", $escape_dir, $callback_func);
 				}
 			}
+		// copy file
 		} else if (file_exists($src)) {
+			if ($escape_dir && in_array($src, $escape_dir)) {
+				return;
+			}
+			// do copy file
 			copy($src, $dst);
 			// copy callback function
-			if (function_exists('dir_copy_wrapper')) {
-				call_user_func_array('dir_copy_wrapper', array($src, $dst));
+			if ($callback_func != null) {
+				call_user_func_array($callback_func, array($src, $dst));
 			}
 		}
 	}
