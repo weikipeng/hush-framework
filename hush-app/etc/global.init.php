@@ -16,7 +16,7 @@ if (defined('__HUSH_CLI')) {
 	$hushDir = __HUSH_LIB_DIR . DIRECTORY_SEPARATOR . 'Hush';
 	if (!is_dir($hushDir)) {
 		// download Zend Framework
-		echo "\nInstalling Hush Framework ..\n";
+		echo "\nInstalling Hush Framework .. \n";
 		$downFile = 'http://hush-framework.googlecode.com/files/HushFramework.zip';
 		$saveFile = $hushDir . 'HushFramework.zip';
 		$savePath = $hushDir . '.';
@@ -31,10 +31,13 @@ if (defined('__HUSH_CLI')) {
 		}
 	}
 }
-
-// check other libraries
-$zendDir = __COMM_LIB_DIR . DIRECTORY_SEPARATOR . 'Zend';
-if (!is_dir($zendDir)) {
-	echo "Please enter 'hush_app/bin' and use 'hush sys init' command to complete the installation.";
-	exit(1);
+else {
+	
+	// check other libraries
+	$zendDir = __COMM_LIB_DIR . DIRECTORY_SEPARATOR . 'Zend';
+	if (!is_dir($zendDir)) {
+		echo "\nCore libraries can not be found .. \n";
+		echo "Please enter 'hush_app/bin' and use 'hush sys init' command to complete the installation.\n";
+		exit(1);
+	}
 }
