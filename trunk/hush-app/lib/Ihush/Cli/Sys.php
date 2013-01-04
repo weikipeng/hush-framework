@@ -120,8 +120,8 @@ NOTICE;
 		// download Zend Framework
 		echo "\nInstalling Zend Framework ..\n";
 		$downFile = 'http://hush-framework.googlecode.com/files/ZendFramework-1.10.2.zip';
-		$saveFile = $libDir . 'ZendFramework-1.10.2.zip';
-		$savePath = $libDir . '.';
+		$saveFile = $libDir . DIRECTORY_SEPARATOR . 'ZendFramework-1.10.2.zip';
+		$savePath = $libDir . DIRECTORY_SEPARATOR . '.';
 		if ($down->download($downFile, $saveFile)) {
 			echo "Extracting.. ";
 			$zip = new ZipArchive;
@@ -135,8 +135,8 @@ NOTICE;
 		// download Phpdoc
 		echo "\nInstalling Php Documentor ..\n";
 		$downFile = 'http://hush-framework.googlecode.com/files/Phpdoc.zip';
-		$saveFile = $libDir . 'Phpdoc.zip';
-		$savePath = $libDir . '.';
+		$saveFile = $libDir . DIRECTORY_SEPARATOR . 'Phpdoc.zip';
+		$savePath = $libDir . DIRECTORY_SEPARATOR . '.';
 		if ($down->download($downFile, $saveFile)) {
 			echo "Extracting.. ";
 			$zip = new ZipArchive;
@@ -150,8 +150,8 @@ NOTICE;
 		// download Smarty_2
 		echo "\nInstalling Smarty 2.x ..\n";
 		$downFile = 'http://hush-framework.googlecode.com/files/Smarty-2.6.25.zip';
-		$saveFile = $libDir . 'Smarty-2.6.25.zip';
-		$savePath = $libDir . '.';
+		$saveFile = $libDir . DIRECTORY_SEPARATOR . 'Smarty-2.6.25.zip';
+		$savePath = $libDir . DIRECTORY_SEPARATOR . '.';
 		if ($down->download($downFile, $saveFile)) {
 			echo "Extracting.. ";
 			$zip = new ZipArchive;
@@ -165,8 +165,8 @@ NOTICE;
 		// download Smarty_3
 		echo "\nInstalling Smarty 3.x ..\n";
 		$downFile = 'http://hush-framework.googlecode.com/files/Smarty-3beta.zip';
-		$saveFile = $libDir . 'Smarty-3beta.zip';
-		$savePath = $libDir . '.';
+		$saveFile = $libDir . DIRECTORY_SEPARATOR . 'Smarty-3beta.zip';
+		$savePath = $libDir . DIRECTORY_SEPARATOR . '.';
 		if ($down->download($downFile, $saveFile)) {
 			echo "Extracting.. ";
 			$zip = new ZipArchive;
