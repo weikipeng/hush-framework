@@ -30,6 +30,7 @@ class Ihush_Cli_Sys extends Ihush_Cli
 		$this->_printHeader();
 		echo "hush sys init\n";
 		echo "hush sys uplib\n";
+		echo "hush sys newapp\n";
 	}
 	
 	public function initAction () 
@@ -50,7 +51,7 @@ Because you will do following things :
 3. Check all the runtime environment variables and directories.
 4. Clean all caches and runtime data.
 
-Are you sure to do all above things [Y/N] : 
+Are you sure you want to continue [Y/N] : 
 NOTICE;
 		
 		// check user input
@@ -178,5 +179,102 @@ NOTICE;
 		
 		unset($down);
 		return true;
+	}
+	
+	public function newappAction ()
+	{
+		echo 
+<<<NOTICE
+
+**********************************************************
+* Start to create a new app copied from this app         *
+**********************************************************
+
+Please enter settings by following prompting !!!
+
+NAMESPACE of the new app : 
+NOTICE;
+		
+		// check user input
+		$namespace = trim(fgets(fopen("php://stdin", "r")));
+		if (!preg_match('/^[A-Za-z]+$/i', $namespace)) {
+			echo "NAMESPACE must be a letter.\n";
+			exit;
+		}
+		
+		echo 
+<<<NOTICE
+LOCALPATH of the new app : 
+NOTICE;
+		
+		// check user input
+		$localpath = trim(fgets(fopen("php://stdin", "r")));
+		if (!is_dir($localpath)) {
+			mkdir($localpath, 0777, true);
+		}
+		$localpath = realpath($localpath);
+		if ($localpath) {
+			echo "\nLOCALPATH : $localpath\n\n";
+		}
+		
+		echo 
+<<<NOTICE
+Are you sure you want to continue [Y/N] : 
+NOTICE;
+
+		// check user input
+		$input = fgets(fopen("php://stdin", "r"));
+		if (strcasecmp(trim($input), 'y')) {
+			exit;
+		}
+		
+		// copy main code
+		Hush_Util::dir_copy(__ROOT, $localpath, array('.svn'), array($this, 'copy_all_wrapper'));
+		
+		// used by copy_lib_wrapper callback
+		$this->namespace = $namespace;
+		
+		// copy lib code
+		$baseLibDir = realpath($localpath . '/lib/');
+		$oldLibDir = $baseLibDir . DIRECTORY_SEPARATOR . 'Ihush';
+		$newLibDir = $baseLibDir . DIRECTORY_SEPARATOR . $namespace;
+		Hush_Util::dir_copy($oldLibDir, $newLibDir, null, array($this, 'copy_lib_wrapper'));
+		
+		
+		// copy etc code
+		$baseEtcDir = realpath($localpath . '/etc/');
+		$tmpEtcDir = $localpath . DIRECTORY_SEPARATOR . 'etc_tmp';
+		Hush_Util::dir_copy($baseEtcDir, $tmpEtcDir, null, array($this, 'copy_lib_wrapper'));
+		Hush_Util::dir_copy($tmpEtcDir, $baseEtcDir, null, null);
+		
+		// remove useless dir
+		echo "Remove useless dirs ...\n";
+		Hush_Util::dir_remove($oldLibDir);
+		Hush_Util::dir_remove($tmpEtcDir);
+		
+		// all completed
+		echo 
+<<<NOTICE
+
+**********************************************************
+* Create successfully                                    *
+**********************************************************
+
+Please check new app in '$localpath' !!!
+
+NOTICE;
+	}
+	
+	public function copy_all_wrapper ($src, $dst)
+	{
+		echo "Copy $src => $dst\n";
+	}
+	
+	public function copy_lib_wrapper ($src, $dst)
+	{
+		$srcCode = file_get_contents($src);
+		$srcCode = str_replace('Ihush', $this->namespace, $srcCode);
+		file_put_contents($dst, $srcCode);
+		echo "Overwrite $dst ...\n";
 	}
 }

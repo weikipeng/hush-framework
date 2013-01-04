@@ -55,7 +55,7 @@ date_default_timezone_set('PRC');
 /**
  * App Name
  */
-define('__APP_NAME', 'iHush');
+define('__APP_NAME', 'Ihush');
 
 /**
  * Enviornment settings
