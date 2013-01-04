@@ -240,17 +240,38 @@ NOTICE;
 		$newLibDir = $baseLibDir . DIRECTORY_SEPARATOR . $namespace;
 		Hush_Util::dir_copy($oldLibDir, $newLibDir, null, array($this, 'copy_lib_wrapper'));
 		
-		
 		// copy etc code
 		$baseEtcDir = realpath($localpath . '/etc/');
 		$tmpEtcDir = $localpath . DIRECTORY_SEPARATOR . 'etc_tmp';
 		Hush_Util::dir_copy($baseEtcDir, $tmpEtcDir, null, array($this, 'copy_lib_wrapper'));
 		Hush_Util::dir_copy($tmpEtcDir, $baseEtcDir, null, null);
 		
+		// copy bin code
+		$baseBinDir = realpath($localpath . '/bin/');
+		$tmpBinDir = $localpath . DIRECTORY_SEPARATOR . 'bin_tmp';
+		Hush_Util::dir_copy($baseBinDir, $tmpBinDir, null, array($this, 'copy_lib_wrapper'));
+		Hush_Util::dir_copy($tmpBinDir, $baseBinDir, null, null);
+		
 		// remove useless dir
 		echo "Remove useless dirs ...\n";
 		Hush_Util::dir_remove($oldLibDir);
 		Hush_Util::dir_remove($tmpEtcDir);
+		Hush_Util::dir_remove($tmpBinDir);
+		
+		// change init configs
+		echo "Change init configs ...\n";
+		$configFilePath = $baseEtcDir . DIRECTORY_SEPARATOR . 'global.config.php';
+		$configFileCode = file_get_contents($configFilePath);
+		$pregArr = array(
+			'/__COMM_LIB_DIR\',.*?\)/',
+			'/__HUSH_LIB_DIR\',.*?\)/',
+		);
+		$replaceArr = array(
+			'__COMM_LIB_DIR\', _hush_realpath(__ROOT . \'/../phplibs\')',
+			'__HUSH_LIB_DIR\', _hush_realpath(__ROOT . \'/../phplibs\')',
+		);
+		$configFileCode = preg_replace($pregArr, $replaceArr, $configFileCode);
+		file_put_contents($configFilePath, $configFileCode);
 		
 		// all completed
 		echo 
