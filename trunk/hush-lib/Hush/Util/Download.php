@@ -22,6 +22,7 @@ class Hush_Util_Download
 	private function stream_notification_callback ($notification_code, $severity, $message, $message_code, $bytes_transferred, $bytes_max)
 	{
 		static $filesize = null;
+		static $oswin = !strncasecmp(PHP_OS, 'win', 3);
 		switch($notification_code) {
 			case STREAM_NOTIFY_RESOLVE:
 			case STREAM_NOTIFY_AUTH_REQUIRED:
@@ -49,7 +50,11 @@ class Hush_Util_Download
 						printf("\rUnknown filesize.. %2d kb done..", $bytes_transferred/1024);
 					} else {
 						$length = (int)(($bytes_transferred/$filesize)*100);
-						printf("\r[%-100s] %d%% (%2d/%2d kb)", str_repeat("=", $length). ">", $length, ($bytes_transferred/1024), $filesize/1024);
+						if ($oswin) {
+							printf("\rDownloading.. %d%% (%2d/%2d kb)", $length, ($bytes_transferred/1024), $filesize/1024);
+						} else {
+							printf("\r[%-100s] %d%% (%2d/%2d kb)", str_repeat("=", $length). ">", $length, ($bytes_transferred/1024), $filesize/1024);
+						}
 					}
 				}
 				break;

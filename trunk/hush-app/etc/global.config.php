@@ -1,5 +1,30 @@
 <?php
 /**
+ * Global environment settings
+ */
+error_reporting(E_ALL ^ E_NOTICE);
+date_default_timezone_set('PRC');
+
+/**
+ * App Name
+ */
+define('__APP_NAME', 'Ihush');
+
+/**
+ * Windows OS
+ * Perhaps useful in some case
+ */
+define('__OS_WIN', !strncasecmp(PHP_OS, 'win', 3));
+
+/**
+ * Enviornment settings
+ * Include 'dev', 'test', 'www'
+ * Impact some variables and debug infomation
+ * TODO : should be changed by enviornment change !!!
+ */
+define('__ENV', 'dev');
+
+/**
  * Common Directories
  */
 define('__ETC', dirname(__FILE__));
@@ -42,22 +67,3 @@ require_once __ETC . '/global.init.php';
  */
 require_once __ETC . '/database.mysql.php';
 require_once __ETC . '/database.mongo.php';
-
-/**
- * Global environment settings
- */
-error_reporting(E_ALL ^ E_NOTICE);
-date_default_timezone_set('PRC');
-
-/**
- * App Name
- */
-define('__APP_NAME', 'Ihush');
-
-/**
- * Enviornment settings
- * Include 'dev', 'test', 'www'
- * Impact some variables and debug infomation
- * TODO : should be changed by enviornment change !!!
- */
-define('__ENV', 'dev');
