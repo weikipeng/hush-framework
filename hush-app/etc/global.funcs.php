@@ -64,7 +64,11 @@ function _hush_download_callback ($notification_code, $severity, $message, $mess
 					printf("\rUnknown filesize.. %2d kb done..", $bytes_transferred/1024);
 				} else {
 					$length = (int)(($bytes_transferred/$filesize)*100);
-					printf("\r[%-100s] %d%% (%2d/%2d kb)", str_repeat("=", $length). ">", $length, ($bytes_transferred/1024), $filesize/1024);
+					if (__OS_WIN) {
+						printf("\rDownloading.. %d%% (%2d/%2d kb)", $length, ($bytes_transferred/1024), $filesize/1024);
+					} else {
+						printf("\r[%-100s] %d%% (%2d/%2d kb)", str_repeat("=", $length). ">", $length, ($bytes_transferred/1024), $filesize/1024);
+					}
 				}
 			}
 			break;
