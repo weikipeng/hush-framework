@@ -135,7 +135,7 @@ NOTICE;
 		// download Phpdoc
 		echo "\nInstalling Php Documentor ..\n";
 		$downFile = 'http://hush-framework.googlecode.com/files/Phpdoc-stable.zip';
-		$saveFile = $libDir . DIRECTORY_SEPARATOR . 'Phpdoc.zip';
+		$saveFile = $libDir . DIRECTORY_SEPARATOR . 'Phpdoc-stable.zip';
 		$savePath = $libDir . DIRECTORY_SEPARATOR . '.';
 		if ($down->download($downFile, $saveFile)) {
 			echo "Extracting.. ";
