@@ -218,12 +218,13 @@ class Hush_Db_Dao
 	 */
 	public function dbr ($cid = 0, $sid = 0)
 	{
-		// try get db first
+		// try to get specify db firstly
 		if (!$this->_getSlave($cid, $sid)) {
-			// do sharding
+			// if specify db can not be found, do sharding
 			$this->_doShardDb();
 			$this->_doShardTable();
 		}
+		// get specify db server or random slave server
 		$options = $this->_config->getSlaveDb();
 		$options['name'] = $this->dbName; // set db name
 		return Hush_Db::dbPool($options, $this->charset);
@@ -238,12 +239,13 @@ class Hush_Db_Dao
 	 */
 	public function dbw ($cid = 0, $sid = 0)
 	{
-		// try get db first
+		// try to get specify db firstly
 		if (!$this->_getMaster($cid, $sid)) {
-			// do sharding
+			// if specify db can not be found, do sharding
 			$this->_doShardDb();
 			$this->_doShardTable();
 		}
+		// get specify db server or random slave server
 		$options = $this->_config->getMasterDb();
 		$options['name'] = $this->dbName; // set db name
 		return Hush_Db::dbPool($options, $this->charset);
