@@ -111,6 +111,18 @@ class Hush_Page
 	}
 	
 	/**
+	 * Set page's debug level
+	 * @param string $dir
+	 * @return unknown
+	 */
+	public function setDebugLevel ($level = Hush_Debug::DEBUG)
+	{
+		if ($this->_debug) {
+			$this->_debug->setDebugLevel($level);
+		}
+	}
+	
+	/**
 	 * Set template dir
 	 * @param string $dir
 	 * @throws Hush_Page_Exception
