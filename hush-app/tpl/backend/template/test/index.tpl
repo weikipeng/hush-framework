@@ -35,7 +35,7 @@
 				<tr><td>Date-picker : </td><td><input type="text" id="datepicker"></td></tr>
 				<tr><td>Time-picker : </td><td><input type="text" id="timepicker"></td></tr>
 				<tr><td>Datetime-picker : </td><td><input type="text" id="datetimepicker"></td></tr>
-			</p>
+			</table>
 		</div>
 		<script type="text/javascript">
 		$(function() {
