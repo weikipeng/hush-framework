@@ -35,6 +35,7 @@ define('__BIN_DIR', realpath(__ROOT . '/bin'));
 define('__WEB_DIR', realpath(__ROOT . '/web'));
 define('__TPL_DIR', realpath(__ROOT . '/tpl'));
 define('__DAT_DIR', realpath(__ROOT . '/dat'));
+define('__DOC_DIR', realpath(__ROOT . '/doc'));
 define('__CACHE_DIR', realpath(__DAT_DIR . '/cache'));
 
 /**
