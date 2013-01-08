@@ -31,6 +31,8 @@ class Ihush_Cli_Sys extends Ihush_Cli
 		echo "hush sys init\n";
 		echo "hush sys uplib\n";
 		echo "hush sys newapp\n";
+		echo "hush sys newdao\n";
+		echo "hush sys newctrl\n";
 	}
 	
 	public function initAction () 
@@ -198,7 +200,7 @@ NOTICE;
 		// check user input
 		$namespace = trim(fgets(fopen("php://stdin", "r")));
 		if (!preg_match('/^[A-Za-z]+$/i', $namespace)) {
-			echo "NAMESPACE must be a letter.\n";
+			echo "\nNAMESPACE must be a letter.\n";
 			exit;
 		}
 		
@@ -286,16 +288,74 @@ Please check new app in '$localpath' !!!
 NOTICE;
 	}
 	
+	// used by newappAction
 	public function copy_all_wrapper ($src, $dst)
 	{
 		echo "Copy $src => $dst\n";
 	}
 	
+	// used by newappAction
 	public function copy_lib_wrapper ($src, $dst)
 	{
 		$srcCode = file_get_contents($src);
 		$srcCode = str_replace('Ihush', $this->namespace, $srcCode);
 		file_put_contents($dst, $srcCode);
 		echo "Overwrite $dst ...\n";
+	}
+	
+	public function newctrlAction ()
+	{
+		echo 
+<<<NOTICE
+
+**********************************************************
+* Start to create a new controller                       *
+**********************************************************
+
+Please enter settings by following prompting !!!
+
+Controller Namespace (Backend\Page\ControllerName) : 
+NOTICE;
+		
+		// check user input
+		$ctrlName = trim(fgets(fopen("php://stdin", "r")));
+		if (!preg_match('/^(Backend|Frontend)\\\\(Page|Remote)\\\\[A-Za-z]+$/i', $ctrlName)) {
+			echo "\nError Controller Namespace.\n";
+			exit;
+		}
+		$ctrlNameArr = explode('\\', $ctrlName);
+		$baseName = $ctrlNameArr[0];
+		$typeName = $ctrlNameArr[1];
+		$pageName = $ctrlNameArr[2];
+		$replaceArr = array('CTRLNAME', 'APPNAME');
+		$changedArr = array(basename($ctrlName), __APP_NAME);
+		
+		// check controller path
+		$ctrlClsBase = realpath(__LIB_DIR . '/' . __APP_NAME . '/App/');
+		$ctrlClsPath = realpath($ctrlClsBase . '/' . dirname($ctrlName)); // just for check
+		$ctrlClsFile = $ctrlClsPath . DIRECTORY_SEPARATOR . $pageName . 'Page.php';
+		$ctrlTplBase = realpath(__TPL_DIR . '/' . strtolower($baseName) . '/template/');
+		$ctrlTplPath = $ctrlTplBase . DIRECTORY_SEPARATOR . strtolower($pageName); // should be created
+		$ctrlTplFile = $ctrlTplPath . DIRECTORY_SEPARATOR . 'index.tpl';
+//		echo $ctrlClsPath."\n".$ctrlClsFile."\n".$ctrlTplFile."\n";
+		if (!is_dir($ctrlClsPath)) {
+			echo "\nUnknown Controller.\n";
+			exit;
+		}
+		if (file_exists($ctrlClsFile) || file_exists($ctrlTplFile)) {
+			echo "\nExisted Controller.\n";
+			exit;
+		}
+		
+		// copy code
+		$codeCtrlPhp = __DOC_DIR . DIRECTORY_SEPARATOR . 'tpl' . DIRECTORY_SEPARATOR . 'code.ctrl.php';
+		file_put_contents($ctrlClsFile, str_replace($replaceArr, $changedArr, file_get_contents($codeCtrlPhp)));
+		echo "\nController PHP : $ctrlClsFile\n";
+		
+		// copy tpl
+		if (!is_dir($ctrlTplPath)) mkdir($ctrlTplPath, 0777, true);
+		$codeCtrlTpl = __DOC_DIR . DIRECTORY_SEPARATOR . 'tpl' . DIRECTORY_SEPARATOR . 'code.ctrl.tpl';
+		file_put_contents($ctrlTplFile, str_replace($replaceArr, $changedArr, file_get_contents($codeCtrlTpl)));
+		echo "Controller TPL : $ctrlTplFile\n";
 	}
 }
