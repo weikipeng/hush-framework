@@ -318,24 +318,24 @@ Controller Namespace (Backend\Page\ControllerName) :
 NOTICE;
 		
 		// check user input
-		$ctrlName = trim(fgets(fopen("php://stdin", "r")));
-		if (!preg_match('/^(Backend|Frontend)\\\\(Page|Remote)\\\\[A-Za-z]+$/i', $ctrlName)) {
+		$ctrlNS = trim(fgets(fopen("php://stdin", "r")));
+		if (!preg_match('/^(Backend|Frontend)\\\\(Page|Remote)\\\\[A-Za-z]+$/i', $ctrlNS)) {
 			echo "\nError Controller Namespace.\n";
 			exit;
 		}
-		$ctrlNameArr = explode('\\', $ctrlName);
-		$baseName = $ctrlNameArr[0];
-		$typeName = $ctrlNameArr[1];
-		$pageName = $ctrlNameArr[2];
-		$replaceArr = array('CTRLNAME', 'APPNAME');
-		$changedArr = array(basename($ctrlName), __APP_NAME);
+		$ctrlNSArr = explode('\\', $ctrlNS);
+		$baseName = ucfirst($ctrlNSArr[0]);
+		$typeName = ucfirst($ctrlNSArr[1]);
+		$ctrlName = ucfirst($ctrlNSArr[2]);
+		$replaceArr = array('APPNAME', 'CTRLNAME');
+		$changedArr = array(__APP_NAME, $ctrlName);
 		
 		// check controller path
 		$ctrlClsBase = realpath(__LIB_DIR . '/' . __APP_NAME . '/App/');
-		$ctrlClsPath = realpath($ctrlClsBase . '/' . dirname($ctrlName)); // just for check
-		$ctrlClsFile = $ctrlClsPath . DIRECTORY_SEPARATOR . $pageName . 'Page.php';
+		$ctrlClsPath = realpath($ctrlClsBase . '/' . dirname($ctrlNS)); // just for check
+		$ctrlClsFile = $ctrlClsPath . DIRECTORY_SEPARATOR . $ctrlName . 'Page.php';
 		$ctrlTplBase = realpath(__TPL_DIR . '/' . strtolower($baseName) . '/template/');
-		$ctrlTplPath = $ctrlTplBase . DIRECTORY_SEPARATOR . strtolower($pageName); // should be created
+		$ctrlTplPath = $ctrlTplBase . DIRECTORY_SEPARATOR . strtolower($ctrlName); // should be created
 		$ctrlTplFile = $ctrlTplPath . DIRECTORY_SEPARATOR . 'index.tpl';
 //		echo $ctrlClsPath."\n".$ctrlClsFile."\n".$ctrlTplFile."\n";
 		if (!is_dir($ctrlClsPath)) {
@@ -350,12 +350,62 @@ NOTICE;
 		// copy code
 		$codeCtrlPhp = __DOC_DIR . DIRECTORY_SEPARATOR . 'tpl' . DIRECTORY_SEPARATOR . 'code.ctrl.php';
 		file_put_contents($ctrlClsFile, str_replace($replaceArr, $changedArr, file_get_contents($codeCtrlPhp)));
-		echo "\nController PHP : $ctrlClsFile\n";
+		echo "\nController Class : $ctrlClsFile\n";
 		
 		// copy tpl
 		if (!is_dir($ctrlTplPath)) mkdir($ctrlTplPath, 0777, true);
 		$codeCtrlTpl = __DOC_DIR . DIRECTORY_SEPARATOR . 'tpl' . DIRECTORY_SEPARATOR . 'code.ctrl.tpl';
 		file_put_contents($ctrlTplFile, str_replace($replaceArr, $changedArr, file_get_contents($codeCtrlTpl)));
 		echo "Controller TPL : $ctrlTplFile\n";
+	}
+	
+	public function newdaoAction ()
+	{
+		echo 
+<<<NOTICE
+
+**********************************************************
+* Start to create a new dao                              *
+**********************************************************
+
+Please enter settings by following prompting !!!
+
+Dao Namespace (SimpleDatabaseName\SimpleTableName) : 
+NOTICE;
+		
+		// check user input
+		$daoNS = trim(fgets(fopen("php://stdin", "r")));
+		if (!preg_match('/^[A-Za-z]+\\\\[A-Za-z]+$/i', $daoNS)) {
+			echo "\nSimple Database & Table Name must be a letter. Just give a simple name here and you can set the real name in the code.\n";
+			exit;
+		}
+		$daoNSArr = explode('\\', $daoNS);
+		$dbName = ucfirst($daoNSArr[0]);
+		$tableName = ucfirst($daoNSArr[1]);
+		$replaceArr = array('APPNAME', 'DBNAME', 'TABLENAME');
+		$changedArr = array(__APP_NAME, $dbName, $tableName);
+		
+		// check dao path
+		$daoClsBase = realpath(__LIB_DIR . '/' . __APP_NAME . '/Dao/');
+		$daoClsPath = $daoClsBase . DIRECTORY_SEPARATOR . $dbName; // should be created
+		$daoClsFile = $daoClsPath . DIRECTORY_SEPARATOR . $tableName . '.php';
+		$daoDbClsFile = $daoClsBase . DIRECTORY_SEPARATOR . $dbName . '.php';
+		echo $daoClsBase."\n".$daoClsPath."\n".$daoClsFile."\n".$daoDbClsFile."\n";
+		
+		// create db class
+		if (!file_exists($daoDbClsFile)) {
+			$codeDbPhp = __DOC_DIR . DIRECTORY_SEPARATOR . 'tpl' . DIRECTORY_SEPARATOR . 'code.db.php';
+			file_put_contents($daoDbClsFile, str_replace($replaceArr, $changedArr, file_get_contents($codeDbPhp)));
+		}
+		
+		// create table class
+		if (!is_dir($daoClsPath)) mkdir($daoClsPath, 0777, true);
+		if (!file_exists($daoClsFile)) {
+			$codeTbPhp = __DOC_DIR . DIRECTORY_SEPARATOR . 'tpl' . DIRECTORY_SEPARATOR . 'code.tb.php';
+			file_put_contents($daoClsFile, str_replace($replaceArr, $changedArr, file_get_contents($codeTbPhp)));
+		}
+		
+		echo "\nDB Class : $daoDbClsFile\n";
+		echo "Table Class : $daoClsFile\n";
 	}
 }
