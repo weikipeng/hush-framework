@@ -350,13 +350,13 @@ NOTICE;
 		// copy code
 		$codeCtrlPhp = __DOC_DIR . DIRECTORY_SEPARATOR . 'tpl' . DIRECTORY_SEPARATOR . 'code.ctrl.php';
 		file_put_contents($ctrlClsFile, str_replace($replaceArr, $changedArr, file_get_contents($codeCtrlPhp)));
-		echo "\nController Class : $ctrlClsFile\n";
+		echo "\nNew Controller Class : $ctrlClsFile\n";
 		
 		// copy tpl
 		if (!is_dir($ctrlTplPath)) mkdir($ctrlTplPath, 0777, true);
 		$codeCtrlTpl = __DOC_DIR . DIRECTORY_SEPARATOR . 'tpl' . DIRECTORY_SEPARATOR . 'code.ctrl.tpl';
 		file_put_contents($ctrlTplFile, str_replace($replaceArr, $changedArr, file_get_contents($codeCtrlTpl)));
-		echo "Controller TPL : $ctrlTplFile\n";
+		echo "\nNew Controller Template : $ctrlTplFile\n";
 	}
 	
 	public function newdaoAction ()
@@ -390,12 +390,15 @@ NOTICE;
 		$daoClsPath = $daoClsBase . DIRECTORY_SEPARATOR . $dbName; // should be created
 		$daoClsFile = $daoClsPath . DIRECTORY_SEPARATOR . $tableName . '.php';
 		$daoDbClsFile = $daoClsBase . DIRECTORY_SEPARATOR . $dbName . '.php';
-		echo $daoClsBase."\n".$daoClsPath."\n".$daoClsFile."\n".$daoDbClsFile."\n";
+//		echo $daoClsBase."\n".$daoClsPath."\n".$daoClsFile."\n".$daoDbClsFile."\n";
 		
 		// create db class
 		if (!file_exists($daoDbClsFile)) {
 			$codeDbPhp = __DOC_DIR . DIRECTORY_SEPARATOR . 'tpl' . DIRECTORY_SEPARATOR . 'code.db.php';
 			file_put_contents($daoDbClsFile, str_replace($replaceArr, $changedArr, file_get_contents($codeDbPhp)));
+			echo "\nNew DB Class : $daoDbClsFile\n";
+		} else {
+			echo "\nDB Class : $daoDbClsFile\n";
 		}
 		
 		// create table class
@@ -403,9 +406,9 @@ NOTICE;
 		if (!file_exists($daoClsFile)) {
 			$codeTbPhp = __DOC_DIR . DIRECTORY_SEPARATOR . 'tpl' . DIRECTORY_SEPARATOR . 'code.tb.php';
 			file_put_contents($daoClsFile, str_replace($replaceArr, $changedArr, file_get_contents($codeTbPhp)));
+			echo "\nNew Table Class : $daoClsFile\n";
+		} else {
+			echo "\nTable Class : $daoClsFile\n";
 		}
-		
-		echo "\nDB Class : $daoDbClsFile\n";
-		echo "Table Class : $daoClsFile\n";
 	}
 }
