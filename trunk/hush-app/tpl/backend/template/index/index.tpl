@@ -30,7 +30,7 @@ function reSetIframe(){
 }
 $(function(){
 	// default selected menu link
-	ChangeNav("top_1", "欢迎界面");
+	ChangeNav("top_1", "/common/");
 });
 </script>
 

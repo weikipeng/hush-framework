@@ -19,7 +19,7 @@ $(function(){
 	//快捷菜单
 	bindQuickMenu();
 	
-	//菜单切换(测试)
+	//菜单绑定
 	bindAdminMenu();
 	
 	//左侧菜单开关
@@ -46,7 +46,8 @@ $(function(){
 	
 });
 
-function bindQuickMenu() //快捷菜单
+//快捷菜单（暂不用）
+function bindQuickMenu()
 {
 	$("#ac_qucikmenu").bind("mouseenter",function(){
 		$("#qucikmenu").slideDown("fast");
@@ -67,19 +68,18 @@ function bindQuickMenu() //快捷菜单
 	});
 }
 
-function bindAdminMenu() //菜单切换
+//菜单绑定逻辑（执行一次）
+function bindAdminMenu()
 {
 	$("#nav").find("a").click(function(){
 		ChangeNav($(this).attr("_for"));
 	});
 
 	$("#menu").find("dt").click(function(){
-		
 		if (close_others) {
 			$("#menu").find("dt").css("background-position","left top");
 			$("#menu").find("dt").next("dd").slideUp("fast");
 		}
-		
 		click_dt = $(this);
 		click_dd = $(this).next("dd");
 		if(click_dd.css("display") == "none"){
@@ -93,11 +93,12 @@ function bindAdminMenu() //菜单切换
 
 	$("#menu dd ul li a").click(function(){
 		$(this).addClass("thisclass").blur().parents("#menu").find("ul li a").not($(this)).removeClass("thisclass");
-		current_link = $(this).html();
+		current_link = $(this).attr("href");
 	});
 }
 
-function ChangeNav(nav) //菜单跳转
+//菜单选择逻辑（每次执行）
+function ChangeNav(nav)
 {
 	$("#nav").find("a").removeClass("thisclass");
 	$("#nav").find("a[_for='"+nav+"']").addClass("thisclass").blur();
@@ -105,11 +106,13 @@ function ChangeNav(nav) //菜单跳转
 	$("#menu").find("div[class^=items]").hide(); // hide all first then show menu
 	$("#menu").find(".items_"+nav).show().find("dl dd").show().find("ul li a").removeClass("thisclass");
 	$("#menu").find(".items_"+nav).css("display", "inline"); // fix bug in firefox
-	// judge which link should be selected by link name
+	
+	// judge which link should be selected by link href
 	link_name = arguments[1] ? arguments[1] : current_link;
-	curr_link = $("#menu").find(".items_"+nav).find("dd ul li a:contains('"+link_name+"')");
+	curr_link = $("#menu").find(".items_"+nav).find("dd ul li a[href="+link_name+"]");
 	curr_link.addClass("thisclass").blur();
 	
+	// hide other links
 	if (close_others) {
 		$("#menu").find("dt").css("background-position","left top");
 		$("#menu").find("dt").next("dd").hide();
@@ -123,7 +126,8 @@ function ChangeNav(nav) //菜单跳转
 	current_link = link_name;
 }
 
-function LeftMenuToggle() //左侧菜单开关
+//左侧菜单开关（隐藏/显示菜单）
+function LeftMenuToggle()
 {
 	$("#togglemenu").click(function(){
 		if($("body").attr("class") == "showmenu"){
@@ -136,7 +140,8 @@ function LeftMenuToggle() //左侧菜单开关
 	});
 }
 
-function TopMenuSlide(direction) //顶部菜单滑动
+//顶部菜单滑动（通过top_menu_max控制）
+function TopMenuSlide(direction)
 {
 	// get top menu number
 	if (top_menu_num == 0) {
