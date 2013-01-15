@@ -14,7 +14,7 @@ require_once 'APPNAME/Dao/DBNAME.php';
 /**
  * @package APPNAME_Dao_DBNAME
  */
-class DBNAME_TABLENAME extends Ihush_Dao_DBNAME
+class DBNAME_TABLENAME extends APPNAME_Dao_DBNAME
 {
 	/**
 	 * @static
