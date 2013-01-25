@@ -16,6 +16,10 @@ class Hush_Exception extends Exception
 {
 	public function __construct($msg = '', $code = 0, Exception $e = null)
 	{
-		parent::__construct($msg, $code, $e);
+		if (version_compare(PHP_VERSION, '5.3.0', '<')) {
+			parent::__construct($msg, (int) $code);
+		} else {
+			parent::__construct($msg, (int) $code, $e);
+		}
 	}
 }
