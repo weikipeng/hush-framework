@@ -15,7 +15,11 @@ function _hush_realpath ($path)
 			$absolutes[] = $part;
 		}
 	}
-	return implode(DIRECTORY_SEPARATOR, $absolutes);
+	if (__OS_WIN) {
+		return implode(DIRECTORY_SEPARATOR, $absolutes);
+	} else {
+		return DIRECTORY_SEPARATOR.implode(DIRECTORY_SEPARATOR, $absolutes);
+	}
 }
 
 function _hush_download ($down_file, $save_file)
