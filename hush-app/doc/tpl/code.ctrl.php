@@ -16,6 +16,14 @@ require_once 'APPNAME/App/Backend/Page.php';
  */
 class CTRLNAMEPage extends APPNAME_App_Backend_Page
 {
+	public function __init ()
+	{
+		parent::__init();
+		
+		// if page need login, uncomment this line
+//		$this->authenticate();
+	}
+	
 	public function indexAction () 
 	{
 		$this->view->welcome = 'Controller Index Page !';
