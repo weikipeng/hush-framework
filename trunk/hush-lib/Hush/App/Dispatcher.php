@@ -415,17 +415,17 @@ class Hush_App_Dispatcher
 			// create page
 			$page = new $className();
 			
-			// set page's debug level
-			if ($this->_debugLevel) {
-				$page->setDebugLevel($this->_debugLevel);
-			}
-			
 			/* USE PAGE VIEW PROCESS
 			 * set template for page view class
 			 */
 			if (self::$pageViewClass) {
 				if ($tpl_dir) $page->setTemplateDir($tpl_dir);
 				$page->__prepare();
+			}
+			
+			// set page's debug level
+			if ($this->_debugLevel) {
+				$page->setDebugLevel($this->_debugLevel);
 			}
 			
 			// callback method implemented in page class
