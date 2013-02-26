@@ -112,7 +112,7 @@ class Hush_Page
 	
 	/**
 	 * Set page's debug level
-	 * @param string $dir
+	 * @param int $level
 	 * @return unknown
 	 */
 	public function setDebugLevel ($level = Hush_Debug::DEBUG)
