@@ -60,6 +60,12 @@ class Hush_App
 	private $_debug = false;
 	
 	/**
+	 * Page's debug level
+	 * @var bool
+	 */
+	private $_debugLevel = false;
+	
+	/**
 	 * Set debug mode for display app's dispatch infomation
 	 * @param bool $debug
 	 * @return Hush_App
@@ -67,6 +73,17 @@ class Hush_App
 	public function setDebug ($debug = true)
 	{
 		$this->_debug = $debug;
+		return $this;
+	}
+	
+	/**
+	 * Set debug level for display app's page
+	 * @param int $level
+	 * @return Hush_App
+	 */
+	public function setDebugLevel ($level = Hush_Debug::DEBUG)
+	{
+		$this->_debugLevel = $level;
 		return $this;
 	}
 	
@@ -203,6 +220,11 @@ class Hush_App
 		// if open debug
 		if ($this->_debug) {
 			$dispatcher->setDebug(true);
+		}
+		
+		// if set debug level
+		if ($this->_debugLevel) {
+			$dispatcher->setDebugLevel($this->_debugLevel);
 		}
 		
 		// if set error page
