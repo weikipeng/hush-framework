@@ -57,6 +57,12 @@ class Hush_App_Dispatcher
 	private $_debug = false;
 	
 	/**
+	 * For page's debug level
+	 * @var bool
+	 */
+	private $_debugLevel = false;
+	
+	/**
 	 * Default class name
 	 * @var string
 	 */
@@ -105,6 +111,16 @@ class Hush_App_Dispatcher
 	public function setDebug ($debug = true)
 	{
 		$this->_debug = $debug;
+	}
+	
+	/**
+	 * Set page's debug level
+	 * @param int $level
+	 * @return unknown
+	 */
+	public function setDebugLevel ($level = Hush_Debug::DEBUG)
+	{
+		$this->_debugLevel = $level;
 	}
 	
 	/**
@@ -398,6 +414,11 @@ class Hush_App_Dispatcher
 			
 			// create page
 			$page = new $className();
+			
+			// set page's debug level
+			if ($this->_debugLevel) {
+				$page->setDebugLevel($this->_debugLevel);
+			}
 			
 			/* USE PAGE VIEW PROCESS
 			 * set template for page view class
