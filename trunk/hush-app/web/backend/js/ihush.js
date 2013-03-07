@@ -10,30 +10,55 @@
 	// popup box
 	$.overlay = {
 		show : function () {
-			$('div.main').block({
-				css : { padding : '20px'},
-				message : '<h1><img src="../img/busy.gif" /> &nbsp; Processing ...</h1>'
-			});
+			var e = arguments[0] || null;
+			if (e) {
+				$('div.main').block({
+					topOffset : this._getTopOffset(),
+					overlayCSS : this._getOverlayCss(),
+					css : { padding : '0px', width : '70%'},
+					message : e,
+					onBlock : function () {
+						$('.blockOverlay').css({
+							height : $(document).height()
+						});
+					}
+				});
+			} else {
+				$('div.main').block({
+					topOffset : this._getTopOffset(),
+					overlayCSS : this._getOverlayCss(),
+					css : { padding : '20px', width : '50%'},
+					message : '<h1><img src="../img/busy.gif" /> &nbsp; Processing ...</h1>'
+				});
+			}
 		},
 		frame : function (url, callback) {
 			$.blockUI.defaults.topOffset = '100';
 			$('div.main').block({
-				css : { padding : '0px', width : '50%'},
+				topOffset : this._getTopOffset(),
+				overlayCSS : this._getOverlayCss(),
+				css : { padding : '0px', width : '70%'},
 				message : '<iframe id="overlayInnerIframe" style="width:100%;height:500px;border:none;overflow-x:hidden" src="' + url + '"></iframe>',
 				onBlock : function () {
-					$('iframe#overlayInnerIframe').load(callback)
+					$('iframe#overlayInnerIframe').load(callback);
 				}
 			});
-		},
-		msg : function (msg) {
-			$('div.blockMsg').html(msg);
 		},
 		close: function (sec) {
 			timeout = sec || 0;
 			setTimeout(function(){
 				$('div.main').unblock();
 			}, timeout);
-			
+		},
+		// private 
+		_getTopOffset: function () {
+			return $(document).scrollTop() + 100;
+		},
+		_getOverlayCss: function () {
+			return {
+				backgroundColor: '#333333',
+				height : $(document).height()
+			};
 		}
 	}
 	
