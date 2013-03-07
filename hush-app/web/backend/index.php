@@ -22,6 +22,6 @@ $app->setDebug(true);
  * set page's debug level
  * TODO : should be changed to Hush_Debug::FATAL in www environment
  */
-$app->setDebugLevel(Hush_Debug::DEBUG);
+$app->setDebugLevel(Hush_Debug::FATAL);
 
 $app->run();
