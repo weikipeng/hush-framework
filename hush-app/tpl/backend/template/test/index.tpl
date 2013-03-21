@@ -93,23 +93,23 @@
 			<div id="detail_1" class="disn">
 				<div class="windownav">
 					<img src="{$_root}img/icon_wrong.png" class="close" onclick="javascript:$.overlay.close(0)"/>
-					<img src="{$_root}img/icon_arrow_right.png" class="icon" /> <b>明细1</b>
+					<img src="{$_root}img/icon_arrow_right.png" class="icon" /> <b>2013-01-01 明细</b>
 				</div>
-				<div style="padding:50px;">明细1内容</div>
+				<div style="padding:50px;">2013-01-01 明细内容</div>
 			</div>
 			<div id="detail_2" class="disn">
 				<div class="windownav">
 					<img src="{$_root}img/icon_wrong.png" class="close" onclick="javascript:$.overlay.close(0)"/>
-					<img src="{$_root}img/icon_arrow_right.png" class="icon" /> <b>明细2</b>
+					<img src="{$_root}img/icon_arrow_right.png" class="icon" /> <b>2013-01-02 明细</b>
 				</div>
-				<div style="padding:50px;">明细2内容</div>
+				<div style="padding:50px;">2013-01-02 明细内容</div>
 			</div>
 			<div id="detail_3" class="disn">
 				<div class="windownav">
 					<img src="{$_root}img/icon_wrong.png" class="close" onclick="javascript:$.overlay.close(0)"/>
-					<img src="{$_root}img/icon_arrow_right.png" class="icon" /> <b>明细3</b>
+					<img src="{$_root}img/icon_arrow_right.png" class="icon" /> <b>2013-01-03 明细</b>
 				</div>
-				<div style="padding:50px;">明细3内容</div>
+				<div style="padding:50px;">2013-01-03 明细内容</div>
 			</div>
 		</div>
 		<script type="text/javascript">
