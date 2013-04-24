@@ -176,5 +176,5 @@ abstract class Hush_Db_Config
 	 * @param string $dbName
 	 * @param string $tbName
 	 */
-	abstract public function getInstance();
+//	abstract public function getInstance();
 }
