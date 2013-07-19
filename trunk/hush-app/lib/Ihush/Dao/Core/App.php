@@ -41,6 +41,25 @@ class Core_App extends Ihush_Dao_Core
 	}
 	
 	/**
+	 * Check whether path existed
+	 * @param string $path
+	 * @param int $app_id
+	 * @return array
+	 */
+	public function checkPath ($path, $app_id = -1)
+	{
+		$sql = $this->select()->from($this->t1, "*")->where("{$this->t1}.path = ?", $path);
+		
+		$res = $this->dbr()->fetchRow($sql);
+		
+		if (!$res || ($res && $res['id'] == $app_id)) {
+			return true;
+		}
+		
+		return false;
+	}
+	
+	/**
 	 * Get all applications from track_app
 	 * @return array
 	 */
