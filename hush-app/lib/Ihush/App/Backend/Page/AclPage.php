@@ -352,6 +352,10 @@ class AclPage extends Ihush_App_Backend_Page
 			if (!$this->param('roles')) {
 				$this->addError('common.notempty', 'Role list');
 			}
+			// check path
+			if (!$appDao->checkPath($this->param('path'))) {
+				$this->addError('common.existed', 'App path');
+			}
 			if ($this->noError()) {
 				// prepare data
 				$data['pid'] = $this->param('pid');
@@ -404,6 +408,10 @@ class AclPage extends Ihush_App_Backend_Page
 			}
 			if (!$roles) {
 				$this->addError('common.notempty', 'Role list');
+			}
+			// check path
+			if (!$appDao->checkPath($this->param('path'), $this->param('id'))) {
+				$this->addError('common.existed', 'App path');
 			}
 			if ($this->noError()) {
 				// prepare data
