@@ -48,6 +48,8 @@ class Core_App extends Ihush_Dao_Core
 	 */
 	public function checkPath ($path, $app_id = -1)
 	{
+		if (!$path) return true; // escape
+		
 		$sql = $this->select()->from($this->t1, "*")->where("{$this->t1}.path = ?", $path);
 		
 		$res = $this->dbr()->fetchRow($sql);
