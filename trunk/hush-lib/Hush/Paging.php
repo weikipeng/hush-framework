@@ -90,7 +90,7 @@ class Hush_Paging
 		
 		// prepare pattern
 		$this->pattern = ($pattern) ? $pattern : $this->pattern;
-		$this->pageUrl = $_SERVER['PHP_SELF'] . "?" . $this->pagStr . "={page}";
+		$this->pageUrl = $this->defaultPageUrl(); // default page url
 		if (array_key_exists('Href', $this->pattern)) {
 			$this->pageUrl = $this->pattern['Href'];
 		}
@@ -356,5 +356,26 @@ class Hush_Paging
 	{
 		// TODO : need to be implemented in subclasses
 		return trim($pageUrl);
+	}
+	
+	/**
+	 * Get default page url
+	 * 
+	 * @return string
+	 */
+	protected function defaultPageUrl ()
+	{
+		$uri = $_SERVER['REQUEST_URI'];
+		$pno = intval($_REQUEST['p']);
+		if ($uri) {
+			$arr = array();
+			$url = parse_url($uri);
+			if (!empty($url['query'])) {
+				parse_str($url['query'], $arr);
+			}
+			$arr[$this->pagStr] = '{page}';
+			$uri = $url['path'].'?'.http_build_query($arr);
+		}
+		return urldecode($uri);
 	}
 }
