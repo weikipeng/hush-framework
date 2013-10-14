@@ -89,12 +89,16 @@ NOTICE;
 			echo "Import database ok.\n";
 		} else {
 			echo "Import database failed.\n";
-			exit;
 		}
 		
 		// check dirs and configs
-		system('hush check dirs');
-		system('hush check configs');
+		if (__OS_WIN) {
+			system('hush check dirs');
+			system('hush check configs');
+		} else {
+			system('./hush check dirs');
+			system('./hush check configs');
+		}
 		
 		echo 
 <<<NOTICE
